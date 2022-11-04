@@ -1,0 +1,88 @@
+.feediv {
+    margin: 1rem;
+}
+
+.tableHeader {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.tableSpan {
+    padding: 0.3rem;
+    width: 10px;
+    border-radius: 2px;
+}
+
+.tableHeaderLeft {
+    width: 50%;
+    padding-left: 1rem;
+}
+
+.tableHeaderRight {
+    width: 50%;
+    text-align: right;
+    padding-right: 2rem;
+}
+
+.buttonAdd {
+    background-color: #27AE60;
+    height: 2rem;
+    width: 9rem;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    justify-content: center
+}
+
+.buttonPending{
+    background-color: #F2C94C;
+    height: 1.5rem;
+    width: 7.5rem;
+    color: #333333;
+    border: none;
+    border-radius: 4px;
+    justify-content: center
+}
+
+.m1 {
+    margin: 1rem 2rem 1rem 1rem;
+}
+
+.header {
+    font-size: 20px;
+    font-weight: 600;
+    margin-top: 5px;
+}
+
+
+@media only screen and (max-width: 1025px) {
+
+    .tableHeader {
+        display: block;
+    }
+
+    .headerFlex {
+        flex-direction: column;
+    }
+
+    .headerFlexLeft {
+        display: inline;
+    }
+
+    .headerFlexRight {
+        display: block;
+    }
+
+    .tableHeaderRight {
+        width: 100%;
+        text-align: left;
+        margin: 1rem;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .m1{
+        margin: 0 1rem;
+        width: 100%;
+    }
+}

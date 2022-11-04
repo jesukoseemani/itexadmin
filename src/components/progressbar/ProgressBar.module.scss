@@ -1,0 +1,48 @@
+.progress {
+	margin-top: 14px;
+}
+
+.progress_p {
+	font-family: Roboto;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 12px;
+	line-height: 12px;
+	letter-spacing: 0.00206293px;
+	color: #828282;
+}
+
+.wrapper {
+	padding: 0 23px;
+	margin-bottom: 30px;
+	background: #fbfefd;
+	border: 1px solid #f2f2f2;
+	border-radius: 4px;
+	width: 100%;
+}
+
+.header {
+	border-bottom: 1px solid #f2f2f2;
+	padding: 30px 0 20px 0;
+	margin: 0 -23px;
+}
+
+.headerh3 {
+	font-family: Roboto;
+	font-style: normal;
+	font-weight: 500;
+	font-size: 16px;
+	line-height: 17px;
+	/* identical to box height, or 103% */
+
+	letter-spacing: 0.0028881px;
+
+	color: #333333;
+	padding: 0;
+	margin: 0;
+	padding: 0 23px;
+}
+
+.content {
+	margin: 20px 0;
+}

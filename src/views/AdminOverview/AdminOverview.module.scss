@@ -1,0 +1,210 @@
+.wrapper {
+	max-width: 100%;
+	background-color: #ffffff;
+	// margin: 0 auto;
+	width: 100vw;
+}
+
+.container {
+	// width: 100%;
+	padding: 0 77px 0 41px;
+	@media (max-width: 600px) {
+		padding: 0 10px 0 10px;
+	}
+}
+
+.lineChartContainer {
+	background: #fbfefd;
+	border: 1px solid #f2f2f2;
+	border-radius: 4px;
+	margin-top: 36px;
+	padding: 0 40px;
+	@media (max-width: 1000px) {
+		padding: 0 5px;
+	}
+}
+
+.gridContainer {
+	display: flex;
+	align-items: flex-start;
+	width: 100%;
+	min-height: 450px;
+
+	@media (max-width: 1400px) {
+		flex-direction: column;
+		// max-width: 300px;
+	}
+}
+
+.progressBarContainer {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+
+	@media (max-width: 1400px) {
+		flex-direction: column;
+	}
+}
+
+.progreeBarChild {
+	flex: 1;
+}
+
+.gridContainerLeft {
+	flex: 3;
+	@media (max-width: 1400px) {
+		width: 100%;
+	}
+}
+
+.gridContainerRight {
+	flex: 1;
+	display: flex;
+	align-items: flex-start;
+	flex-direction: column;
+	border-left: 1px solid #f2f2f2;
+	padding-left: 26px;
+	min-height: 450px;
+	// width: 100%;
+}
+
+.gridContainerRightTop {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.gridContainerRightBottom {
+	flex: 1;
+	display: flex;
+	align-items: flex-start;
+	justify-content: flex-start;
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
+	@media (max-width: 1400px) {
+		width: 270px;
+	}
+}
+
+.firstline {
+	margin: 0 -40px;
+	background-color: #f2f2f2;
+	height: 1px;
+	opacity: 0.2;
+}
+
+.secondline {
+	background-color: #f2f2f2;
+	width: 100%;
+	text-align: center;
+	height: 1px;
+	opacity: 0.2;
+}
+
+.lineChartHeaderLeft {
+	display: flex;
+	margin-top: 11px;
+	margin-bottom: 51px;
+}
+
+.breakOffContent {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	margin-right: 40px;
+}
+
+.breakOffContentH1 {
+	font-family: Roboto;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 12px;
+	line-height: 16px;
+	color: #828282;
+	padding: 0;
+	margin: 0;
+}
+
+.breakOffContentP {
+	font-family: Roboto;
+	font-style: normal;
+	font-weight: 600;
+	font-size: 18px;
+	line-height: 32px;
+	letter-spacing: 0.00536144px;
+	color: #333333;
+	padding: 0;
+	margin: 0;
+}
+
+.breakOffContentTopBox {
+	margin: 20px 0;
+}
+
+.gridFeatures {
+	display: flex;
+	width: 100%;
+	background: #fbfefd;
+	border: 1px solid #f2f2f2;
+	border-radius: 4px;
+	margin: 21px 0;
+	@media (max-width: 1400px) {
+		flex-direction: column;
+	}
+}
+
+.gridFeaturesTable {
+	// border: 1px solid #f2f2f2;
+	border-radius: 4px;
+	margin: 21px 0;
+}
+
+.gridFeatureContent {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	padding: 0px 40px;
+	margin: 21px 0;
+	border-right: 1px solid rgba(0, 0, 0, 0.14);
+}
+
+.gridFeatureContenth {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	padding: 0px 40px;
+	margin: 21px 0;
+}
+
+.gridFeatureContentH1 {
+	font-family: Roboto;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 14px;
+	line-height: 16px;
+	letter-spacing: 0.0052px;
+	color: #828282;
+	padding: 0;
+	margin: 0;
+	margin-bottom: 5px;
+}
+
+.gridFeatureContentP {
+	font-family: Roboto;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 20px;
+	line-height: 23px;
+	letter-spacing: 0.0052px;
+	color: #333333;
+	padding: 0;
+	margin: 0;
+}
+
+.gridAreaChart {
+	width: 100%;
+}

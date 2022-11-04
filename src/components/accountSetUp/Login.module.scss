@@ -1,0 +1,145 @@
+.signinContainer {
+    height: 100vh;
+    width: 100%;
+    background-color: rgba(239, 243, 248, 1);
+    margin: 0 auto;
+}
+
+.logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 4rem;
+}
+
+.signinDiv {
+    border: 1px solid transparent;
+    width: 35%;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 2rem 4rem 2rem 4rem;
+    background: #FFFFFF;
+    box-shadow: 0px 4px 14px rgba(15, 49, 32, 0.15);
+    border-radius: 6px;
+}
+
+.signinHeader {
+    text-align: center;
+}
+
+.headerH {
+    font-size: 18px;
+    line-height: 21px;
+    color: #000000;
+}
+
+.headerEmail {
+    font-weight: 300;
+    font-size: 24px;
+    line-height: 28px;
+    color: #406A99;
+}
+
+.headerP {
+    font-size: 14px;
+    text-align: center;
+    color: #6F6F6F;
+    line-height: 1.5em;
+    height: 3em;
+}
+
+.desc {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+    overflow: hidden;
+    width: 75%;
+    color: #8B8B8B;
+    // line-break: auto;
+}
+
+.title {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 19px;
+    color: #414141;
+}
+
+.formTitle {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 15px;
+    color: #414141;
+}
+
+.header {
+    font-style: normal;
+    font-weight: 300;
+    font-size: 30px;
+    line-height: 35px;
+    color: #333333;
+    margin-bottom: 1.5rem;
+}
+
+.mt1 {
+    margin-top: 1rem;
+}
+
+.mt2 {
+    margin-top: 2rem;
+}
+
+.sub {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.subP {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 0.9rem;
+    line-height: 1rem;
+    text-align: center;
+    color: #6F6F6F;
+
+}
+
+.formSub {
+    margin-top: 2rem;
+    font-size: 0.9rem;
+    line-height: 1rem;
+    text-align: center;
+    color: #000000;
+}
+
+.signinAnchor {
+    text-decoration: none;
+    color: #000000;
+}
+
+.emailVerificationDiv{
+    margin: 3rem auto;
+}
+
+@media only screen and (min-device-width: 601px) and (max-device-width: 1024px) {
+    .signinDiv {
+        padding: 3rem;
+        width: 50%;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .signinDiv {
+        padding: 2rem;
+        width: 80%;
+    }
+
+    .signinContainer {
+        height: auto;
+    }
+}

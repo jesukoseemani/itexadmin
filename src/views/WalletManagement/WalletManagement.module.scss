@@ -1,0 +1,404 @@
+.tableHeader {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.tableSpan {
+    padding: 0.3rem;
+    width: 10px;
+    border-radius: 2px;
+}
+
+.tableHeaderLeft {
+    width: 50%;
+    padding-left: 1rem;
+}
+
+.tableHeaderRight {
+    width: 50%;
+    text-align: right;
+    padding-right: 2rem;
+}
+
+
+.button1 {
+    background-color: #E0E0E0;
+    height: 2rem;
+    width: 9rem;
+    color: #333333;
+    border: none;
+    border-radius: 4px;
+    justify-content: center;
+    margin-right: 1rem;
+}
+
+.button2 {
+    background-color: #27AE60;
+    height: 2rem;
+    width: 9rem;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    justify-content: center
+}
+
+.buttonSpan {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap
+}
+
+.m1 {
+    margin: 1rem 2rem 1rem 1rem;
+}
+
+.mlhalf {
+    margin-left: 0.5rem;
+}
+
+.dividerClass {
+    display: block;
+    margin: 0;
+    -webkit-flex-shrink: 0;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+    border-width: 0;
+    border-style: solid;
+    border-color: rgba(0, 0, 0, 0.12);
+    border-bottom-width: 0;
+    margin-top: 35px;
+    height: 40px;
+    border-right-width: thin;
+    -webkit-align-self: stretch;
+    -ms-flex-item-align: stretch;
+    align-self: stretch;
+}
+
+.header {
+    font-size: 13px;
+    line-height: 16px;
+    color: #828282;
+}
+
+.sub {
+    font-size: 13px;
+    line-height: 16px;
+    color: #27AE60;
+    margin-top: 5px;
+}
+
+.tabs {
+    display: flex;
+}
+
+.container {
+    width: 100%;
+    padding: 1rem 2rem;
+}
+
+
+.tableHeader {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.transactionDetailsHeader {
+    margin: 1rem 1rem 0rem 1rem;
+}
+
+.back {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    flex-wrap: wrap;
+    font-size: 12px;
+    line-height: 14px;
+    color: #4F4F4F;
+}
+
+.headerAmount {
+    font-size: 21px;
+    line-height: 28px;
+    color: #333333;
+}
+
+.headerFlex {
+    margin: 1rem;
+    display: flex;
+    flex-direction: row;
+}
+
+
+.headerFlexRight {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: end;
+}
+
+.headerAmount {
+    font-size: 24px;
+    line-height: 28px;
+    color: #333333;
+}
+
+.mlhalf {
+    margin-left: 0.5rem;
+    margin-top: 0.2rem;
+}
+
+.ml1 {
+    margin-left: 1rem;
+}
+
+.ml2 {
+    margin-left: 2rem;
+}
+
+
+.mt1 {
+    margin-top: 1rem;
+}
+
+.mt2 {
+    margin-top: 2rem;
+}
+
+.mb1 {
+    margin-bottom: 2rem;
+}
+
+
+.header {
+    font-size: 13px;
+    line-height: 16px;
+    color: #828282;
+}
+
+.gridHeader {
+    margin: 3rem 0rem 0.5rem 0rem
+}
+
+.detail {
+    font-size: 13px;
+    line-height: 16px;
+    color: #333333;
+    margin-top: 0.4rem;
+}
+
+.blacklist {
+    color: #EB5757;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    flex-wrap: wrap;
+    font-size: 13px;
+    line-height: 17px;
+}
+
+.inline {
+    display: flex;
+    justify-content: left;
+    align-items: left;
+    flex-wrap: wrap;
+    font-size: 13px;
+    line-height: 17px;
+}
+
+.green {
+    color: #219653;
+    font-size: 12px;
+    line-height: 16px;
+}
+
+.copy {
+    color: #2F80ED;
+    margin-top: 0.2rem;
+    margin-left: 0.5rem
+}
+
+.error {
+    color: #EB5757;
+    font-size: 12px;
+    line-height: 16px;
+}
+
+.text {
+    font-size: 12px;
+    line-height: 14px;
+    color: #4F4F4F;
+}
+
+.title {
+    font-size: 18px;
+    line-height: 21px;
+    color: #333333;
+}
+
+.titleHead {
+    font-size: 18px;
+    line-height: 21px;
+    font-weight: 700;
+    color: #333333;
+}
+
+.show {
+    font-size: 15px;
+    line-height: 19px;
+    color: #2F80ED;
+    margin-top: 2rem;
+}
+
+.buttonSuccessful {
+    width: 80px;
+    height: 19px;
+    background: #27AE60;
+    border-radius: 2px;
+    border: none;
+    color: #fff;
+    margin-left: 1rem;
+}
+
+.buttonFraudulent {
+    width: 150px;
+    height: 19px;
+    background: #EB5757;
+    border-radius: 2px;
+    border: none;
+    color: #fff;
+    margin-left: 1rem;
+}
+
+.buttongrey {
+    width: 140px;
+    height: 32px;
+    background: #E0E0E0;
+    border-radius: 4px;
+    border: none;
+    margin-left: 0.5rem;
+    cursor: pointer;
+}
+
+
+.buttongreen {
+    width: 140px;
+    height: 32px;
+    background: #27AE60;
+    border-radius: 4px;
+    border: none;
+    margin-left: 0.5rem;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.buttonflag {
+    width: 140px;
+    height: 32px;
+    background: #EB5757;
+    border-radius: 4px;
+    border: none;
+    margin-left: 0.5rem;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.dividerClass {
+    display: block;
+    margin: 0;
+    -webkit-flex-shrink: 0;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+    border-width: 0;
+    border-style: solid;
+    border-color: rgba(0, 0, 0, 0.12);
+    border-bottom-width: 0;
+    margin-top: 29px;
+    height: auto;
+    border-right-width: thin;
+    -webkit-align-self: stretch;
+    -ms-flex-item-align: stretch;
+    align-self: stretch;
+}
+
+@media only screen and (max-width: 1025px) {
+    .dividerClass {
+        display: none;
+    }
+
+    .tableHeader {
+        display: block;
+    }
+
+    .headerFlex {
+        flex-direction: column;
+    }
+
+    .headerFlexLeft {
+        display: inline;
+    }
+
+    .headerFlexRight {
+        display: block;
+    }
+
+    .tableHeaderRight {
+        width: 100%;
+        text-align: left;
+        margin: 1rem;
+    }
+}
+
+
+
+@media only screen and (max-width: 1025px) {
+    .dividerClass {
+        display: none;
+    }
+
+    .tableHeader {
+        display: block;
+    }
+
+    .headerFlex {
+        flex-direction: column;
+    }
+
+    .headerFlexLeft {
+        display: inline;
+    }
+
+    .headerFlexRight {
+        display: block;
+    }
+
+    .tableHeaderRight {
+        width: 100%;
+        text-align: left;
+        margin: 1rem;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+
+    .buttongrey {
+        margin-top: 0.5rem;
+    }
+
+    .buttongreen {
+        margin-top: 0.5rem;
+    }
+
+    .buttonflag {
+        margin-top: 0.5rem;
+    }
+
+    .transactionDetails {
+        margin: 0.2rem
+    }
+
+    .tabs {
+        display: block;
+    }
+
+
+}

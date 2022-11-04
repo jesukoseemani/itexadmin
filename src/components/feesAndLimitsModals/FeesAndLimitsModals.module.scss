@@ -1,0 +1,77 @@
+.modalContainer {
+    width: 380px;
+    height: auto;
+    margin: auto auto;
+    border-radius: 6px;
+    border-color: transparent;
+}
+
+.modalColumn {
+    width: 100%;
+}
+
+.modalHeader {
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 21px;
+    color: #828282;
+    text-align: left;
+    margin: 1.5rem;
+    // padding-left: 1.5rem;
+}
+
+.back {
+    color: #333333;
+}
+
+.modalBody {
+    margin: 1rem 2rem 2rem 2rem;
+    color: #333333;
+}
+
+.textDiv {
+    width: 260px;
+    font-weight: normal;
+    font-size: 14px;
+    text-align: left;
+    color: #828282;
+    margin: 1.5rem 3rem;
+}
+
+.inputLabel {
+    color: #333333;
+}
+
+.black {
+    font-size: 13px;
+    line-height: 16px;
+    color: #333333;
+}
+
+.mt1 {
+    margin-top: 1rem;
+}
+
+.mt2 {
+    margin-top: 2rem;
+}
+
+.mb1{
+    margin-bottom: -0.9rem;
+}
+
+.buttonMargin {
+    margin-top: 1rem;
+}
+
+@media (max-width: 800px) {
+    .modalContainer {
+        width: 100%;
+        max-height: calc(100vh - 80px);
+        overflow-y: auto;
+    }
+
+    .buttonMargin {
+        margin-top: 1rem;
+    }
+}

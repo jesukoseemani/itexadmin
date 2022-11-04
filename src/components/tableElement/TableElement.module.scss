@@ -1,0 +1,93 @@
+.header {
+	padding: 0px;
+	margin: 0px;
+	font-family: Roboto;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 14px;
+	line-height: 16px;
+	color: #4f4f4f;
+}
+
+.header1 {
+	padding: 0px;
+	margin: 0px;
+	font-family: Roboto;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 14px;
+	line-height: 16px;
+	color: #4f4f4f;
+	margin-bottom: 8px;
+}
+
+.Select_top {
+	padding: 30px 35px 11px 26px;
+}
+
+.Select_bottom {
+	padding: 11px 35px 30px 26px;
+}
+
+.Button {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin: 30px 43px;
+}
+
+.Button_clear {
+	background: #e0e0e0;
+	border-radius: 4px;
+	font-family: Roboto;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 14px;
+	line-height: 26px;
+	display: flex;
+	align-items: center;
+	text-align: center;
+	color: #333333;
+	border: none;
+	outline: none;
+	cursor: pointer;
+	padding: 3px 20px;
+}
+
+.Button_apply {
+	background: #27ae60;
+	box-sizing: border-box;
+	border-radius: 4px;
+	font-family: Roboto;
+	font-style: normal;
+	font-weight: 500;
+	font-size: 14px;
+	line-height: 26px;
+	display: flex;
+	align-items: center;
+	text-align: center;
+	color: #ffffff;
+	border: none;
+	outline: none;
+	cursor: pointer;
+	padding: 3px 20px;
+}
+
+.arrow_design {
+	background: red;
+	border: 1px solid #d5dae1;
+	box-shadow: 0px 0px 0px rgba(6, 44, 82, 0.103346),
+		0px 2px 16px rgba(33, 43, 54, 0.08);
+	border-radius: '2px';
+	transform: matrix(0.81, 0.99, -0.9, 0.81, 0, 0);
+	width: 13px;
+	height: 13px;
+	position: absolute;
+	top: 0px;
+	right: 55px;
+	z-index: 999;
+}
+
+.menu {
+	transform: translateX(-20px) translateY(-5px);
+}

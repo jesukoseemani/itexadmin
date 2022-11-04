@@ -1,0 +1,116 @@
+.modalContainer {
+	width: 350px;
+	height: 350px;
+	margin: auto auto;
+	border-radius: 6px;
+	border-color: transparent;
+}
+
+.modalContainer2 {
+	width: 450px;
+	height: 450px;
+	margin: auto auto;
+	border-radius: 6px;
+	border-color: transparent;
+}
+
+.unflagmodalContainer {
+	width: 350px;
+	height: 300px;
+	margin: auto auto;
+	border-radius: 6px;
+	border-color: transparent;
+}
+
+.chargebackContainer {
+	max-width: 900px;
+	min-width: 600px;
+	margin: auto auto;
+	border-radius: 6px;
+	border-color: transparent;
+}
+
+.chargebackheader {
+	color: #828282;
+	text-align: left;
+	padding: 1rem 3rem;
+}
+
+.modalColumn {
+	width: 100%;
+}
+
+.modalHeader {
+	font-weight: normal;
+	font-size: 16px;
+	line-height: 21px;
+	color: #828282;
+	text-align: left;
+	margin: 1.5rem;
+	padding-left: 1.5rem;
+}
+
+.back {
+	color: #333333;
+}
+
+.modalBody {
+	margin: 2rem 3rem;
+	color: #333333;
+}
+
+.textDiv {
+	width: 260px;
+	font-weight: normal;
+	font-size: 14px;
+	text-align: left;
+	color: #828282;
+	margin: 1.5rem 3rem;
+}
+
+.formControlLabel {
+	font-size: 14px;
+	text-align: left;
+	color: #828282;
+}
+
+.inputLabel {
+	color: #333333;
+}
+
+.mt1 {
+	margin-top: 1rem;
+}
+
+.mt2 {
+	margin-top: 2rem;
+}
+
+.buttonMargin {
+	margin-top: 2rem;
+}
+
+@media (max-width: 800px) {
+	.modalContainer {
+		width: 100%;
+		max-height: calc(100vh - 80px);
+		overflow-y: auto;
+	}
+
+	.unflagmodalContainer {
+		width: 100%;
+		max-height: calc(100vh - 80px);
+		overflow-y: auto;
+	}
+
+	.chargebackContainer {
+		min-width: 80%;
+		max-width: 90%;
+		max-height: calc(100vh - 80px);
+		overflow-y: scroll;
+	}
+
+	.buttonMargin {
+		margin-top: 1rem;
+	}
+}

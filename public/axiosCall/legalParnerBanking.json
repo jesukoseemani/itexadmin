@@ -1,0 +1,72 @@
+[
+	{
+		"id": "1",
+		"created_by": "James Holliday Ventures",
+		"integration_status":"Won",
+		"provider_name": "Access Bank",
+		"created_date": "Aug 13 2020"
+	},
+	{
+		"id": "2",
+		"created_by": "Jameson winery",
+		"integration_status": "Pending",
+		"provider_name": "Access Bank",
+		"created_date": "Aug 13 2020"
+	},
+	{
+		"id": "3",
+		"created_by": "James Holliday Ventures",
+		"integration_status": "Won",
+		"provider_name": "Access Bank",
+		"created_date": "Aug 13 2020"
+	},
+	{
+		"id": "4",
+		"created_by": "James Holliday Ventures",
+		"integration_status": "Won",
+		"provider_name": "Access Bank",
+		"created_date": "Aug 13 2020"
+	},
+	{
+		"id": "5",
+		"created_by": "Kingdom chaser Inc.",
+		"integration_status": "Lost",
+		"provider_name": "Access Bank",
+		"created_date": "Aug 13 2020"
+	},
+	{
+		"id": "6",
+		"created_by": "James Holliday Ventures",
+		"integration_status": "Won",
+		"provider_name": "Access Bank",
+		"created_date": "Aug 13 2020"
+	},
+	{
+		"id": "7",
+		"created_by": "James Holliday Ventures",
+		"integration_status": "Won",
+		"provider_name": "Access Bank",
+		"created_date": "Aug 13 2020"
+	},
+	{
+		"id": "8",
+		"created_by": "James Holliday Ventures",
+		"integration_status": "Won",
+		"provider_name": "Access Bank",
+		"created_date": "Aug 13 2020"
+	},
+	{
+		"id": "9",
+		"created_by": "James Holliday Ventures",
+		"integration_status": "Won",
+		"provider_name": "Access Bank",
+		"created_date": "Aug 13 2020"
+	},
+	{
+		"id": "10",
+		"created_by": "James Holliday Ventures",
+		"integration_status": "Won",
+		"provider_name": "Access Bank",
+		"created_date": "Aug 13 2020"
+	}
+]

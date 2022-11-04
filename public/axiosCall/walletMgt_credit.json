@@ -1,0 +1,83 @@
+[
+	{
+		"id": "1",
+		"payment_type": "Account funding",
+		"business_name": "James Haliday Ventures",
+		"transaction_amount": "NGN 34000",
+		"transaction_reference": "ITEX-ab95cf96f454669a4",
+		"date": "Aug 13 2020"
+	},
+	{
+		"id": "2",
+		"payment_type": "Checkout funding",
+		"business_name": "James Haliday Ventures",
+		"transaction_amount": "NGN 5005.2",
+		"transaction_reference": "ITEX-ab95cf96f445669a4",
+		"date": "Aug 13 2020"
+	},
+	{
+		"id": "3",
+		"payment_type": "Account funding",
+		"business_name": "James Haliday Ventures",
+		"transaction_amount": "NGN 5005.2",
+		"transaction_reference": "ITEX-ab95cf96f445669a4",
+		"date": "Aug 13 2020"
+	},
+	{
+		"id": "4",
+		"payment_type": "Checkout funding",
+		"business_name": "Kingdom Chasers Inc",
+		"transaction_amount": "NGN 4555005.2",
+		"transaction_reference": "ITEX-ab95cf96f445669b4",
+		"date": "Aug 13 2020"
+	},
+	{
+		"id": "5",
+		"payment_type": "Account funding",
+		"business_name": "Jameson WinePress",
+		"transaction_amount": "NGN 65005.2",
+		"transaction_reference": "ITEX-ab95cf45f445669a4",
+		"date": "Aug 13 2020"
+	},
+	{
+		"id": "6",
+		"payment_type": "Account funding",
+		"business_name": "James Haliday Ventures",
+		"transaction_amount": "NGN 89000",
+		"transaction_reference": "ITEX-cg95cf96f454669a4",
+		"date": "Aug 13 2020"
+	},
+	{
+		"id": "7",
+		"payment_type": "Checkout funding",
+		"business_name": "James Haliday Ventures",
+		"transaction_amount": "NGN 5705.2",
+		"transaction_reference": "ITEX-ab95cf89f445669a4",
+		"date": "Aug 13 2020"
+	},
+	{
+		"id": "8",
+		"payment_type": "Account funding",
+		"business_name": "James Haliday Ventures",
+		"transaction_amount": "NGN 5005.2",
+		"transaction_reference": "ITEX-ab95cf96f445899a4",
+		"date": "Aug 13 2020"
+	},
+	{
+		"id": "9",
+		"payment_type": "Checkout funding",
+		"business_name": "Kingdom Chasers Inc",
+		"transaction_amount": "NGN 45505.2",
+		"transaction_reference": "ITEX-ab95cf96f445669b4",
+		"date": "Aug 13 2020"
+	},
+	{
+		"id": "10",
+		"payment_type": "Account funding",
+		"business_name": "Jameson WinePress",
+		"transaction_amount": "NGN 65005.2",
+		"transaction_reference": "ITEX-rt95cf45f445669a4",
+		"date": "Aug 13 2020"
+	}
+
+]

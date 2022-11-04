@@ -1,0 +1,68 @@
+import React, { useState } from 'react';
+import { Divider } from '@material-ui/core';
+import styles from './BusinessStyle.module.scss';
+import TextField from '@mui/material/TextField';
+import MuiMenuItem from '@material-ui/core/MenuItem';
+
+import { makeStyles } from '@material-ui/core';
+
+const useStyles = makeStyles({
+	root: {
+		'& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
+			border: 'none',
+		},
+		'& .MuiOutlinedInput-input.MuiInputBase-input.MuiInputBase-input.MuiOutlinedInput-input':
+			{
+				textAlign: 'center',
+				padding: '8.1px 14px',
+			},
+	},
+	select: {
+		'&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
+			outline: 'none',
+		},
+		'& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-input': {
+			backgroundColor: '#ffffff',
+		},
+		'& .MuiInputLabel-root.Mui-focused': {
+			color: '#E0E0E0',
+		},
+		'& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+			border: '1px solid #E0E0E0',
+		},
+	},
+});
+
+function SixthReuse({
+	title,
+	description,
+}: {
+	title: string;
+	description: string;
+}) {
+	const [value, setValue] = useState('');
+	const classes = useStyles();
+
+	return (
+		<div className={styles.general}>
+			<h3 className={styles.generalh3}>{title}</h3>
+			<Divider />
+
+			<div className={styles.selectinput}>
+				<p className={styles.selectinputp}>{description}</p>
+				<TextField
+					id='demo-simple-select'
+					value={value}
+					InputProps={{ style: { height: 40 } }}
+					className={classes.select}
+					fullWidth
+					onChange={(e) => setValue(e.target.value)}
+				/>
+			</div>
+
+			<button className={styles.button}>Submit</button>
+		</div>
+	);
+}
+
+export default SixthReuse;

@@ -1,0 +1,160 @@
+.header {
+    position: absolute;
+    top: 0;
+    display: flex;
+    width: 100vw;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo {
+    position: relative;
+    width: 70vw;
+    margin: 1rem 0;
+    float: left;
+}
+
+.wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 6rem auto -100px auto;
+    min-height: auto;
+    height: auto !important;
+    height: 100%;
+}
+
+.emailWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 6rem auto -142px auto;
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+}
+
+.emailBody {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+    width: 70vw;
+}
+
+.address {
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 16px;
+    text-align: center;
+    color: #262626;
+    margin: 1rem 0
+}
+
+.mt {
+    margin-top: 1.5rem;
+}
+
+.buttonDiv {
+    text-align: center;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.push {
+    height: 142px;
+}
+
+.push2 {
+    height: 100px;
+}
+
+.footerContainer {
+    width: 100vw;
+    position: relative;
+    bottom: 0;
+    display: flex;
+    background-color: #EFF7F2;
+    align-items: center;
+    justify-content: center;
+}
+
+.footerLogo {
+    margin-bottom: 1rem;
+}
+
+.textdiv {
+    width: 50vw;
+    text-align: center;
+}
+
+.imgDiv {
+    color: #27AE60;
+    display: flex;
+    justify-content: center;
+}
+
+.img {
+    margin: 1rem;
+}
+
+.unsubscribe {
+    color: #27AE60
+}
+
+.text {
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 16px;
+    text-align: center;
+    color: #828282;
+    margin: 1rem 0
+}
+
+.text2 {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+    color: #4F4F4F;
+    margin: 1rem 0
+}
+
+.transactionWrapper {
+    background-color: #F8FAF8;
+    padding: 3rem;
+}
+
+.transheader {
+    font-weight: 300;
+    font-size: 40px;
+    line-height: 48px;
+}
+
+.transaction {
+    display: flex;
+}
+
+.left {
+    width: 50%;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.right {
+    width: 50%;
+    text-align: right;
+}
+
+@media only screen and (max-width: 600px) {
+    .right {
+        text-align: left;
+    }
+
+    .emailBody .logo{
+        width: 90vw;
+    }
+
+    .transactionWrapper {
+        padding: 0.5rem;
+    }
+    
+}

@@ -1,0 +1,125 @@
+.drawerWidth {
+	width: 269px;
+	height: 100%;
+	// overflow:scroll;
+	background: #ebebeb;
+	box-shadow: inset -1px 0px 0px rgba(56, 56, 56, 0.1);
+}
+
+.drawerContent {
+	padding-top: 20px;
+	width: 100%;
+	padding-left: 16px;
+	// padding-right: 16px;
+}
+
+.logo {
+	// position: fixed;
+	// top: 0;
+	// left: 0;
+	// overflow: hidden;
+	display: flex;
+	align-content: center;
+	padding-left: 37px;
+}
+
+.logoName {
+	font-style: normal;
+	font-family: Inter;
+	font-weight: 600;
+	font-size: 18px;
+	line-height: 140%;
+	padding-left: 15px;
+	color: #002841;
+}
+
+.drawerMenu {
+	margin-top: 40px;
+}
+
+.drawerList {
+	list-style: none;
+	text-decoration: none;
+	font-family: Inter;
+	font-style: normal;
+	font-weight: 500;
+	font-size: 15px;
+	color: #002841;
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	padding: 5px 8px;
+	margin-top: 4px;
+	margin-bottom: 4px;
+	cursor: pointer;
+}
+
+.title {
+	margin-left: -16px;
+}
+
+.sectionTitle {
+	color: #000;
+	margin-top: 1rem;
+	font-size: 0.85rem;
+	line-height: 0.73rem;
+	padding-left: 1.9rem;
+	color: #9c9c9c;
+}
+
+.moreContent {
+	padding-top: 43px;
+	margin-top: 43px;
+	border-top: 0.65px solid rgba(75, 112, 154, 0.28);
+}
+
+.collapse {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	padding-left: 18px;
+	margin-top: 70px;
+}
+
+.collapseText {
+	font-family: Inter;
+	font-style: normal;
+	font-weight: 500;
+	font-size: 15px;
+	line-height: 140%;
+	color: rgba(0, 40, 65, 0.8);
+	padding-left: 22px;
+}
+
+.collapseIcon {
+	padding-left: 22px;
+}
+
+.wrapperList {
+	height: 100vh;
+	overflow-y: scroll;
+}
+
+.wrapperList::-webkit-scrollbar {
+	display: none;
+}
+
+/* Hide scrollbar for IE, Edge add Firefox */
+.wrapperList {
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+	/* Firefox */
+}
+
+// .logoimg {
+// 	width: 70px;
+// 	height: 70px;
+// 	object-fit: cover;
+// }
+
+
+// @media only screen and (max-width: 840px) {
+// 	.sectionTitle {
+// 	  font-size: 0;
+// 	}
+//   }

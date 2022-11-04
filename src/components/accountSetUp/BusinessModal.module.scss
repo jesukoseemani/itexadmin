@@ -1,0 +1,97 @@
+.container {
+	//height: 500px;
+	//width: 530px;
+	width: 100%;
+	margin: 0 auto;
+	padding: 0;
+	color: black;
+}
+.header {
+	border-bottom: 1px solid rgba(224, 224, 224, 1);
+	width: 100%;
+	margin: 1.5rem 0;
+	color: rgba(130, 130, 130, 1);
+
+	h3 {
+		padding: 0.7rem 1rem;
+	}
+}
+.wrapper {
+	width: 90%;
+	margin: 0 auto;
+}
+
+.selectWrapper {
+	display: flex;
+	justify-content: flex-start;
+	flex-direction: column;
+	padding: 2rem;
+	border-radius: 4px;
+	margin: 0rem;
+	//border: 1px solid rgba(224, 224, 224, 1);
+	cursor: pointer;
+}
+.selectContent {
+	padding-left: 1rem;
+}
+
+.isActiveSelectWrapper {
+	// border : 1px solid #27AE60;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	padding: 2rem;
+	border-radius: 4px;
+	margin: 2rem;
+	cursor: pointer;
+}
+.selectHeader {
+	font-family: Roboto;
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: 19px;
+	letter-spacing: 0em;
+	color: rgba(65, 65, 65, 1);
+}
+
+.selectContent {
+	//   font-family: Roboto;
+	// font-size: 14px;
+	// font-style: normal;
+	// font-weight: 400;
+	// line-height: 18px;
+	// letter-spacing: 0em;
+	// color: rgba(139, 139, 139, 1);
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+}
+
+.controlGroup {
+	display: flex;
+	border: 1px solid rgba(224, 224, 224, 1);
+	margin: 10px;
+	padding: 25px;
+	position: relative;
+	width: 100%;
+}
+.selectedContent {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index: 99;
+}
+.active {
+	border: 1px solid #27ae60;
+}
+
+.wrapper_radio_steps {
+	width: 845px;
+	height: 609px;
+	margin: 150px auto;
+	background-color: #ffffff;
+	padding: 0 10%;
+}

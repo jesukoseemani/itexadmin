@@ -1,0 +1,53 @@
+.modalContainer {
+    width: 400px;
+    margin: auto auto;
+}
+
+.modalColumn {
+    padding: 2rem;
+    width: 100%;
+}
+
+.modalBusinessContainer {
+    margin: auto auto;
+    padding: 3rem;
+}
+
+.modalBusinessColumn {
+    padding: 3rem;
+    width: 100%;
+}
+
+.modalHeader {
+    font-size: 18px;
+    line-height: 21px;
+    color: #828282;
+    text-align: left;
+}
+
+.inputLabel{
+    color: #333333;
+}
+
+hr {
+    border: 0;
+    clear:both;
+    display:block;
+    width: 100%;               
+    background-color:#333333;
+    height: 1px;
+  }
+
+@media (max-width: 800px) {
+    .modalBusinessContainer {
+        flex-direction: column;
+        max-height: calc(100vh - 80px);
+        overflow-y: auto; 
+    }
+
+    .modalContainer {
+        width: 100%;
+        max-height: calc(100vh - 80px);
+        overflow-y: auto; 
+    }
+}

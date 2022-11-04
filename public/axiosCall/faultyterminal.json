@@ -1,0 +1,90 @@
+[
+	{
+		"id": "98765",
+		"business_name": "James Haliday Ventures",
+		"state": "Lagos",
+		"number_of_terminal": 21,
+		"date": "Aug 13 2020",
+		"status": "Faulty"
+	},
+	{
+		"id": "98766",
+		"business_name": "Jameson winery",
+		"state": "Ondo",
+		"number_of_terminal": 1,
+		"date": "Aug 13 2020",
+		"status": "Faulty"
+	},
+	{
+		"id": "98767",
+		"business_name": "James Haliday Ventures",
+		"state": "Akure",
+		"number_of_terminal": 41,
+		"date": "Aug 13 2020",
+		"status": "Faulty"
+	},
+	{
+		"id": "98768",
+		"business_name": "James Haliday Ventures",
+		"state": "Okota",
+		"number_of_terminal": 16,
+		"date": "Aug 13 2020",
+		"status": "Faulty"
+	},
+	{
+		"id": "98769",
+		"business_name": "James Haliday Ventures",
+		"state": "Abuja",
+		"number_of_terminal": 11,
+		"date": "Aug 13 2020",
+		"status": "Faulty"
+	},
+	{
+		"id": "98760",
+		"business_name": "Kingdom chasers Inc",
+		"state": "Lagos",
+		"number_of_terminal": 8,
+		"date": "Aug 13 2020",
+		"status": "Faulty"
+	},
+	{
+		"id": "98761",
+		"business_name": "James Haliday Ventures",
+		"state": "Lagos",
+		"number_of_terminal": 7,
+		"date": "Aug 13 2020",
+		"status": "Faulty"
+	},
+	{
+		"id": "98762",
+		"business_name": "James Haliday Ventures",
+		"state": "Ikeja",
+		"number_of_terminal": 10,
+		"date": "Aug 13 2020",
+		"status": "Faulty"
+	},
+	{
+		"id": "98763",
+		"business_name": "Jameson winery",
+		"state": "Abuja",
+		"number_of_terminal": 5,
+		"date": "Aug 13 2020",
+		"status": "Faulty"
+	},
+	{
+		"id": "98764",
+		"business_name": "James Haliday Ventures",
+		"state": "Abeokuta",
+		"number_of_terminal": 9,
+		"date": "Aug 13 2020",
+		"status": "Faulty"
+	},
+	{
+		"id": "98775",
+		"business_name": "Jameson winery",
+		"state": "Lagos",
+		"number_of_terminal": 17,
+		"date": "Aug 13 2020",
+		"status": "Faulty"
+	}
+]
