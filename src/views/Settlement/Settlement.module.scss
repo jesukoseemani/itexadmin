@@ -1,349 +1,348 @@
 .feediv {
-    margin: 0rem 1rem;
+	margin: 0rem 1rem;
 }
 
 .modalContainer {
-    max-width: 900px;
-    min-width: 700px;
-    height: auto;
-    margin: auto auto;
-    border-radius: 6px;
-    border-color: transparent;
+	max-width: 900px;
+	min-width: 700px;
+	height: auto;
+	margin: auto auto;
+	border-radius: 6px;
+	border-color: transparent;
 }
 
 .modalBody {
-    margin: 2rem 3rem;
-    color: #333333;
+	margin: 2rem 3rem;
+	color: #333333;
 }
 
 .headerModal {
-    color: #828282;
-    text-align: left;
-    padding: 1rem 3rem;
+	color: #828282;
+	text-align: left;
+	padding: 1rem 3rem;
 }
 
 .tableHeader {
-    display: flex;
-    flex-wrap: wrap;
+	display: flex;
+	flex-wrap: wrap;
+	margin-top: 1rem;
 }
 
 .tableSpan {
-    padding: 0.3rem;
-    width: 10px;
-    border-radius: 2px;
+	padding: 0.3rem;
+	width: 10px;
+	border-radius: 2px;
 }
 
 .tableHeaderLeft {
-    width: 30%;
-    padding-left: 2rem;
-    padding-top: 1rem;
+	width: 30%;
+	padding-left: 2rem;
+	padding-top: 1rem;
 }
 
 .tableHeaderRight {
-    width: 70%;
-    text-align: right;
-    padding-right: 2rem;
+	width: 70%;
+	text-align: right;
+	padding-right: 2rem;
 }
 
 .mlhalf {
-    margin-left: 0.5rem;
-    margin-top: 0.2rem;
+	margin-left: 0.5rem;
+	margin-top: 0.2rem;
 }
 
 .button1 {
-    background-color: #E0E0E0;
-    height: 2rem;
-    width: 9rem;
-    color: #333333;
-    border: none;
-    border-radius: 4px;
-    justify-content: center;
-    margin-right: 1rem;
+	background-color: #e0e0e0;
+	height: 2rem;
+	width: 9rem;
+	color: #333333;
+	border: none;
+	border-radius: 4px;
+	justify-content: center;
+	margin-right: 1rem;
+	cursor: pointer;
 }
 
 .buttonAdd {
-    background-color: #27AE60;
-    height: 2rem;
-    width: 7rem;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    justify-content: center
+	background-color: #27ae60;
+	height: 2rem;
+	width: 7rem;
+	color: #fff;
+	border: none;
+	border-radius: 4px;
+	justify-content: center;
+	cursor: pointer;
 }
 
 .buttonSuccessful {
-    background-color: #27AE60;
-    height: 1rem;
-    width: 4rem;
-    margin-left: 1rem;
-    font-weight: 520;
-    color: #fff;
-    border: none;
-    border-radius: 2px;
-    justify-content: center
+	background-color: #27ae60;
+	height: 1rem;
+	width: 4rem;
+	margin-left: 1rem;
+	font-weight: 520;
+	color: #fff;
+	border: none;
+	border-radius: 2px;
+	justify-content: center;
 }
 
 .buttonPending {
-    background-color: #F2C94C;
-    height: 1rem;
-    width: 8rem;
-    margin-left: 1rem;
-    font-weight: 520;
-    color: #333333;
-    border: none;
-    border-radius: 2px;
-    justify-content: center
+	background-color: #f2c94c;
+	height: 1rem;
+	width: 8rem;
+	margin-left: 1rem;
+	font-weight: 520;
+	color: #333333;
+	border: none;
+	border-radius: 2px;
+	justify-content: center;
 }
 
 .buttonFailed {
-    background-color: #EB5757;
-    height: 1rem;
-    width: 8rem;
-    margin-left: 1rem;
-    font-weight: 520;
-    color: #fff;
-    border: none;
-    border-radius: 2px;
-    justify-content: center
+	background-color: #eb5757;
+	height: 1rem;
+	width: 8rem;
+	margin-left: 1rem;
+	font-weight: 520;
+	color: #fff;
+	border: none;
+	border-radius: 2px;
+	justify-content: center;
 }
 
 .m1 {
-    margin: 1rem 2rem 1rem 2rem;
+	margin: 1rem 2rem 1rem 2rem;
 }
 
 .mt1 {
-    margin-top: 1rem;
+	margin-top: 1rem;
 }
 
 .back {
-    display: flex;
-    justify-content: left;
-    align-items: center;
-    flex-wrap: wrap;
-    font-size: 12px;
-    line-height: 14px;
-    color: #4F4F4F;
+	display: flex;
+	justify-content: left;
+	align-items: center;
+	flex-wrap: wrap;
+	font-size: 12px;
+	line-height: 14px;
+	color: #4f4f4f;
 }
 
 .headerAmount {
-    font-size: 21px;
-    line-height: 28px;
-    color: #333333;
+	font-size: 21px;
+	line-height: 28px;
+	color: #333333;
 }
 
-
 .header {
-    font-size: 13px;
-    font-weight: 400;
-    line-height: 16px;
-    color: #828282;
+	font-size: 13px;
+	font-weight: 400;
+	line-height: 16px;
+	color: #828282;
 }
 
 .tableTitle {
-    font-size: 16px;
-    font-weight: 500;
-    line-height: 16px;
+	font-size: 16px;
+	font-weight: 500;
+	line-height: 16px;
 }
 
 .gridHeader {
-    margin: 3rem 0rem 0.5rem 0rem
+	margin: 3rem 0rem 0.5rem 0rem;
 }
 
 .detail {
-    font-size: 13px;
-    line-height: 16px;
-    color: #333333;
-    margin-top: 0.4rem;
+	font-size: 13px;
+	line-height: 16px;
+	color: #333333;
+	margin-top: 0.4rem;
 }
 
 .settlementDetails {
-    margin: 1rem;
+	margin: 1rem;
 }
 
 .headerFlex {
-    margin: 1rem;
-    display: flex;
-    flex-direction: row;
+	margin: 1rem;
+	display: flex;
+	flex-direction: row;
 }
 
-
 .headerFlexRight {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: end;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: end;
 }
 
 .buttongreen {
-    width: 140px;
-    height: 32px;
-    background: #27AE60;
-    border-radius: 4px;
-    border: none;
-    margin-left: 1rem;
-    font-size: 12px;
-    color: #ffffff;
-    cursor: pointer;
+	width: 140px;
+	height: 32px;
+	background: #27ae60;
+	border-radius: 4px;
+	border: none;
+	margin-left: 1rem;
+	font-size: 12px;
+	color: #ffffff;
+	cursor: pointer;
 }
 
 .buttonflag {
-    width: 140px;
-    height: 32px;
-    background: #EB5757;
-    border-radius: 4px;
-    border: none;
-    font-size: 12px;
-    color: #ffffff;
-    cursor: pointer;
+	width: 140px;
+	height: 32px;
+	background: #eb5757;
+	border-radius: 4px;
+	border: none;
+	font-size: 12px;
+	color: #ffffff;
+	cursor: pointer;
 }
 
 @media only screen and (max-width: 1025px) {
+	.tableHeader {
+		display: block;
+	}
 
-    .tableHeader {
-        display: block;
-    }
+	.headerFlex {
+		flex-direction: column;
+	}
 
-    .headerFlex {
-        flex-direction: column;
-    }
+	.headerFlexLeft {
+		display: inline;
+	}
 
-    .headerFlexLeft {
-        display: inline;
-    }
+	.headerFlexRight {
+		display: block;
+	}
 
-    .headerFlexRight {
-        display: block;
-    }
-
-    .tableHeaderRight {
-        width: 100%;
-        text-align: left;
-        margin: 1rem;
-    }
+	.tableHeaderRight {
+		width: 100%;
+		text-align: left;
+		margin: 1rem;
+	}
 }
 
 .buttonSpan {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
 }
 
 //bulksettlement
 
 .terminal_h1 {
-    font-family: 'Roboto';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 18px;
-    line-height: 21px;
-    color: #828282;
-    padding: 0;
-    margin: 27px 50px;
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 18px;
+	line-height: 21px;
+	color: #828282;
+	padding: 0;
+	margin: 27px 50px;
 }
 
 .bulkContainer {
-    width: 611px;
-    height: 481px;
+	width: 611px;
+	height: 481px;
 }
 
 .bulk_wrapper {
-    margin: 20px 50px 0px 50px;
+	margin: 20px 50px 0px 50px;
 }
 
 .wrapper {
-    margin: 0px 50px 0px 50px;
+	margin: 0px 50px 0px 50px;
 }
 .bulk_p {
-    font-family: 'Roboto';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 16px;
-    color: #4f4f4f;
-    margin-bottom: 20px;
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 16px;
+	color: #4f4f4f;
+	margin-bottom: 20px;
 }
 
 .bulk_button {
-    outline: none;
-    border: none;
-    width: 100%;
-    background: #27ae60;
-    border-radius: 4px;
-    font-family: 'Roboto';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 16px;
-    line-height: 19px;
-    text-align: center;
-    color: #ffffff;
-    height: 44px;
-    cursor: pointer;
-    margin-top: 20px;
+	outline: none;
+	border: none;
+	width: 100%;
+	background: #27ae60;
+	border-radius: 4px;
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 700;
+	font-size: 16px;
+	line-height: 19px;
+	text-align: center;
+	color: #ffffff;
+	height: 44px;
+	cursor: pointer;
+	margin-top: 20px;
 }
 
 .bulk_button:disabled,
 .bulk_button[disabled] {
-    border: 1px solid #999999;
-    background-color: #cccccc;
-    color: #666666;
+	border: 1px solid #999999;
+	background-color: #cccccc;
+	color: #666666;
 }
 
 .fileupload_para {
-    font-family: 'Roboto';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 16px;
-    text-align: center;
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 16px;
+	text-align: center;
 
-    color: #4f4f4f;
+	color: #4f4f4f;
 }
 
 .fileupload_wrapper {
-    background: #f9fbff;
-    border: 1px dashed #bdbdbd;
-    width: 100%;
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    height: 44px;
-    position: relative;
-    cursor: pointer;
+	background: #f9fbff;
+	border: 1px dashed #bdbdbd;
+	width: 100%;
+	border-radius: 4px;
+	display: flex;
+	align-items: center;
+	height: 44px;
+	position: relative;
+	cursor: pointer;
 }
 
 .fileupload_icon {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
 }
 
 .input_file {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    cursor: pointer;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	opacity: 0;
+	cursor: pointer;
 }
 
 .mbn1 {
-    margin-bottom: -2rem;
+	margin-bottom: -2rem;
 }
 
 @media only screen and (max-width: 600px) {
-    .m1 {
-        margin: 0 1rem;
-        width: 100%;
-    }
+	.m1 {
+		margin: 0 1rem;
+		width: 100%;
+	}
 
-    .modalContainer {
-        width: 50%;
-        min-height: auto;
-        max-height: calc(100vh - 80px);
-        margin: auto auto;
-        overflow-y: scroll;
-    }
-
+	.modalContainer {
+		width: 50%;
+		min-height: auto;
+		max-height: calc(100vh - 80px);
+		margin: auto auto;
+		overflow-y: scroll;
+	}
 }

@@ -38,7 +38,7 @@ export default function OperantTableItexPay({
 	limit,
 	setDataValue2,
 	setOpen2,
-	reset
+	reset,
 }: {
 	columns: any[];
 	rows: any[];
@@ -110,8 +110,8 @@ export default function OperantTableItexPay({
 									style={{
 										minWidth: column.minWidth,
 										fontWeight: 'bold',
-										background: '#FBFEFD',
-										fontSize: '16px',
+										background: '#F4F6F8',
+										fontSize: '14px',
 									}}>
 									{column.label}
 								</TableCell>

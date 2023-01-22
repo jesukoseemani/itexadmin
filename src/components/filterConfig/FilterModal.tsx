@@ -116,25 +116,25 @@ const FilterModal = ({
 						<p>Due date</p>
 						<div>
 							<p
-								style={{ color: eventDate === 'today' ? 'blue' : '' }}
+								style={{ color: eventDate === 'today' ? '#26AD60' : '' }}
 								onClick={handleClick}
 								data-value='today'>
 								Today
 							</p>
 							<p
-								style={{ color: eventDate === 'last7days' ? 'blue' : '' }}
+								style={{ color: eventDate === 'last7days' ? '#26AD60' : '' }}
 								onClick={handleClick}
 								data-value='last7days'>
 								Last 7 days
 							</p>
 							<p
-								style={{ color: eventDate === 'last30days' ? 'blue' : '' }}
+								style={{ color: eventDate === 'last30days' ? '#26AD60' : '' }}
 								onClick={handleClick}
 								data-value='last30days'>
 								30 days
 							</p>
 							<p
-								style={{ color: eventDate === 'oneyear' ? 'blue' : '' }}
+								style={{ color: eventDate === 'oneyear' ? '#26AD60' : '' }}
 								onClick={handleClick}
 								data-value='oneyear'>
 								1 year
@@ -158,7 +158,10 @@ const FilterModal = ({
 					) : (
 						<div>
 							<p>Transaction Ref</p>
-							<input placeholder='e.g ITXH0898383UY38383' onChange={refHandler} />
+							<input
+								placeholder='e.g ITXH0898383UY38383'
+								onChange={refHandler}
+							/>
 						</div>
 					)}
 

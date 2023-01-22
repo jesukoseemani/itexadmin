@@ -99,3 +99,71 @@
 .icons {
 	margin: 0 5px;
 }
+.account_wrap {
+	margin: 20px 50px;
+}
+
+.account_h1 {
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 18px;
+	line-height: 21px;
+	/* identical to box height */
+
+	color: #828282;
+}
+
+.removeModal {
+	margin-top: 40px;
+	width: 100%;
+}
+
+.removeModal_p {
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 22px;
+	color: #333333;
+}
+
+.buttonModalwrap {
+	margin: 40px 20px;
+}
+.buttonModal {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	width: 100%;
+}
+.cancelModal {
+	width: 100px;
+	height: 30.76px;
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 500;
+	font-size: 14px;
+	line-height: 26px;
+	text-align: center;
+	color: #ffffff;
+	background: #333333;
+	border: 1.28183px solid #333333;
+	border-radius: 3.8455px;
+}
+.removeModal {
+	width: 100px;
+	height: 30.76px;
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 500;
+	font-size: 14px;
+	line-height: 26px;
+	text-align: center;
+	color: #ffffff;
+	background: #27ae60;
+	border: 1.28183px solid #27ae60;
+	border-radius: 3.8455px;
+	margin-left: 20px;
+	cursor: pointer;
+}

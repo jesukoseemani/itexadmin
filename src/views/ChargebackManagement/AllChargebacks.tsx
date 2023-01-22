@@ -15,7 +15,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import FilterModal from '../../components/filterConfig/FilterModal';
 import SingleChargeRequest from '../../components/ModalsReuse/businessDetailsModal/SingleChargeRequest';
 import BulkChargeRequest from '../../components/ModalsReuse/businessDetailsModal/BulkChargeRequest';
-
+import moment from 'moment';
 const useStyles = makeStyles({
 	root: {
 		'& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
@@ -110,9 +110,9 @@ function AllChargebacks() {
 		type: '',
 	});
 	const [isFilterModalOpen, setIsFilterModalOpen] = useState<boolean>(false);
- const history = useHistory();
+	const history = useHistory();
 	const [totalRows, setTotalRows] = useState<number>(0);
-  const [gotopage, setGotopage] = useState<boolean>(false)
+	const [gotopage, setGotopage] = useState<boolean>(false);
 
 	interface dataTypes {
 		id: string;
@@ -125,12 +125,24 @@ function AllChargebacks() {
 	}
 
 	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+		const [anchorElDownload, setAnchorElDownload] =
+			useState<null | HTMLElement>(null);
 	const open = Boolean(anchorEl);
+	const [openDownload, setOpenDownload] = useState<boolean>(false);
+	const showDownload = Boolean(anchorElDownload);
 	const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
 		setAnchorEl(event.currentTarget);
 	};
 	const handleClose = () => {
 		setAnchorEl(null);
+	};
+	const handleMenuDownloadClick = (
+		event: React.MouseEvent<HTMLButtonElement>
+	) => {
+		setAnchorElDownload(event.currentTarget);
+	};
+	const handleMenuDownloadClose = () => {
+		setAnchorElDownload(null);
 	};
 
 	// const handleClick = (event: any) => {
@@ -144,6 +156,53 @@ function AllChargebacks() {
 
 	const dispatch = useDispatch();
 
+	// DATE CONVERTION
+	const now = new Date();
+	const dateNow = moment().format('YYYY-MM-DD');
+	const sevenDaysAgo = moment().subtract(7, 'day').format('YYYY-MM-DD');
+	const thirtyDaysAgo = moment().subtract(30, 'day').format('YYYY-MM-DD');
+	const startOfYear = moment().startOf('year').format('YYYY-MM-DD');
+	const endOfYear = moment().endOf('year').format('YYYY-MM-DD');
+
+	// FOR FILTER METHOD
+
+	const [fromDate, setFromDate] = useState('');
+	const [toDate, setToDate] = useState('');
+	const [email, setEmail] = useState('');
+	const [status, setStatus] = useState('');
+	const [event, setEvent] = useState('');
+	const [bearer, setBearer] = useState<boolean>(false);
+	const [reset, setReset] = useState<boolean>(false);
+
+	useEffect(() => {
+		if (event === 'today') {
+			setFromDate(dateNow);
+			setToDate(dateNow);
+		} else if (event === 'last7days') {
+			setFromDate(sevenDaysAgo);
+			setToDate(dateNow);
+		} else if (event === 'last30days') {
+			setFromDate(thirtyDaysAgo);
+			setToDate(dateNow);
+		} else if (event === 'oneyear') {
+			setFromDate(startOfYear);
+			setToDate(endOfYear);
+		} else {
+			setFromDate('');
+			setToDate('');
+		}
+	}, [event]);
+
+	const clearHandler = () => {
+		setEvent('');
+		setFromDate('');
+		setToDate('');
+		setStatus('');
+		setEmail('');
+		setBearer(true);
+		setIsFilterModalOpen(false);
+	};
+
 	const changePage = (value: number) => {
 		setPageNumber(value);
 	};
@@ -152,9 +211,9 @@ function AllChargebacks() {
 	};
 
 	const { access_token } = useSelector((state) => state?.authPayReducer?.auth);
-  useEffect(() => {
-if (gotopage) history.push('/chargebackmgt/upload');
-  }, [gotopage, history])
+	useEffect(() => {
+		if (gotopage) history.push('/chargebackmgt/upload');
+	}, [gotopage, history]);
 
 	// useEffect(() => {
 	// 	axios
@@ -187,6 +246,10 @@ if (gotopage) history.push('/chargebackmgt/upload');
 		setTotalRows(Number(apiRes?.length));
 		console.log(apiRes);
 	}, [apiRes]);
+
+		const modalFunc = () => {
+			setReset(true);
+		};
 
 	useEffect(() => {
 		const { id, type } = selectedId;
@@ -334,7 +397,7 @@ if (gotopage) history.push('/chargebackmgt/upload');
 				},
 				modalContent: (
 					<>
-					<BulkChargeRequest setGotopage={setGotopage}/>
+						<BulkChargeRequest setGotopage={setGotopage} />
 					</>
 				),
 			})
@@ -345,7 +408,19 @@ if (gotopage) history.push('/chargebackmgt/upload');
 			<FilterModal
 				isOpen={isFilterModalOpen}
 				handleClose={() => setIsFilterModalOpen(false)}
+				setEvent={setEvent}
+				setFromDate={setFromDate}
+				setToDate={setToDate}
+				setEmail={setEmail}
+				setStatus={setStatus}
+				eventDate={event}
+				clearHandler={clearHandler}
+				setBearer={setBearer}
+				name='business'
+				filterFunction={modalFunc}
+				changePage={changePage}
 			/>
+
 			<NavBar name='All ChargeBack' />
 			<div className={styles.header}>
 				<div className={styles.header_left}>
@@ -354,7 +429,9 @@ if (gotopage) history.push('/chargebackmgt/upload');
 					</h1>
 				</div>
 				<div className={styles.header_right}>
-					<div className={styles.button_business}>
+					<div
+						onClick={() => setIsFilterModalOpen(true)}
+						className={styles.button_business}>
 						<button className={styles.button_business_button}>
 							All Chargebacks{' '}
 							<span className={styles.button_business_span}>
@@ -371,7 +448,13 @@ if (gotopage) history.push('/chargebackmgt/upload');
 						</button>
 					</div>
 					<div className={styles.button_business}>
-						<button className={styles.button_business_button}>
+						<button
+							id='download-menu'
+							aria-controls={openDownload ? 'download-menu' : undefined}
+							aria-haspopup='true'
+							aria-expanded={openDownload ? 'true' : undefined}
+							onClick={handleMenuDownloadClick}
+							className={styles.button_business_button}>
 							Download{' '}
 							<span className={styles.button_business_span}>
 								<CloudUploadIcon
@@ -385,6 +468,33 @@ if (gotopage) history.push('/chargebackmgt/upload');
 							</span>{' '}
 							&nbsp;
 						</button>
+						<Menu
+							id='download-menu'
+							anchorEl={anchorElDownload}
+							open={showDownload}
+							onClose={handleMenuDownloadClose}
+							MenuListProps={{
+								'aria-labelledby': 'log-refund-button',
+							}}
+							PaperProps={{
+								style: {
+									width: '150px',
+									padding: '.25rem',
+									textAlign: 'center',
+								},
+							}}>
+							<MenuItem>
+								<p style={{ padding: '.4rem', fontSize: '0.7rem' }}>CSV</p>
+							</MenuItem>
+							<Divider />
+							<MenuItem>
+								<p style={{ padding: '.4rem', fontSize: '0.7rem' }}>Excel</p>
+							</MenuItem>
+							<Divider />
+							<MenuItem>
+								<p style={{ padding: '.4rem', fontSize: '0.7rem' }}>Pdf</p>
+							</MenuItem>
+						</Menu>
 					</div>
 
 					<div className={styles.button_mark}>
@@ -418,14 +528,14 @@ if (gotopage) history.push('/chargebackmgt/upload');
 
 			{/* TABLE */}
 			<div className={styles.maintable}>
-			{apiRes?.length && (
-				<OperantTableItexPay
-					columns={columns}
-					rows={rows}
-					totalRows={totalRows}
-					changePage={changePage}
-					limit={limit}
-				/>
+				{apiRes?.length && (
+					<OperantTableItexPay
+						columns={columns}
+						rows={rows}
+						totalRows={totalRows}
+						changePage={changePage}
+						limit={limit}
+					/>
 				)}
 			</div>
 		</div>
