@@ -38,7 +38,7 @@ export default function OperantTableItexPay({
 	limit,
 	setDataValue2,
 	setOpen2,
-	reset
+	reset,
 }: {
 	columns: any[];
 	rows: any[];
