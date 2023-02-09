@@ -57,6 +57,8 @@ import { openToastAndSetContent } from '../redux/actions/toast/toastActions';
 import { useHistory } from 'react-router';
 import { logOut } from '../redux/actions/auth/authActions';
 import { saveLoading } from '../redux/actions/loadingState/loadingStateActions';
+import Bank from '../views/Bank/Bank';
+import BankDetails from '../components/bankDetails/BankDetails';
 
 export default function AppRoutes() {
 	const dispatch = useDispatch();
@@ -295,6 +297,20 @@ export default function AppRoutes() {
 								exact
 								path='/compliance'
 								component={AllCompliance}
+								AuthUser={loadingState}
+							/>
+
+							<ProtectedRoute
+								exact
+								path='/bank'
+								component={Bank}
+								AuthUser={loadingState}
+							/>
+
+							<ProtectedRoute
+								exact
+								path='/bank/:id'
+								component={BankDetails}
 								AuthUser={loadingState}
 							/>
 

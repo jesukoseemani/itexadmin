@@ -154,6 +154,15 @@ const legal = [
   },
 ];
 
+const Bank = [
+	{
+		id: 'DBBB',
+		title: 'Bank Balances',
+		route: '/bank',
+		icon: <AssuredWorkloadIcon />,
+	},
+];
+
 const fraudRiskManagement = [
   {
     id: "DFMS",
@@ -378,209 +387,221 @@ export default function MiniDrawer() {
   };
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <CssBaseline />
-      <AppBar position="fixed" open={open}></AppBar>
-      <Drawer variant="permanent" open={open}>
-         <div className={styles.logo}>
-            <img src={Logo} alt="" className={styles.logoimg} />
-          </div>
-        
-        <div className={styles.wrapperList}>
-         
+		<Box sx={{ display: 'flex' }}>
+			<CssBaseline />
+			<AppBar position='fixed' open={open}></AppBar>
+			<Drawer variant='permanent' open={open}>
+				<div className={styles.logo}>
+					<img src={Logo} alt='' className={styles.logoimg} />
+				</div>
 
-          <div className={styles.drawerMenu}>
-            <List>
-              {adminOverview.map(({ route, title, id, icon }) => (
-                <ComponentListItem
-                  key={id}
-                  route={route}
-                  title={title}
-                  id={id}
-                  icon={icon}
-                  open={open}
-                />
-              ))}
+				<div className={styles.wrapperList}>
+					<div className={styles.drawerMenu}>
+						<List>
+							{adminOverview.map(({ route, title, id, icon }) => (
+								<ComponentListItem
+									key={id}
+									route={route}
+									title={title}
+									id={id}
+									icon={icon}
+									open={open}
+								/>
+							))}
 
-              <h2 style={styledH2} className={styles.sectionTitle}>
-                Businesses
-              </h2>
-              {businesses.map(({ route, title, id, icon }) => (
-                <ComponentListItem
-                  key={id}
-                  route={route}
-                  title={title}
-                  id={id}
-                  icon={icon}
-                  open={open}
-                />
-              ))}
+							<h2 style={styledH2} className={styles.sectionTitle}>
+								Businesses
+							</h2>
+							{businesses.map(({ route, title, id, icon }) => (
+								<ComponentListItem
+									key={id}
+									route={route}
+									title={title}
+									id={id}
+									icon={icon}
+									open={open}
+								/>
+							))}
 
-              <h2 style={styledH2} className={styles.sectionTitle}>
-                Transaction Management
-              </h2>
-              {transactionManagement.map(({ route, title, id, icon }) => (
-                <ComponentListItem
-                  key={id}
-                  route={route}
-                  title={title}
-                  id={id}
-                  icon={icon}
-                  open={open}
-                />
-              ))}
+							<h2 style={styledH2} className={styles.sectionTitle}>
+								Transaction Management
+							</h2>
+							{transactionManagement.map(({ route, title, id, icon }) => (
+								<ComponentListItem
+									key={id}
+									route={route}
+									title={title}
+									id={id}
+									icon={icon}
+									open={open}
+								/>
+							))}
 
-              <h2 style={styledH2} className={styles.sectionTitle}>
-                Fees &amp; Limits
-              </h2>
-              {feesAndLimits.map(({ route, title, id, icon }) => (
-                <ComponentListItem
-                  key={id}
-                  route={route}
-                  title={title}
-                  id={id}
-                  icon={icon}
-                  open={open}
-                />
-              ))}
+							<h2 style={styledH2} className={styles.sectionTitle}>
+								Fees &amp; Limits
+							</h2>
+							{feesAndLimits.map(({ route, title, id, icon }) => (
+								<ComponentListItem
+									key={id}
+									route={route}
+									title={title}
+									id={id}
+									icon={icon}
+									open={open}
+								/>
+							))}
 
-              <h2 style={styledH2} className={styles.sectionTitle}>
-                Wallet Management
-              </h2>
-              {walletManagement.map(({ route, title, id, icon }) => (
-                <ComponentListItem
-                  key={id}
-                  route={route}
-                  title={title}
-                  id={id}
-                  icon={icon}
-                  open={open}
-                />
-              ))}
+							<h2 style={styledH2} className={styles.sectionTitle}>
+								Wallet Management
+							</h2>
+							{walletManagement.map(({ route, title, id, icon }) => (
+								<ComponentListItem
+									key={id}
+									route={route}
+									title={title}
+									id={id}
+									icon={icon}
+									open={open}
+								/>
+							))}
 
-              <h2 style={styledH2} className={styles.sectionTitle}>
-                Settlement
-              </h2>
-              {settlement.map(({ route, title, id, icon }) => (
-                <ComponentListItem
-                  key={id}
-                  route={route}
-                  title={title}
-                  id={id}
-                  icon={icon}
-                  open={open}
-                />
-              ))}
+							<h2 style={styledH2} className={styles.sectionTitle}>
+								Bank
+							</h2>
+							{Bank.map(({ route, title, id, icon }) => (
+								<ComponentListItem
+									key={id}
+									route={route}
+									title={title}
+									id={id}
+									icon={icon}
+									open={open}
+								/>
+							))}
 
-              <h2 style={styledH2} className={styles.sectionTitle}>
-                Compliance
-              </h2>
-              {compliance.map(({ route, title, id, icon }) => (
-                <ComponentListItem
-                  key={id}
-                  route={route}
-                  title={title}
-                  id={id}
-                  icon={icon}
-                  open={open}
-                />
-              ))}
+							<h2 style={styledH2} className={styles.sectionTitle}>
+								Settlement
+							</h2>
+							{settlement.map(({ route, title, id, icon }) => (
+								<ComponentListItem
+									key={id}
+									route={route}
+									title={title}
+									id={id}
+									icon={icon}
+									open={open}
+								/>
+							))}
 
-              <h2 style={styledH2} className={styles.sectionTitle}>
-                Point Of Sale
-              </h2>
-              {pointOfSale.map(({ route, title, id, icon }) => (
-                <ComponentListItem
-                  key={id}
-                  route={route}
-                  title={title}
-                  id={id}
-                  icon={icon}
-                  open={open}
-                />
-              ))}
+							<h2 style={styledH2} className={styles.sectionTitle}>
+								Compliance
+							</h2>
+							{compliance.map(({ route, title, id, icon }) => (
+								<ComponentListItem
+									key={id}
+									route={route}
+									title={title}
+									id={id}
+									icon={icon}
+									open={open}
+								/>
+							))}
 
-              <h2 style={styledH2} className={styles.sectionTitle}>
-                Legal
-              </h2>
-              {legal.map(({ route, title, id, icon }) => (
-                <ComponentListItem
-                  key={id}
-                  route={route}
-                  title={title}
-                  id={id}
-                  icon={icon}
-                  open={open}
-                />
-              ))}
+							<h2 style={styledH2} className={styles.sectionTitle}>
+								Point Of Sale
+							</h2>
+							{pointOfSale.map(({ route, title, id, icon }) => (
+								<ComponentListItem
+									key={id}
+									route={route}
+									title={title}
+									id={id}
+									icon={icon}
+									open={open}
+								/>
+							))}
 
-              <h2 style={styledH2} className={styles.sectionTitle}>
-                Fraud &amp; Risk Management
-              </h2>
-              {fraudRiskManagement.map(({ route, title, id, icon }) => (
-                <ComponentListItem
-                  key={id}
-                  route={route}
-                  title={title}
-                  id={id}
-                  icon={icon}
-                  open={open}
-                />
-              ))}
+							<h2 style={styledH2} className={styles.sectionTitle}>
+								Legal
+							</h2>
+							{legal.map(({ route, title, id, icon }) => (
+								<ComponentListItem
+									key={id}
+									route={route}
+									title={title}
+									id={id}
+									icon={icon}
+									open={open}
+								/>
+							))}
 
-              <h2 style={styledH2} className={styles.sectionTitle}>
-                Chargeback Management
-              </h2>
-              {chargebackManagement.map(({ route, title, id, icon }) => (
-                <ComponentListItem
-                  key={id}
-                  route={route}
-                  title={title}
-                  id={id}
-                  icon={icon}
-                  open={open}
-                />
-              ))}
+							<h2 style={styledH2} className={styles.sectionTitle}>
+								Fraud &amp; Risk Management
+							</h2>
+							{fraudRiskManagement.map(({ route, title, id, icon }) => (
+								<ComponentListItem
+									key={id}
+									route={route}
+									title={title}
+									id={id}
+									icon={icon}
+									open={open}
+								/>
+							))}
 
-              <h2 style={styledH2} className={styles.sectionTitle}>
-                Users &amp; Permissions
-              </h2>
-              {usersAndPermissions.map(({ route, title, id, icon }) => (
-                <ComponentListItem
-                  key={id}
-                  route={route}
-                  title={title}
-                  id={id}
-                  icon={icon}
-                  open={open}
-                />
-              ))}
-            </List>
-          </div>
-        </div>
+							<h2 style={styledH2} className={styles.sectionTitle}>
+								Chargeback Management
+							</h2>
+							{chargebackManagement.map(({ route, title, id, icon }) => (
+								<ComponentListItem
+									key={id}
+									route={route}
+									title={title}
+									id={id}
+									icon={icon}
+									open={open}
+								/>
+							))}
 
-        {/* <DrawerHeader>
+							<h2 style={styledH2} className={styles.sectionTitle}>
+								Users &amp; Permissions
+							</h2>
+							{usersAndPermissions.map(({ route, title, id, icon }) => (
+								<ComponentListItem
+									key={id}
+									route={route}
+									title={title}
+									id={id}
+									icon={icon}
+									open={open}
+								/>
+							))}
+						</List>
+					</div>
+				</div>
+
+				{/* <DrawerHeader>
           <IconButton></IconButton>
         </DrawerHeader> */}
 
-        <List>
-          {theme.direction === "rtl" ? null : (
-            <MuiListItem onClick={handleDrawerClose}> 
-              <div className={styles.drawerList}>
-                <ListItemIcon>
-                  <img src={CollapseIcon} alt="icons" className={styles.icon} />
-                </ListItemIcon>
-                <ListItemText>
-                  {/* <img src={icon} alt="icons" /> */}
-                  <div style={styledText} className={styles.title}>
-                    Collapse SideBar
-                  </div>
-                </ListItemText>
-              </div>
-            </MuiListItem>
-          )}
-        </List>
-      </Drawer>
-    </Box>
-  );
+				<List>
+					{theme.direction === 'rtl' ? null : (
+						<MuiListItem onClick={handleDrawerClose}>
+							<div className={styles.drawerList}>
+								<ListItemIcon>
+									<img src={CollapseIcon} alt='icons' className={styles.icon} />
+								</ListItemIcon>
+								<ListItemText>
+									{/* <img src={icon} alt="icons" /> */}
+									<div style={styledText} className={styles.title}>
+										Collapse SideBar
+									</div>
+								</ListItemText>
+							</div>
+						</MuiListItem>
+					)}
+				</List>
+			</Drawer>
+		</Box>
+	);
 }

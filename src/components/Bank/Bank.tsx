@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import styles from './Businesses.module.scss';
+import styles from './Bank.module.scss';
 import { makeStyles } from '@material-ui/core';
 import NavBar from '../../components/navbar/NavBar';
 import { useDispatch } from 'react-redux';
@@ -18,6 +18,9 @@ import {
 	closeLoader,
 	openLoader,
 } from '../../redux/actions/loader/loaderActions';
+import AddBankModal from '../../components/AddBankModal/AddBankModal';
+import { Divider } from '@mui/material';
+import { ReactComponent as DownloadNew } from '../../assets/images/downloadnew.svg';
 
 const useStyles = makeStyles({
 	root: {
@@ -74,11 +77,46 @@ const useStyles = makeStyles({
 	},
 });
 
-function Businesses() {
+const Mocked = [
+	{
+		id: 1,
+		amount: 200000,
+		status: 'Successful',
+		customerId: 'debra.holt@example.com',
+		paymentType: 'Card',
+		date: 'August 13, 2020',
+	},
+	{
+		id: 2,
+		amount: 200000,
+		status: 'Pending',
+		customerId: 'debra.holt@example.com',
+		paymentType: 'Card',
+		date: 'August 13, 2020',
+	},
+	{
+		id: 3,
+		amount: 200000,
+		status: 'Failed',
+		customerId: 'debra.holt@example.com',
+		paymentType: 'Card',
+		date: 'August 13, 2020',
+	},
+	{
+		id: 4,
+		amount: 200000,
+		status: 'Successful',
+		customerId: 'debra.holt@example.com',
+		paymentType: 'Card',
+		date: 'August 13, 2020',
+	},
+];
+
+function Bank() {
 	const [filter, setFilter] = useState('filter');
 	const classes = useStyles();
 	const [rows, setRows] = useState<any[]>([]);
-	const [apiRes, setApiRes] = useState<BusinessTableApiTypes>();
+	const [apiRes, setApiRes] = useState<any>(Mocked);
 	const [pageNumber, setPageNumber] = useState<number>(1);
 	const [approved, setApproved] = useState<string>('');
 
@@ -164,43 +202,43 @@ function Businesses() {
 		setRowsPerPage(value);
 	};
 
-	const fetchFunction = () => {
-		dispatch(openLoader());
+	// const fetchFunction = () => {
+	// 	dispatch(openLoader());
 
-		axios
-			.get<BusinessTableApiTypes>(
-				`/admin/business?perpage=${rowsPerPage}&page=${pageNumber}&fromdate=${fromDate}&todate=${toDate}&email=${email}&paymentmethod=${status}&approved=${approved}`
-			)
-			.then((res) => {
-				setApiRes(res.data);
-				setBearer(false);
-				dispatch(closeLoader());
-			})
-			.catch((err) => {
-				console.log(err);
-				dispatch(closeLoader());
-			})
-			.finally(() => {
-				setIsFilterModalOpen(false);
-			});
-	};
+	// 	axios
+	// 		.get<BusinessTableApiTypes>(
+	// 			`/admin/business?perpage=${rowsPerPage}&page=${pageNumber}&fromdate=${fromDate}&todate=${toDate}&email=${email}&paymentmethod=${status}&approved=${approved}`
+	// 		)
+	// 		.then((res) => {
+	// 			setApiRes(res.data);
+	// 			setBearer(false);
+	// 			dispatch(closeLoader());
+	// 		})
+	// 		.catch((err) => {
+	// 			console.log(err);
+	// 			dispatch(closeLoader());
+	// 		})
+	// 		.finally(() => {
+	// 			setIsFilterModalOpen(false);
+	// 		});
+	// };
 
-	useEffect(() => {
-		fetchFunction();
-	}, [rowsPerPage, pageNumber, bearer, approved]);
+	// useEffect(() => {
+	// 	fetchFunction();
+	// }, [rowsPerPage, pageNumber, bearer, approved]);
 
 	const modalFunc = () => {
 		setReset(true);
 	};
 
 	useEffect(() => {
-		if (apiRes && apiRes?.businesses.length) {
-			setTotalRows(apiRes._metadata?.totalcount);
+		if (apiRes && apiRes?.length) {
+			setTotalRows(apiRes?.length);
 		}
 	}, [apiRes]);
 
 	useEffect(() => {
-		if (open2 && dataValue2 !== null) history.push(`/businesses/${dataValue2}`);
+		if (open2 && dataValue2 !== null) history.push(`/bank/${dataValue2}`);
 	}, [dataValue2, open2]);
 
 	const editBusinessHandler = () => {
@@ -211,121 +249,81 @@ function Businesses() {
 				},
 				modalContent: (
 					<div className={styles.modalDiv}>
-						<AccountType title='Business' />
+						<AddBankModal />
 					</div>
 				),
 			})
 		);
 	};
 
-	const boxData = [
-		{
-			title: 'Active Businesses',
-			number: 5,
-			identifier: 'active',
-		},
-		{
-			title: 'Pending Businesses',
-			number: 5,
-			identifier: 'pending',
-		},
-		{
-			title: 'Inactive Businesses',
-			number: 5,
-			identifier: 'inactive',
-		},
-	];
-
 	//ENDS FUNCTIONS
 
 	interface Column {
-		id:
-			| 'status'
-			| 'merchantcode'
-			| 'business_name'
-			| 'email_address'
-			| 'contact_person'
-			| 'country'
-			| 'sign_up'
-			| 'actions';
+		id: 'amount' | 'status' | 'customerId' | 'paymentType' | 'date';
 
 		label: any;
 		minWidth?: number;
 		align?: 'right' | 'left' | 'center';
 	}
 	const columns: Column[] = [
+		{ id: 'amount', label: 'Amount', minWidth: 100 },
 		{ id: 'status', label: 'Status', minWidth: 100 },
-		{ id: 'merchantcode', label: 'Merchant Code', minWidth: 100 },
-		{ id: 'business_name', label: 'Business name', minWidth: 100 },
+		{ id: 'customerId', label: 'Customer ID', minWidth: 200 },
 		{
-			id: 'email_address',
-			label: 'Email address',
+			id: 'paymentType',
+			label: 'Payment type',
 			align: 'center',
 			minWidth: 100,
 		},
-		{ id: 'contact_person', label: 'Contact person', minWidth: 100 },
-		{ id: 'country', label: 'Country', minWidth: 100 },
-		{ id: 'sign_up', label: 'Sign up Date', minWidth: 100 },
+		{ id: 'date', label: 'Date', minWidth: 100 },
 	];
 
 	const LoanRowTab = useCallback(
 		(
 			id: number | string,
-			tradingname: string,
-			approved: string,
-			email: number,
-			firstname: string,
-			lastname: string,
-			country: string,
-			added: string,
-			merchantcode: string
+			amount: string,
+			status: string,
+			customerId: any,
+			paymentType: string,
+			date: string
 		) => ({
-			business_name: tradingname,
+			amount: amount,
 			status: (
 				<button
 					className={styles.tableSpan}
 					style={{
 						backgroundColor:
-							(approved === 'APPROVED' && '#25AC60') ||
-							(approved === 'DECLINED' && '#D92418') ||
-							(approved === 'PENDING' && '#CEA528') ||
+							(status === 'Successful' && '#25AC60') ||
+							(status === 'Failed' && '#D92418') ||
+							(status === 'Pending' && '#CEA528') ||
 							'rgba(169, 170, 171, 0.22)',
 						color:
-							(approved === 'APPROVED' && '#FFFFFF') ||
-							(approved === 'DECLINED' && '#FFFFFF') ||
-							(approved === 'PENDING' && '#FFFFFF') ||
+							(status === 'Successful' && '#FFFFFF') ||
+							(status === 'Failed' && '#FFFFFF') ||
+							(status === 'Pending' && '#FFFFFF') ||
 							'#FFFFFF',
 					}}>
-					{approved.toLocaleLowerCase()}
+					{status.toLocaleLowerCase()}
 				</button>
 			),
-			email_address: email,
-			contact_person: (
-				<div>
-					{firstname ? firstname : ''} {lastname ? lastname : ''}
-				</div>
-			),
-			country: country === 'NG' ? 'Nigeria' : 'null',
-			sign_up: `${format(parseISO(added), 'MMMM dd, yyyy')}`,
-			merchantcode: merchantcode,
+			customerId: customerId,
+			paymentType: paymentType,
+			date: date,
 		}),
 		[]
 	);
 	useEffect(() => {
 		const newRowOptions: any[] = [];
 		apiRes &&
-			apiRes?.businesses.map((each: any) =>
+			apiRes?.map((each: any) =>
 				newRowOptions.push(
 					LoanRowTab(
-						each.id,
-						each.tradingname,
-						each.approved,
-						each.email,
-						each?.user[0]?.firstname,
-						each?.user[0]?.lastname,
-						each.country,
-						each.added,
-						each.merchantcode
+						each?.id,
+						each?.amount,
+						each?.status,
+						each?.customerId,
+						each?.paymentType,
+						each?.date
 					)
 				)
 			);
@@ -353,12 +351,20 @@ function Businesses() {
 				<NavBar name='business' />
 				<div className={styles.header}>
 					<div className={styles.header_left}>
-						<h1 className={styles.header_left_h1}>
-							{apiRes?._metadata.totalcount} Businesses
-						</h1>
+						<h1 className={styles.header_left_h1}>Transactions</h1>
 					</div>
 					<div className={styles.header_right}>
 						<div className={styles.selectwrapper}>
+							<button className={styles.filterbutton}>
+								<span className={styles.filterbutton_span_left}>
+									Download &nbsp;&nbsp;
+									<DownloadNew />
+								</span>
+							</button>
+						</div>
+						<div
+							style={{ marginLeft: '20px' }}
+							className={styles.selectwrapper}>
 							<button
 								className={styles.filterbutton}
 								onClick={() => setIsFilterModalOpen(true)}>
@@ -369,27 +375,10 @@ function Businesses() {
 								</span>
 							</button>
 						</div>
-						<div className={styles.button_business}>
-							<button
-								onClick={editBusinessHandler}
-								className={styles.button_business_button}>
-								<span className={styles.button_business_span}>+</span> &nbsp;
-								New business
-							</button>
-						</div>
 					</div>
 				</div>
 
-				<div className={styles.box}>
-					{boxData?.map(({ title, number, identifier }) => (
-						<div
-							onClick={() => setApproved(identifier)}
-							className={styles.singleBox}>
-							<p>{title}</p>
-							<h3>{number}</h3>
-						</div>
-					))}
-				</div>
+				<Divider />
 
 				{/* TABLE */}
 				<div className={styles.maintable}>
@@ -399,8 +388,8 @@ function Businesses() {
 						totalRows={totalRows}
 						changePage={changePage}
 						limit={limit}
-						setDataValue2={setDataValue2}
-						setOpen2={setOpen2}
+						// setDataValue2={setDataValue2}
+						// setOpen2={setOpen2}
 					/>
 				</div>
 			</div>
@@ -408,4 +397,4 @@ function Businesses() {
 	);
 }
 
-export default Businesses;
+export default Bank;

@@ -10,56 +10,53 @@ import {
 } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 
-function AccountType({title}:{title:string;}) {
-const accountTypes = [
-	{
-		id: 'individual',
-		title: 'Individual',
-		description: 'Enter your details to create an account.',
-	},
+function AccountType({ title }: { title: string }) {
+	const accountTypes = [
+		{
+			id: 'individual',
+			title: 'Individual',
+			description: 'Enter your details to create an account.',
+		},
 
-	{
-		id: 'business',
-		title: 'Business',
-		description:
-			'Start accepting payment using our infrastructure from customers anywhere in the world.',
-	},
+		{
+			id: 'business',
+			title: 'Business',
+			description:
+				'Start accepting payment using our infrastructure from customers anywhere in the world.',
+		},
 
-	{
-		id: 'ngo',
-		title: 'NGO',
-		description: 'Accept credit / debit cards, USSD, Bank transfer and more.',
-	},
-];
+		{
+			id: 'ngo',
+			title: 'NGO',
+			description: 'Accept credit / debit cards, USSD, Bank transfer and more.',
+		},
+	];
 
-const [selectedValue, setSelectedValue] = useState<string | undefined>(
-	undefined
-);
+	const [selectedValue, setSelectedValue] = useState<string | undefined>(
+		undefined
+	);
 
-const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-	setSelectedValue(event.target.value);
-};
+	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setSelectedValue(event.target.value);
+	};
 
-const history = useHistory();
+	const history = useHistory();
 
-const handleSubmit = () => {
+	const handleSubmit = () => {};
 
-};
-
-
-const theme = {
-	overrides: {
-		MuiRadio: {
-			colorSecondary: {
-				'&$checked': {
-					color: 'green',
+	const theme = {
+		overrides: {
+			MuiRadio: {
+				colorSecondary: {
+					'&$checked': {
+						color: 'green',
+					},
 				},
 			},
 		},
-	},
-};
+	};
 
-const muiTheme = createTheme(theme);
+	const muiTheme = createTheme(theme);
 
 	return (
 		<div
@@ -108,6 +105,7 @@ const muiTheme = createTheme(theme);
 									color: '#fff',
 									border: 'none',
 									borderRadius: '4px',
+									cursor: 'pointer',
 								}}
 								type='submit'
 								color='primary'
@@ -118,7 +116,6 @@ const muiTheme = createTheme(theme);
 					</FormControl>
 				</div>
 			</div>
-
 		</div>
 	);
 }

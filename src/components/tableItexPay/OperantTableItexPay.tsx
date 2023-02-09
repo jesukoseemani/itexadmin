@@ -109,9 +109,9 @@ export default function OperantTableItexPay({
 									align={column.align}
 									style={{
 										minWidth: column.minWidth,
-										fontWeight: 'bold',
-										background: '#FBFEFD',
-										fontSize: '16px',
+										fontWeight: '600',
+										background: '#F4F6F8',
+										fontSize: '14px',
 									}}>
 									{column.label}
 								</TableCell>

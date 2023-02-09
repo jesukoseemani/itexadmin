@@ -3,132 +3,162 @@
 	margin: 0 auto;
 }
 
-.businesss_trans {
-	padding: 0 40px;
-	margin-top: 41px;
-
-	@media (max-width: 1000px) {
-		padding: 0 5px;
-	}
-}
-
-.businesss_trans_h3 {
-	font-family: Roboto;
-	font-style: normal;
-	font-weight: normal;
-	font-size: 12px;
-	line-height: 14px;
-	/* identical to box height */
-
-	letter-spacing: 0.0028px;
-
-	color: #7c7c7c;
-}
-
-.divider_wrapper_2 {
-	margin: 8px 40px 22px 40px;
-}
-
-.gridFeatures {
-	padding: 0 40px;
-	margin-bottom: 25px;
-
-}
-
-.business_header_general {
-	padding: 0 40px;
-	margin-top: 60px;
-	
-}
-
-.gridFeatureBusiness {
+.header {
 	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
-	justify-content: flex-start;
-}
-
-.gridFeatureBusinessh {
-	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
-	justify-content: flex-start;
-	border-left: 1.2619px solid #e0e0e0;
-	padding-left: 40px;
-}
-
-.gridFeatureBusinessH1 {
-	font-family: Roboto;
-	font-style: normal;
-	font-weight: normal;
-	font-size: 12px;
-	line-height: 20px;
-	/* or 168% */
-
-	display: flex;
+	justify-content: space-between;
 	align-items: center;
-
-	color: #828282;
-
-	padding: 0;
-	margin: 0;
-	margin-bottom: 10px;
+	padding: 0 40px;
+	margin-top: 30px;
 }
 
-.gridFeatureBusinessP {
+.maintable {
+	padding: 0 40px;
+	margin: 24px 0;
+	// overflow-x: scroll;
+}
+
+.header_left {
+}
+
+.header_left_h1 {
 	font-family: Roboto;
 	font-style: normal;
 	font-weight: normal;
-	font-size: 14px;
-	line-height: 16px;
-
+	font-size: 20px;
+	line-height: 23px;
 	color: #333333;
-
-	cursor: 'pointer';
 }
 
-.gridFeatureBusinessP1 {
-	font-family: Roboto;
-	font-style: normal;
-	font-weight: normal;
-	font-size: 14px;
-	line-height: 16px;
-
-	color: #333333;
-
-	cursor: 'pointer';
-
-	margin-right: 10px;
-}
-
-.gridFeatureBusinessDiv {
+.header_right {
 	display: flex;
 	align-items: center;
 }
 
-.gridFeatureBusinessButton {
-	margin-right: 9.5px;
+.selectwrapper {
+}
+
+.button_business {
+	margin-left: 16px;
+}
+
+.button_business_button {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	background: #27ae60;
-	border-radius: 1.6px;
-	padding: 2.4px 23.2px;
+	border-radius: 4px;
 	font-family: Roboto;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 14px;
+	line-height: 16px;
+	letter-spacing: 0.0024px;
+	color: #ffffff;
+	border: none;
+	outline: none;
+	width: 131px;
+	height: 32px;
+	cursor: pointer;
+}
+
+.button_business_span {
+}
+
+.tableSpan {
+	min-width: 80px;
+	height: 29px;
+	font-size: 14px;
+	color: white;
+	border-radius: 3px;
+	outline: none;
+	border: none;
+}
+
+.wrapper {
+	font-size: 12px;
+	box-shadow: 0px -0.65px 0px rgba(75, 112, 154, 0.18);
+	border-radius: 2px 2px 8px 8px;
+}
+
+.tableVertIcon {
+	cursor: pointer;
+	width: 35px;
+	height: 35px;
+	border-radius: 50%;
+	display: grid;
+	place-items: center;
+	transition: all 0.4s ease;
+	margin-left: 10px;
+}
+
+.tableVertIcon:hover {
+	background-color: rgba(255, 255, 255, 0.16);
+}
+
+.filterbutton {
+	width: 131px;
+	height: 31px;
+	background: #e0e0e0;
+	border-radius: 4px;
+	font-family: 'Roboto';
 	font-style: normal;
 	font-weight: 500;
-	font-size: 9.6px;
-	line-height: 11px;
+	font-size: 14px;
+	line-height: 16px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 	text-align: center;
-	color: #ffffff;
+	letter-spacing: 0.0024px;
+	color: #333333;
 	outline: none;
 	border: none;
 	cursor: pointer;
 }
 
-.gridFeatureBusinessPE {
-	font-family: Roboto;
-	font-style: normal;
-	font-weight: normal;
-	font-size: 14px;
-	line-height: 16px;
+.filterbutton_span_left {
+	flex: 3;
+	display: flex;
+	justify-content: center;
+}
+.filterbutton_span_right {
+	flex: 1;
+}
+
+.box {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(291px, 1fr));
+	grid-gap: 30px;
+	padding: 0 40px;
+	margin: 44px 0px 39px 0px;
+}
+.singleBox {
+	padding: 21px 35px;
+	background: #fbfefd;
+	border: 1px solid #f2f2f2;
+	border-radius: 4px;
 	cursor: pointer;
-	color: #27ae60;
+	h3 {
+		font-family: 'Roboto';
+		font-style: normal;
+		font-weight: 500;
+		font-size: 20px;
+		line-height: 23px;
+		letter-spacing: 0.0052px;
+		color: #0f1747;
+		margin: 0;
+		padding: 0;
+		margin-top: 10px;
+	}
+	p {
+		font-family: 'Roboto';
+		font-style: normal;
+		font-weight: 400;
+		font-size: 14px;
+		line-height: 16px;
+		letter-spacing: 0.0052px;
+		color: #828282;
+		margin: 0;
+		padding: 0;
+	}
 }
