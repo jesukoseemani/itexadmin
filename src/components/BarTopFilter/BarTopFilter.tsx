@@ -42,7 +42,7 @@ const useStyles = makeStyles({
 
 // <h4 style={styledh4}>{label && moment(label).format('ddd, MMM d')}</h4>;
 
-function BarTopFilter() {
+function BarTopFilter({ title }: { title?: string }) {
 	const [value, setValue] = useState<Date | null>(new Date());
 	const [valueTo, setValueTo] = useState<Date | null>(new Date());
 	const [duration, setDuration] = useState('today');
@@ -59,17 +59,21 @@ function BarTopFilter() {
 	return (
 		<div className={styles.wrapper}>
 			<div className={styles.selectwrapper}>
-				<TextField
-					id='demo-simple-select'
-					value={duration}
-					className={classes.select}
-					onChange={(e) => setDuration(e.target.value)}
-					select>
-					<MuiMenuItem value='today'>Today</MuiMenuItem>
-					<MuiMenuItem value='last7days'>Last 7 days</MuiMenuItem>
-					<MuiMenuItem value='lastweek'>Last 30days</MuiMenuItem>
-					<MuiMenuItem value='lastmonth'>Last year</MuiMenuItem>
-				</TextField>
+				{title ? (
+					title
+				) : (
+					<TextField
+						id='demo-simple-select'
+						value={duration}
+						className={classes.select}
+						onChange={(e) => setDuration(e.target.value)}
+						select>
+						<MuiMenuItem value='today'>Today</MuiMenuItem>
+						<MuiMenuItem value='last7days'>Last 7 days</MuiMenuItem>
+						<MuiMenuItem value='lastweek'>Last 30days</MuiMenuItem>
+						<MuiMenuItem value='lastmonth'>Last year</MuiMenuItem>
+					</TextField>
+				)}
 			</div>
 			<div className={styles.right}>
 				<div className={styles.datewrapper}>

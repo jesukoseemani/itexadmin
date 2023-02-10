@@ -93,7 +93,7 @@ function StatusModal({ ident }: { ident: string }) {
 	return (
 		<div className={styles.modalContainer}>
 			<div className={styles.statusWrapper}>
-				<img src={`${ident === 'approve' ? Success : Failed}`} alt='' />
+				<img src={`${ident === 'approved' ? Success : Failed}`} alt='' />
 				<p>
 					{ident === 'approve'
 						? 'Document has being Approved'

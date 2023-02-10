@@ -26,6 +26,27 @@ const StyledUl = styled.ul`
 	} */
 `;
 
+const StyledBoldH2 = styled.h2`
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 700;
+	font-size: 22px;
+	line-height: 21px;
+	letter-spacing: -0.272307px;
+	color: #0f1747;
+	padding: 0;
+	margin: 0;
+`;
+const StyledBoldp = styled.p`
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 12px;
+	line-height: 21px;
+	letter-spacing: -0.136153px;
+	color: #7f7f8f;
+`;
+
 const CustomLabel = ({ viewBox, total }: any) => {
 	const { cx, cy } = viewBox;
 	return (
@@ -56,7 +77,7 @@ const renderLegend = (props: any) => {
 		listStyle: 'none',
 		display: 'flex',
 		alignItems: 'center',
-		marginTop: '20px',
+		marginBottom: '10px',
 	};
 	const styledbox: React.CSSProperties = {
 		width: '11px',
@@ -101,6 +122,10 @@ const renderLegend = (props: any) => {
 
 	return (
 		<StyledUl>
+			<div style={{ marginBottom: '10px' }}>
+				<StyledBoldH2>N200,000,000</StyledBoldH2>
+				<StyledBoldp>Total transaction value</StyledBoldp>
+			</div>
 			{payload.map((entry: any, index: any) => (
 				<li style={styledli} key={`item-${index}`}>
 					<div
@@ -124,15 +149,15 @@ const renderLegend = (props: any) => {
 function PieChart2({ data02 }: pieTypes) {
 	return (
 		<StyledChart>
-			<ResponsiveContainer width='100%' height={150}>
-				<PieChart width={75} height={75}>
+			<ResponsiveContainer width='100%' height='100%'>
+				<PieChart width={142} height={142}>
 					<Pie
 						dataKey='amount'
-						cx={45}
-						cy={60}
+						cx={80}
+						cy={100}
 						data={data02}
-						innerRadius={20}
-						outerRadius={50}
+						innerRadius={40}
+						outerRadius={70}
 						fill='#82ca9d'>
 						{data02.map((entry: any, index: any) => (
 							<Cell key={`cell-${index}`} fill={entry.color} />
@@ -145,11 +170,8 @@ function PieChart2({ data02 }: pieTypes) {
 						content={renderLegend}
 						iconType='square'
 						iconSize={10}
-						height={30}
-						width={350}
 						layout='vertical'
-						align='center'
-						verticalAlign='bottom'
+						verticalAlign='middle'
 					/>
 				</PieChart>
 			</ResponsiveContainer>

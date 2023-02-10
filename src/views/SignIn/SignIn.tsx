@@ -15,6 +15,7 @@ import { useHistory } from 'react-router-dom';
 import { saveAuth } from '../../redux/actions/auth/authActions';
 import { saveLoading } from '../../redux/actions/loadingState/loadingStateActions';
 import { saveCountry } from '../../redux/actions/country/countryActions';
+import aYAxios from '../../components/axiosInstance';
 
 const SignIn = () => {
 	const dispatch = useDispatch();

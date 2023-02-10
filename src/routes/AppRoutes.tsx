@@ -59,6 +59,7 @@ import { logOut } from '../redux/actions/auth/authActions';
 import { saveLoading } from '../redux/actions/loadingState/loadingStateActions';
 import Bank from '../views/Bank/Bank';
 import BankDetails from '../components/bankDetails/BankDetails';
+import SalesTab from '../views/FraudRiskManagement/SalesTab/SalesTab';
 
 export default function AppRoutes() {
 	const dispatch = useDispatch();
@@ -338,7 +339,7 @@ export default function AppRoutes() {
 							<ProtectedRoute
 								exact
 								path='/fraudmgt_sales'
-								component={Sales}
+								component={SalesTab}
 								AuthUser={loadingState}
 							/>
 

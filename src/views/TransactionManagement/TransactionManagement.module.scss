@@ -9,7 +9,7 @@
 	flex-wrap: wrap;
 }
 
-.paymentflex{
+.paymentflex {
 	display: flex;
 }
 
@@ -315,6 +315,36 @@
 	display: flex;
 	justify-content: flex-end;
 	align-items: center;
+}
+
+.filterbutton {
+	width: 131px;
+	height: 31px;
+	background: #e0e0e0;
+	border-radius: 4px;
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 500;
+	font-size: 14px;
+	line-height: 16px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	text-align: center;
+	letter-spacing: 0.0024px;
+	color: #333333;
+	outline: none;
+	border: none;
+	cursor: pointer;
+}
+
+.filterbutton_span_left {
+	flex: 3;
+	display: flex;
+	justify-content: center;
+}
+.filterbutton_span_right {
+	flex: 1;
 }
 
 @media only screen and (max-width: 1025px) {

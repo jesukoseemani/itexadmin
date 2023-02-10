@@ -52,7 +52,6 @@ function BankDetails() {
 	// 		});
 	// }, [urlId]);
 
-
 	return (
 		<div className={styles.container}>
 			<NavBar name='business' />
