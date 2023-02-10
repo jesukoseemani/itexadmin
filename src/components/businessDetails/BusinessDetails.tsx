@@ -20,12 +20,28 @@ import FourthReuse from '../ModalsReuse/businessDetailsModal/FourthReuse';
 import FifthReuse from '../ModalsReuse/businessDetailsModal/fifthReuse';
 import SixthReuse from '../ModalsReuse/businessDetailsModal/SixthReuse';
 import EditBusiness from '../ModalsReuse/businessDetailsModal/EditBusiness';
+import { ReactComponent as PendingIcon } from '../../assets/images/alert-circle.svg';
+import { ReactComponent as DangerIcon } from '../../assets/images/close-circle.svg';
+import { ReactComponent as ApprovedIcon } from '../../assets/images/checkmark-circle.svg';
+import Modal from 'react-modal';
+import { customStyles } from '../../helpers/modalStyles';
+import { ReactComponent as CloseIcon } from '../../assets/images/modalclose.svg';
+import MessageComplianceModal from '../messageComplianceModal/MessageComplianceModal';
 
 function BusinessDetails() {
 	const [details, setDetails] = useState<BusinessTableApiTypes>();
+	const [docsDetails, setDocsDetails] = useState<any>();
+
 	const location = useLocation();
 	const history = useHistory();
 	const dispatch = useDispatch();
+	const [modalIsOpen, setIsOpen] = React.useState(false);
+	function closeModal() {
+		setIsOpen(false);
+	}
+	function openModal() {
+		setIsOpen(true);
+	}
 
 	const urlId = location.pathname.split('/')[2];
 	interface addressTypes {
@@ -37,9 +53,7 @@ function BusinessDetails() {
 
 	useEffect(() => {
 		axios
-			.get<BusinessTableApiTypes>(
-				`/admin/business?merchantcode=${urlId}`
-			)
+			.get<BusinessTableApiTypes>(`/admin/business?merchantcode=${urlId}`)
 			.then((res) => {
 				setDetails(res.data);
 				console.log('getbusiness:', res.data);
@@ -87,6 +101,21 @@ function BusinessDetails() {
 		'Pin + OTP',
 		'Tokenization',
 	];
+
+	const sendMessageHandler = () => {
+		dispatch(
+			openModalAndSetContent({
+				modalStyles: {
+					padding: 0,
+				},
+				modalContent: (
+					<>
+						<MessageComplianceModal />
+					</>
+				),
+			})
+		);
+	};
 
 	const popUpHandler = (desc: string) => {
 		if (desc === 'compliance') {
@@ -372,6 +401,68 @@ function BusinessDetails() {
 		}
 	};
 
+	const docs = [
+		{
+			id: 1,
+			image: 'https://picsum.photos/200',
+			name: 'CAC Certificate',
+			status: 'Pending',
+			comment: 'CAC Certificate is a useful piece',
+		},
+		{
+			id: 2,
+			image: 'https://picsum.photos/200',
+			name: 'First Director ID',
+			status: 'Approved',
+			comment: 'Director ID is a useful piece',
+		},
+		{
+			id: 3,
+			image: 'https://picsum.photos/200',
+			name: 'MEMAT Document',
+			status: 'Declined',
+			comment: 'MEMAT Document is a useful piece',
+		},
+		{
+			id: 4,
+			image: 'https://picsum.photos/200',
+			name: 'Lincense',
+			status: 'Approved',
+			comment: 'Document is a useful piece',
+		},
+	];
+
+	const back = '<< Back';
+	const next = 'Next >>';
+	const imageViewerHandler = (
+		image: string,
+		name: string,
+		status: string,
+		comment: string,
+		id: number
+	) => {
+		setDocsDetails({ image, name, status, comment, id });
+		setIsOpen(true);
+	};
+
+	const moveHandler = (identify: string) => {
+		setIsOpen(false);
+
+		if (identify === 'back') {
+			const filterdata = docs.filter((item) => item.id === docsDetails.id - 1);
+			setDocsDetails(filterdata[0]);
+		}
+
+		if (identify === 'next') {
+			const filterdata = docs.filter((item) => item.id === docsDetails.id + 1);
+			setDocsDetails(filterdata[0]);
+		}
+
+		setTimeout(() => {
+			setIsOpen(true);
+		}, 100);
+	};
+
 	return (
 		<div className={styles.container}>
 			<NavBar name='business' />
@@ -425,7 +516,8 @@ function BusinessDetails() {
 						<img src={danger} alt='' />
 					</span>
 					<p className={styles.desc_paragraph}>
-						{details?.businesses[0].businesstype}
+						{details?.businesses[0].businesstype ||
+							'Business Type Not Provided'}
 					</p>
 				</div>
 
@@ -590,7 +682,109 @@ function BusinessDetails() {
 					</Grid>
 				</Grid>
 			</div>
+			<div
+				style={{
+					display: 'flex',
+					justifyContent: 'space-between',
+					alignItems: 'center',
+				}}
+				className={styles.business_header_general}>
+				<h3 className={styles.businesss_trans_h3}>Business Document</h3>
+				<button
+					onClick={sendMessageHandler}
+					className={styles.detailsHeaderRightButton}>
+					Send Merchant a message
+				</button>
+			</div>
 
+			<div className={styles.divider_wrapper_3}>
+				<Divider />
+			</div>
+
+			<div className={styles.docsWrapper}>
+				{docs.map(({ image, name, status, comment, id }) => (
+					<div
+						key={id}
+						onClick={() => imageViewerHandler(image, name, status, comment, id)}
+						className={styles.singleDocs}>
+						<p>{name}</p>
+						<div className={styles.singleDocsImage}>
+							<img src={image} alt='' />
+							<span>
+								{status === 'Approved' ? (
+									<ApprovedIcon />
+								) : status === 'Pending' ? (
+									<PendingIcon />
+								) : (
+									<DangerIcon />
+								)}
+							</span>
+						</div>
+					</div>
+				))}
+			</div>
+
+			<Modal
+				isOpen={modalIsOpen}
+				onRequestClose={closeModal}
+				contentLabel='Example Modal'
+				style={customStyles}>
+				<div className={styles.modalBody}>
+					<div className={styles.modalHeader}>
+						<div className={styles.background}>
+							<div className={styles.linkDetails}>{docsDetails?.name}</div>
+							<CloseIcon onClick={closeModal} style={{ cursor: 'pointer' }} />
+						</div>
+					</div>
+
+					<Divider />
+
+					<div className={styles.contentWrap}>
+						<h3>Compliant Status</h3>
+						<button
+							style={{
+								backgroundColor:
+									(docsDetails?.status === 'Approved' && '#27AE60') ||
+									(docsDetails?.status === 'Declined' && '#EB5757') ||
+									(docsDetails?.status === 'Pending' && '#F2C94C') ||
+									'rgba(169, 170, 171, 0.22)',
+								color:
+									(docsDetails?.status === 'Approved' && '#FFFFFF') ||
+									(docsDetails?.status === 'Declined' && '#FFFFFF') ||
+									(docsDetails?.status === 'Pending' && '#FFFFFF') ||
+									'#FFFFFF',
+							}}>
+							{docsDetails?.status}
+						</button>
+					</div>
+					<div className={styles.contentoverflow}>
+						<div className={styles.contentImage}>
+							<img src={docsDetails?.image} alt='' />
+						</div>
+						<div className={styles.contentWord}>
+							<h3>Compliant Comment</h3>
+							<Divider style={{ margin: '0px', padding: '0px' }} />
+							<p className={styles.contentWord_p}>{docsDetails?.comment}</p>
+						</div>
+					</div>
+
+					<div className={styles.contentButton}>
+						<button
+							disabled={docsDetails?.id <= 1}
+							onClick={() => moveHandler('back')}
+							className={styles.contentButtonBack}>
+							{back}
+						</button>
+						<button
+							disabled={docsDetails?.id >= docs?.length}
+							onClick={() => moveHandler('next')}
+							className={styles.contentButtonNext}>
+							{next}
+						</button>
+					</div>
+				</div>
+			</Modal>
+			{/* 
 			<div className={styles.business_header_general}>
 				<h3 className={styles.businesss_trans_h3}>Business information</h3>
 			</div>
@@ -788,9 +982,7 @@ function BusinessDetails() {
 							<h1 className={styles.gridFeatureBusinessH1}>
 								Settlement account number
 							</h1>
-							<p className={styles.gridFeatureBusinessP}>
-							
-							</p>
+							<p className={styles.gridFeatureBusinessP}></p>
 						</div>
 					</Grid>
 					<Grid item xs={6} md={2}>
@@ -995,8 +1187,8 @@ function BusinessDetails() {
 						</div>
 					</Grid>
 				</Grid>
-			</div>
-			<BusinessDataTabs id={urlId} />
+			</div> */}
+			{/* <BusinessDataTabs id={urlId} /> */}
 		</div>
 	);
 }

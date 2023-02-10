@@ -17,6 +17,10 @@ import {
 	faUnlock,
 	faKey,
 } from '@fortawesome/free-solid-svg-icons';
+import { ReactComponent as Trash } from '../../assets/images/trash-2.svg';
+import { ReactComponent as Edit } from '../../assets/images/edit-3.svg';
+import UserModal from '../../components/ModalsReuse/UserModal';
+import RoleModal from '../../components/ModalsReuse/RoleModal';
 
 const useStyles = makeStyles({
 	root: {
@@ -75,11 +79,8 @@ const useStyles = makeStyles({
 
 interface userRoleTypes {
 	id: string | number;
-	roles_id: number;
 	role_name: string;
 	role_description: string;
-	role_type: string;
-	status: string;
 	added_on: string;
 }
 
@@ -87,6 +88,12 @@ const Roles = () => {
 	const classes = useStyles();
 	const [rows, setRows] = useState<any[]>([]);
 	const [apiRes, setApiRes] = useState<userRoleTypes[]>([]);
+	const [singleData, setSingleData] = useState<userRoleTypes>({
+		id: '',
+		role_name: '',
+		role_description: '',
+		added_on: '',
+	});
 	const [pageNumber, setPageNumber] = useState<number>(1);
 	const [rowsPerPage, setRowsPerPage] = useState<string | number | undefined>(
 		10
@@ -115,7 +122,6 @@ const Roles = () => {
 	const limit = (value: number) => {
 		setRowsPerPage(value);
 	};
-
 
 	const { access_token } = useSelector((state) => state?.authPayReducer?.auth);
 
@@ -157,7 +163,72 @@ const Roles = () => {
 				},
 				modalContent: (
 					<div className={styles.modalDiv}>
-						<AccountType title='User' />
+						<RoleModal title='Add custom role' />
+					</div>
+				),
+			})
+		);
+	};
+
+	const editHandler = (
+		id: number | string,
+		role_name: string,
+		role_description: string,
+		added_on: string
+	) => {
+		setSingleData({
+			id,
+			role_name,
+			role_description,
+			added_on,
+		});
+		dispatch(
+			openModalAndSetContent({
+				modalStyles: {
+					padding: 0,
+					maxWidth: '539px',
+					height: '700px',
+					width: '100%',
+				},
+				modalContent: (
+					<div className={styles.modalDiv}>
+						<RoleModal title='Edit role & permission' />
+					</div>
+				),
+			})
+		);
+	};
+	const deleteHandler = () => {
+		dispatch(
+			openModalAndSetContent({
+				modalStyles: {
+					padding: 0,
+					maxWidth: '653px',
+					height: '254px',
+					width: '100%',
+				},
+				modalContent: (
+					<div className={styles.modalDiv}>
+						<div className={styles.account_wrap}>
+							<h1 className={styles.account_h1}>Remove role</h1>
+						</div>
+
+						<div className={styles.buttonModalwrap}>
+							<p className={styles.removeModal_p}>
+								Are you sure want to remove this role. This role will no longer
+								appear on the platform unless added. Click on ‘Remove’ to delete
+								this role.
+							</p>
+
+							<div className={styles.buttonModal}>
+								<button
+									style={{ background: '#E0E0E0', color: '#333333' }}
+									className={styles.removeModal}>
+									Cancel
+								</button>
+								<button className={styles.removeModal}>Remove</button>
+							</div>
+						</div>
 					</div>
 				),
 			})
@@ -167,30 +238,19 @@ const Roles = () => {
 	//ENDS FUNCTIONS
 
 	interface Column {
-		id:
-			| 'roles_id'
-			| 'role_name'
-			| 'role_description'
-			| 'role_type'
-			| 'status'
-			| 'added_on'
-			| 'actions';
+		id: 'role_name' | 'role_description' | 'added_on' | 'actions';
 
 		label: any;
 		minWidth?: number;
 		align?: 'right' | 'left' | 'center';
 	}
 	const columns: Column[] = [
-		{ id: 'roles_id', label: 'Role ID', minWidth: 100 },
 		{ id: 'role_name', label: 'Role Name', minWidth: 100 },
 		{
 			id: 'role_description',
 			label: 'Role Description',
-			align: 'center',
 			minWidth: 100,
 		},
-		{ id: 'role_type', label: 'Type', minWidth: 100 },
-		{ id: 'status', label: 'Status', minWidth: 100 },
 		{ id: 'added_on', label: 'Added On', minWidth: 100 },
 		{ id: 'actions', label: 'Action(s)', align: 'left', minWidth: 100 },
 	];
@@ -198,35 +258,12 @@ const Roles = () => {
 	const LoanRowTab = useCallback(
 		(
 			id: number | string,
-			roles_id: number,
 			role_name: string,
 			role_description: string,
-			role_type: string,
-			status: string,
 			added_on: string
 		) => ({
-			roles_id: roles_id,
 			role_name: role_name,
 			role_description: role_description,
-			role_type: role_type,
-			status: (
-				<span
-					className={styles.tableSpan}
-					style={{
-						backgroundColor:
-							(status === 'Deactivated' && '#27AE60') ||
-							(status === 'Active' && '#EB5757') ||
-							(status === 'IN-REVIEW' && '#F2C94C') ||
-							'rgba(169, 170, 171, 0.22)',
-						color:
-							(status === 'Deactivated' && '#FFFFFF') ||
-							(status === 'Active' && '#FFFFFF') ||
-							(status === 'IN-REVIEW' && '#12122C') ||
-							'#FFFFFF',
-					}}>
-					{status}
-				</span>
-			),
 			added_on: added_on,
 			actions: (
 				<div
@@ -237,20 +274,15 @@ const Roles = () => {
 					aria-expanded={open ? 'true' : undefined}
 					onClick={handleClick}
 					className={styles.tableVertIcon}>
-					<div className={styles.icons}>
-						<FontAwesomeIcon icon={faPenToSquare} />
+					<div
+						onClick={() =>
+							editHandler(id, role_name, role_description, added_on)
+						}
+						className={styles.icons}>
+						<Edit />
 					</div>
-					<div className={styles.icons}>
-						<FontAwesomeIcon icon={faClockRotateLeft} />
-					</div>
-					<div className={styles.icons}>
-						<FontAwesomeIcon icon={faTrashCan} />
-					</div>
-					<div className={styles.icons}>
-						<FontAwesomeIcon icon={faUnlock} />
-					</div>
-					<div className={styles.icons}>
-						<FontAwesomeIcon icon={faKey} />
+					<div onClick={() => deleteHandler()} className={styles.icons}>
+						<Trash />
 					</div>
 				</div>
 			),
@@ -264,11 +296,8 @@ const Roles = () => {
 				newRowOptions.push(
 					LoanRowTab(
 						each.id,
-						each.roles_id,
 						each.role_name,
 						each.role_description,
-						each.role_type,
-						each.status,
 						each.added_on
 					)
 				)
@@ -293,23 +322,13 @@ const Roles = () => {
 						</h1>
 					</div>
 					<div className={styles.header_right}>
-						<div className={styles.selectwrapper}>
-							Download{' '}
-							<CloudUploadIcon
-								sx={{
-									width: '15px',
-									height: '10px',
-									color: 'gray',
-									marginLeft: '10px',
-								}}
-							/>
-						</div>
+						<div className={styles.selectwrapper}>Download</div>
 						<div className={styles.button_business}>
 							<button
 								onClick={editBusinessHandler}
 								className={styles.button_business_button}>
 								<span className={styles.button_business_span}>+</span> &nbsp;
-								Create User
+								Add custom role
 							</button>
 						</div>
 					</div>

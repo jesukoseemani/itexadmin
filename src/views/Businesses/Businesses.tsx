@@ -80,6 +80,8 @@ function Businesses() {
 	const [rows, setRows] = useState<any[]>([]);
 	const [apiRes, setApiRes] = useState<BusinessTableApiTypes>();
 	const [pageNumber, setPageNumber] = useState<number>(1);
+	const [approved, setApproved] = useState<string>('');
+
 	const [rowsPerPage, setRowsPerPage] = useState<string | number | undefined>(
 		10
 	);
@@ -167,7 +169,7 @@ function Businesses() {
 
 		axios
 			.get<BusinessTableApiTypes>(
-				`/admin/business?perpage=${rowsPerPage}&page=${pageNumber}&fromdate=${fromDate}&todate=${toDate}&email=${email}&paymentmethod=${status}`
+				`/admin/business?perpage=${rowsPerPage}&page=${pageNumber}&fromdate=${fromDate}&todate=${toDate}&email=${email}&paymentmethod=${status}&approved=${approved}`
 			)
 			.then((res) => {
 				setApiRes(res.data);
@@ -185,7 +187,7 @@ function Businesses() {
 
 	useEffect(() => {
 		fetchFunction();
-	}, [rowsPerPage, pageNumber, bearer]);
+	}, [rowsPerPage, pageNumber, bearer, approved]);
 
 	const modalFunc = () => {
 		setReset(true);
@@ -215,6 +217,24 @@ function Businesses() {
 			})
 		);
 	};
+
+	const boxData = [
+		{
+			title: 'Active Businesses',
+			number: 5,
+			identifier: 'active',
+		},
+		{
+			title: 'Pending Businesses',
+			number: 5,
+			identifier: 'pending',
+		},
+		{
+			title: 'Inactive Businesses',
+			number: 5,
+			identifier: 'inactive',
+		},
+	];
 
 	//ENDS FUNCTIONS
 
@@ -262,13 +282,13 @@ function Businesses() {
 		) => ({
 			business_name: tradingname,
 			status: (
-				<span
+				<button
 					className={styles.tableSpan}
 					style={{
 						backgroundColor:
-							(approved === 'APPROVED' && '#27AE60') ||
-							(approved === 'DECLINED' && '#EB5757') ||
-							(approved === 'PENDING' && '#F2C94C') ||
+							(approved === 'APPROVED' && '#25AC60') ||
+							(approved === 'DECLINED' && '#D92418') ||
+							(approved === 'PENDING' && '#CEA528') ||
 							'rgba(169, 170, 171, 0.22)',
 						color:
 							(approved === 'APPROVED' && '#FFFFFF') ||
@@ -276,8 +296,8 @@ function Businesses() {
 							(approved === 'PENDING' && '#FFFFFF') ||
 							'#FFFFFF',
 					}}>
-					{approved}
-				</span>
+					{approved.toLocaleLowerCase()}
+				</button>
 			),
 			email_address: email,
 			contact_person: (
@@ -286,7 +306,7 @@ function Businesses() {
 				</div>
 			),
 			country: country === 'NG' ? 'Nigeria' : 'null',
-			sign_up: `${format(parseISO(added), 'dd MMM yyyy')}`,
+			sign_up: `${format(parseISO(added), 'MMMM dd, yyyy')}`,
 			merchantcode: merchantcode,
 		}),
 		[]
@@ -339,11 +359,15 @@ function Businesses() {
 					</div>
 					<div className={styles.header_right}>
 						<div className={styles.selectwrapper}>
-							<Button
+							<button
 								className={styles.filterbutton}
 								onClick={() => setIsFilterModalOpen(true)}>
-								Filter <ArrowDropDownIcon />
-							</Button>
+								<span className={styles.filterbutton_span_left}>Filter </span>
+
+								<span className={styles.filterbutton_span_right}>
+									<ArrowDropDownIcon />
+								</span>
+							</button>
 						</div>
 						<div className={styles.button_business}>
 							<button
@@ -354,6 +378,17 @@ function Businesses() {
 							</button>
 						</div>
 					</div>
+				</div>
+
+				<div className={styles.box}>
+					{boxData?.map(({ title, number, identifier }) => (
+						<div
+							onClick={() => setApproved(identifier)}
+							className={styles.singleBox}>
+							<p>{title}</p>
+							<h3>{number}</h3>
+						</div>
+					))}
 				</div>
 
 				{/* TABLE */}

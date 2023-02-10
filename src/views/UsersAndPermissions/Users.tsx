@@ -17,6 +17,9 @@ import {
 	faUnlock,
 	faKey,
 } from '@fortawesome/free-solid-svg-icons';
+import { ReactComponent as Trash } from '../../assets/images/trash-2.svg';
+import { ReactComponent as Edit } from '../../assets/images/edit-3.svg';
+import UserModal from '../../components/ModalsReuse/UserModal';
 
 const useStyles = makeStyles({
 	root: {
@@ -87,6 +90,15 @@ const UsersPermission = () => {
 	const classes = useStyles();
 	const [rows, setRows] = useState<any[]>([]);
 	const [apiRes, setApiRes] = useState<userRoleTypes[]>([]);
+	const [singleData, setSingleData] = useState<userRoleTypes>({
+		id: '',
+		first_name: '',
+		last_name: '',
+		username: '',
+		role: '',
+		status: '',
+		added_on: '',
+	});
 	const [pageNumber, setPageNumber] = useState<number>(1);
 	const [rowsPerPage, setRowsPerPage] = useState<string | number | undefined>(
 		10
@@ -156,7 +168,78 @@ const UsersPermission = () => {
 				},
 				modalContent: (
 					<div className={styles.modalDiv}>
-						<AccountType title='User' />
+						<UserModal title='Add a new user' />
+					</div>
+				),
+			})
+		);
+	};
+
+	const editHandler = (
+		id: number | string,
+		first_name: string,
+		last_name: string,
+		username: string,
+		role: string,
+		status: string,
+		added_on: string
+	) => {
+		setSingleData({
+			id,
+			first_name,
+			last_name,
+			username,
+			role,
+			status,
+			added_on,
+		});
+		dispatch(
+			openModalAndSetContent({
+				modalStyles: {
+					padding: 0,
+					maxWidth: '539px',
+					height: '700px',
+					width: '100%',
+				},
+				modalContent: (
+					<div className={styles.modalDiv}>
+						<UserModal title='Edit user' />
+					</div>
+				),
+			})
+		);
+	};
+	const deleteHandler = () => {
+		dispatch(
+			openModalAndSetContent({
+				modalStyles: {
+					padding: 0,
+					maxWidth: '653px',
+					height: '254px',
+					width: '100%',
+				},
+				modalContent: (
+					<div className={styles.modalDiv}>
+						<div className={styles.account_wrap}>
+							<h1 className={styles.account_h1}>Remove user</h1>
+						</div>
+
+						<div className={styles.buttonModalwrap}>
+							<p className={styles.removeModal_p}>
+								Are you sure want to remover this user. This user will no longer
+								have access to the platform permissions. Click on ‘Remove’ to
+								remove this user.
+							</p>
+
+							<div className={styles.buttonModal}>
+								<button
+									style={{ background: '#E0E0E0', color: '#333333' }}
+									className={styles.removeModal}>
+									Cancel
+								</button>
+								<button className={styles.removeModal}>Remove</button>
+							</div>
+						</div>
 					</div>
 				),
 			})
@@ -236,20 +319,23 @@ const UsersPermission = () => {
 					aria-expanded={open ? 'true' : undefined}
 					onClick={handleClick}
 					className={styles.tableVertIcon}>
-					<div className={styles.icons}>
-						<FontAwesomeIcon icon={faPenToSquare} />
+					<div
+						onClick={() =>
+							editHandler(
+								id,
+								first_name,
+								last_name,
+								username,
+								role,
+								status,
+								added_on
+							)
+						}
+						className={styles.icons}>
+						<Edit />
 					</div>
-					<div className={styles.icons}>
-						<FontAwesomeIcon icon={faClockRotateLeft} />
-					</div>
-					<div className={styles.icons}>
-						<FontAwesomeIcon icon={faTrashCan} />
-					</div>
-					<div className={styles.icons}>
-						<FontAwesomeIcon icon={faUnlock} />
-					</div>
-					<div className={styles.icons}>
-						<FontAwesomeIcon icon={faKey} />
+					<div onClick={() => deleteHandler()} className={styles.icons}>
+						<Trash />
 					</div>
 				</div>
 			),
@@ -287,26 +373,16 @@ const UsersPermission = () => {
 				<NavBar name='User' />
 				<div className={styles.header}>
 					<div className={styles.header_left}>
-						<h1 className={styles.header_left_h1}>User Management</h1>
+						<h1 className={styles.header_left_h1}>Users</h1>
 					</div>
 					<div className={styles.header_right}>
-						<div className={styles.selectwrapper}>
-							Download{' '}
-							<CloudUploadIcon
-								sx={{
-									width: '15px',
-									height: '10px',
-									color: 'gray',
-									marginLeft: '10px',
-								}}
-							/>
-						</div>
+						<div className={styles.selectwrapper}>Download</div>
 						<div className={styles.button_business}>
 							<button
 								onClick={editBusinessHandler}
 								className={styles.button_business_button}>
 								<span className={styles.button_business_span}>+</span> &nbsp;
-								Create User
+								New User
 							</button>
 						</div>
 					</div>

@@ -297,13 +297,15 @@ const TransactionManagement = () => {
 								</span>
 							</button> */}
 
-							<div className={styles.selectwrapper}>
-								<Button
-									className={styles.filterbutton}
-									onClick={() => setIsFilterModalOpen(true)}>
-									Filter <ArrowDropDownIcon />
-								</Button>
-							</div>
+							<button
+								className={styles.filterbutton}
+								onClick={() => setIsFilterModalOpen(true)}>
+								<span className={styles.filterbutton_span_left}>Filter </span>
+
+								<span className={styles.filterbutton_span_right}>
+									<ArrowDropDownIcon />
+								</span>
+							</button>
 
 							<div className={styles.button_business}>
 								<CSVLink
