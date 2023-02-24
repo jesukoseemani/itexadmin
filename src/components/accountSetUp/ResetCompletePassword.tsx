@@ -11,34 +11,40 @@ import {
 } from '../../redux/actions/loader/loaderActions';
 import { openToastAndSetContent } from '../../redux/actions/toast/toastActions';
 import axios from 'axios';
+import useQuery from '../../hooks/useQuery';
 
-const LoginPasswordReset = () => {
+const ResetCompletePassword = () => {
 	const history = useHistory();
 	const dispatch = useDispatch();
-	const validate = Yup.object({
-		email: Yup.string()
-			.email('Email is invalid')
-			.required('Email Address is required'),
-	});
+	let query = useQuery();
 
-	const handleLogin = () => {
-		history.push('/signin');
-	};
+	const email = query.get('email');
+	const token = query.get('token');
+
+	console.log('dembe:', email, token);
+
+	const validate = Yup.object({
+		password: Yup.string()
+			.min(6, 'Password must be at least 6 charaters')
+			.required('Password is required'),
+	});
 
 	return (
 		<Formik
 			initialValues={{
-				email: '',
+				email,
+				token,
+				password: '',
 			}}
 			validationSchema={validate}
 			onSubmit={(values) => {
+				console.log(values);
 				dispatch(openLoader());
 
 				axios
-					.post('/auth/password/reset', values)
+					.post('/auth/password/reset/complete', values)
 					.then((res: any) => {
 						dispatch(closeLoader());
-						console.log('res:', res.data);
 						dispatch(
 							openToastAndSetContent({
 								toastContent: res?.data?.message,
@@ -48,7 +54,7 @@ const LoginPasswordReset = () => {
 							})
 						);
 
-						history.push('/email_verification');
+						history.push('/signin');
 					})
 					.catch((err: any) => {
 						dispatch(closeLoader());
@@ -70,33 +76,33 @@ const LoginPasswordReset = () => {
 					<div className={styles.mt1}>
 						<div className={styles.signinDiv}>
 							<div className={styles.signinHeader}>
-								<h5 className={styles.headerH}>Password Reset</h5>
+								<h5 className={styles.headerH}>New Password</h5>
 								<p className={styles.mt1} />
 								<p className={styles.headerP}>
-									Enter the email address associated with your account and we'll
-									send you a link to reset your password.
+									let’s set up a new password for your account
 								</p>
 							</div>
 							<div className={styles.mt2}>
 								<Form>
 									<InputLabel>
-										<span className={styles.formTitle}>Email Address</span>
+										<span className={styles.formTitle}>Password</span>
 									</InputLabel>
 									<Field
 										as={TextField}
 										helperText={
-											<ErrorMessage name='email'>
+											<ErrorMessage name='password'>
 												{(msg) => <span style={{ color: 'red' }}>{msg}</span>}
 											</ErrorMessage>
 										}
-										name='email'
-										placeholder='email@email.com'
+										name='password'
+										placeholder='******'
 										variant='outlined'
 										margin='normal'
-										type='email'
+										type='password'
 										size='small'
 										fullWidth
 									/>
+
 									<InputLabel className={styles.mt1}></InputLabel>
 									<button
 										style={{
@@ -109,7 +115,7 @@ const LoginPasswordReset = () => {
 										}}
 										type='submit'
 										color='primary'>
-										Continue
+										Reset Password
 									</button>
 								</Form>
 							</div>
@@ -119,8 +125,9 @@ const LoginPasswordReset = () => {
 					<div className={styles.sub}>
 						<p className={styles.mt2}>
 							<span className={styles.subP}>
-								<a className={styles.signinAnchor} onClick={handleLogin}>
-									<span className={styles.desc}>Remember your password? </span>
+								<a
+									onClick={() => history.push('/signin')}
+									className={styles.signinAnchor}>
 									Back to Login
 								</a>
 							</span>
@@ -132,4 +139,4 @@ const LoginPasswordReset = () => {
 	);
 };
 
-export default LoginPasswordReset;
+export default ResetCompletePassword;

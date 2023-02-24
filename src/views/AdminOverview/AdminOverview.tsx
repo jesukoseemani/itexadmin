@@ -9,6 +9,10 @@ import axios from 'axios';
 import { trendTypes, progressSuccessTypes } from '../../types/UserTableTypes';
 import { saveMe } from '../../redux/actions/me/meActions';
 import { useDispatch } from 'react-redux';
+import { Grid } from '@mui/material';
+import DashboardProductTable from '../../components/dashboardProductTable/DashboardProductTable';
+import { openToastAndSetContent } from '../../redux/actions/toast/toastActions';
+import { AnySchema } from 'yup';
 
 interface businessData {
 	total: string;
@@ -18,6 +22,7 @@ interface businessData {
 	message: string;
 }
 
+
 const AdminOverview = () => {
 	const [businessData, setBusinessData] = useState<businessData>();
 	const [overviewData, setOverviewData] = useState<trendTypes>();
@@ -25,16 +30,278 @@ const AdminOverview = () => {
 		useState<progressSuccessTypes>();
 	const [progressFailedData, setProgressFailedData] =
 		useState<progressSuccessTypes>();
+	const [topBusiness, setTopBusiness] = useState<any>();
+	const [topBusinessByS, setTopBusinessByS] = useState<any>();
+	const [topBusinessByF, setTopBusinessByF] = useState<any>();
+	const [topBusinessByR, setTopBusinessByR] = useState<any>();
+	const [cardNetwork, setCardNetwork] = useState<any>();
+
+
 	const dispatch = useDispatch();
 
 	useEffect(() => {
 		axios
-			.get(`/merchant/account/me`)
+			.get(`/auth/me`)
 			.then((res) => {
 				dispatch(saveMe(res.data));
 			})
 			.catch((err) => console.log(err));
 	}, [dispatch]);
+
+	const trendTransaction = () => {
+		axios
+			.get<trendTypes>(`/trend/transactions`)
+			.then((res) => {
+				setOverviewData(res.data);
+				dispatch(
+					openToastAndSetContent({
+						toastContent: res?.data?.message,
+						toastStyles: {
+							backgroundColor: 'green',
+						},
+					})
+				);
+			})
+			.catch((err) => {
+				console.log(err);
+				dispatch(
+					openToastAndSetContent({
+						toastContent: err?.data?.message,
+						toastStyles: {
+							backgroundColor: 'red',
+						},
+					})
+				);
+			});
+	};
+
+	const trendBusiness = () => {
+		axios
+			.get<businessData>(`/trend/business`)
+			.then((res) => {
+				setBusinessData(res.data);
+
+				dispatch(
+					openToastAndSetContent({
+						toastContent: res?.data?.message,
+						toastStyles: {
+							backgroundColor: 'green',
+						},
+					})
+				);
+			})
+			.catch((err) => {
+				console.log(err);
+				dispatch(
+					openToastAndSetContent({
+						toastContent: err?.data?.message,
+						toastStyles: {
+							backgroundColor: 'red',
+						},
+					})
+				);
+			});
+	};
+
+	const trendSuccess = () => {
+		axios
+			.get<progressSuccessTypes>(`/trend/successtrxpercent`)
+			.then((res) => {
+				setProgressSuccessData(res.data);
+
+				dispatch(
+					openToastAndSetContent({
+						toastContent: res?.data?.message,
+						toastStyles: {
+							backgroundColor: 'green',
+						},
+					})
+				);
+			})
+			.catch((err) => {
+				console.log(err);
+				dispatch(
+					openToastAndSetContent({
+						toastContent: err?.data?.message,
+						toastStyles: {
+							backgroundColor: 'red',
+						},
+					})
+				);
+			});
+	};
+
+		const trendFailed = () => {
+			axios
+				.get<progressSuccessTypes>(`/trend/failtrxpercent`)
+				.then((res) => {
+					setProgressSuccessData(res.data);
+
+					dispatch(
+						openToastAndSetContent({
+							toastContent: res?.data?.message,
+							toastStyles: {
+								backgroundColor: 'green',
+							},
+						})
+					);
+				})
+				.catch((err) => {
+					console.log(err);
+					dispatch(
+						openToastAndSetContent({
+							toastContent: err?.data?.message,
+							toastStyles: {
+								backgroundColor: 'red',
+							},
+						})
+					);
+				});
+		};
+
+	const topBusinessFN = () => {
+		axios
+			.get<any>(`/trend/topbusiness`)
+			.then((res) => {
+				setTopBusiness(res.data);
+
+				dispatch(
+					openToastAndSetContent({
+						toastContent: res?.data?.message,
+						toastStyles: {
+							backgroundColor: 'green',
+						},
+					})
+				);
+			})
+			.catch((err) => {
+				console.log(err);
+				dispatch(
+					openToastAndSetContent({
+						toastContent: err?.data?.message,
+						toastStyles: {
+							backgroundColor: 'red',
+						},
+					})
+				);
+			});
+	};
+
+		const topSBusinessFN = () => {
+			axios
+				.get<any>(`/trend/topbusinessbysuccess`)
+				.then((res) => {
+					setTopBusinessByS(res.data);
+
+					dispatch(
+						openToastAndSetContent({
+							toastContent: res?.data?.message,
+							toastStyles: {
+								backgroundColor: 'green',
+							},
+						})
+					);
+				})
+				.catch((err) => {
+					console.log(err);
+					dispatch(
+						openToastAndSetContent({
+							toastContent: err?.data?.message,
+							toastStyles: {
+								backgroundColor: 'red',
+							},
+						})
+					);
+				});
+		};
+			const topFBusinessFN = () => {
+				axios
+					.get<any>(`/trend/topbusinessbyfail`)
+					.then((res) => {
+						setTopBusinessByF(res.data);
+
+						dispatch(
+							openToastAndSetContent({
+								toastContent: res?.data?.message,
+								toastStyles: {
+									backgroundColor: 'green',
+								},
+							})
+						);
+					})
+					.catch((err) => {
+						console.log(err);
+						dispatch(
+							openToastAndSetContent({
+								toastContent: err?.data?.message,
+								toastStyles: {
+									backgroundColor: 'red',
+								},
+							})
+						);
+					});
+			};
+				const topRBusinessFN = () => {
+					axios
+						.get<any>(`/trend/topbusinessbyrefund`)
+						.then((res) => {
+							setTopBusinessByR(res.data);
+
+							dispatch(
+								openToastAndSetContent({
+									toastContent: res?.data?.message,
+									toastStyles: {
+										backgroundColor: 'green',
+									},
+								})
+							);
+						})
+						.catch((err) => {
+							console.log(err);
+							dispatch(
+								openToastAndSetContent({
+									toastContent: err?.data?.message,
+									toastStyles: {
+										backgroundColor: 'red',
+									},
+								})
+							);
+						});
+				};
+					const cardNetworkFN = () => {
+						axios
+							.get<any>(`/trend/cardnetworks`)
+							.then((res) => {
+								setCardNetwork(res.data);
+
+								dispatch(
+									openToastAndSetContent({
+										toastContent: res?.data?.message,
+										toastStyles: {
+											backgroundColor: 'green',
+										},
+									})
+								);
+							})
+							.catch((err) => {
+								console.log(err);
+								dispatch(
+									openToastAndSetContent({
+										toastContent: err?.data?.message,
+										toastStyles: {
+											backgroundColor: 'red',
+										},
+									})
+								);
+							});
+					};
+
+	useEffect(() => {
+		trendTransaction();
+		trendBusiness();
+		trendSuccess();
+		trendFailed();
+	}, []);
 
 	const data02 = [
 		{
@@ -100,46 +367,6 @@ const AdminOverview = () => {
 			amount: 39,
 		},
 	];
-
-	useEffect(() => {
-		axios
-			.get<businessData>(
-				`/admin/dashboard/trend/business`
-			)
-			.then((res) => {
-				setBusinessData(res.data);
-			});
-	}, []);
-
-	useEffect(() => {
-		axios
-			.get<trendTypes>(
-				`/admin/dashboard/trend/transactions`
-			)
-			.then((res) => {
-				setOverviewData(res.data);
-			});
-	}, []);
-
-	useEffect(() => {
-		axios
-			.get<progressSuccessTypes>(
-				`/admin/dashboard/trend/successtrxpercent`
-			)
-			.then((res) => {
-				setProgressSuccessData(res.data);
-			});
-	}, []);
-
-	useEffect(() => {
-		axios
-			.get<progressSuccessTypes>(
-				`/admin/dashboard/trend/failtrxpercent`
-			)
-			.then((res) => {
-				setProgressFailedData(res.data);
-			});
-	}, []);
 
 	return (
 		<div className={styles.wrapper}>
@@ -254,7 +481,7 @@ const AdminOverview = () => {
 
 			{/* third */}
 
-			{/* <div className={styles.container}>
+			<div className={styles.container}>
 				<div className={styles.gridFeaturesTable}>
 					<Grid container spacing={2}>
 						<Grid item xs={12} md={6}>
@@ -299,23 +526,10 @@ const AdminOverview = () => {
 								figured={false}
 							/>
 						</Grid>
-						<Grid item xs={12} md={6}>
-							<DashboardProductTable
-								title='Funding per funding type'
-								data={dataPercent}
-								figured={false}
-							/>
-						</Grid>
-						<Grid item xs={12} md={6}>
-							<DashboardProductTable
-								title='Top merchant by success rate'
-								data={dataPercent}
-								figured={false}
-							/>
-						</Grid>
+					
 					</Grid>
 				</div>
-			</div> */}
+			</div>
 
 			{/* fourth */}
 			<div className={styles.container}>

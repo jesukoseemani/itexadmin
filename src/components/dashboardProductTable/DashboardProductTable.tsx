@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import NumberFormat from 'react-number-format';
+import OperantTable from '../table/OperantTable';
 import TableElementSymbol from '../tableElement/TableElementSymbol';
 // import { dashboardDataTypes } from '../../types/UserTableTypes';
 
@@ -102,13 +103,13 @@ function DashboardProductTable({
 
 	return (
 		<>
-			{/* <OperantTable
+			<OperantTable
 				columns={columns}
 				rows={rows}
 				totalRows={totalRows}
 				changePage={changePage}
 				limit={limit}
-			/> */}
+			/>
 		</>
 	);
 }

@@ -60,6 +60,8 @@ import { saveLoading } from '../redux/actions/loadingState/loadingStateActions';
 import Bank from '../views/Bank/Bank';
 import BankDetails from '../components/bankDetails/BankDetails';
 import SalesTab from '../views/FraudRiskManagement/SalesTab/SalesTab';
+import ResetCompletePassword from '../components/accountSetUp/ResetCompletePassword';
+import Modules from '../views/UsersAndPermissions/Modules';
 
 export default function AppRoutes() {
 	const dispatch = useDispatch();
@@ -153,6 +155,9 @@ export default function AppRoutes() {
 						</Route>
 						<Route exact path='/email_verification'>
 							<EmailVerification />
+						</Route>
+						<Route exact path='/reset-password'>
+							<ResetCompletePassword />
 						</Route>
 						<>
 							<ProtectedRoute
@@ -417,6 +422,13 @@ export default function AppRoutes() {
 								exact
 								path='/usersandpermissions/roles'
 								component={Roles}
+								AuthUser={loadingState}
+							/>
+
+							<ProtectedRoute
+								exact
+								path='/usersandpermissions/modules'
+								component={Modules}
 								AuthUser={loadingState}
 							/>
 

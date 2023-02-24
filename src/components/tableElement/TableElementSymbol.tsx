@@ -83,7 +83,7 @@ function TableElementSymbol() {
 		setAnchorEl(null);
 	};
 	const classes = useStyles();
-
+// onClick = { handleClick };
 	return (
 		<>
 			<div
@@ -92,7 +92,7 @@ function TableElementSymbol() {
 				aria-haspopup='true'
 				aria-expanded={open ? 'true' : undefined}
 				style={{ cursor: 'pointer' }}
-				onClick={handleClick}>
+				>
 				<FilterListIcon />
 			</div>
 			<StyledMenu

@@ -19,7 +19,17 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { ReactComponent as Trash } from '../../assets/images/trash-2.svg';
 import { ReactComponent as Edit } from '../../assets/images/edit-3.svg';
+import { ReactComponent as Change } from '../../assets/images/refresh-outline.svg';
+import { ReactComponent as Key } from '../../assets/images/key-outline.svg';
+
 import UserModal from '../../components/ModalsReuse/UserModal';
+import moment from 'moment';
+import {
+	closeLoader,
+	openLoader,
+} from '../../redux/actions/loader/loaderActions';
+import UserRoleChangeModal from '../../components/ModalsReuse/UserRoleChangeModal';
+import PermissionModal from '../../components/ModalsReuse/PermissionModal';
 
 const useStyles = makeStyles({
 	root: {
@@ -77,28 +87,64 @@ const useStyles = makeStyles({
 });
 
 interface userRoleTypes {
-	id: string | number;
-	first_name: string;
-	last_name: string;
-	username: string;
-	role: string;
-	status: string;
-	added_on: string;
+	_metadata: {
+		page: number;
+		perpage: number;
+		pagecount: number;
+		totalcount: number;
+		links: [];
+	};
+	users: [
+		{
+			id: number;
+			userRole: {
+				id: number;
+				userRoleName: string;
+				roleDescription: string;
+				status: boolean;
+				createdBy: null | string;
+				createdAt: string;
+				deletedAt: null | string;
+				isDeleted: boolean;
+			};
+			firstname: string;
+			lastname: string;
+			email: string;
+			phoneNumber: string;
+			institution: null | string;
+			username: string;
+			userStatus: boolean;
+			forcePasswordChange: number;
+			lastLogin: null | string;
+			lastLoginIp: null | string;
+			createdBy: number;
+			approvedBy: null | string;
+			approvedOn: string;
+			createdAt: string;
+			updatedAt: string;
+			deletedAt: null | string;
+			isDeleted: boolean;
+		}
+	];
+	code: string;
+	message: string;
 }
 
 const UsersPermission = () => {
 	const classes = useStyles();
 	const [rows, setRows] = useState<any[]>([]);
-	const [apiRes, setApiRes] = useState<userRoleTypes[]>([]);
-	const [singleData, setSingleData] = useState<userRoleTypes>({
-		id: '',
-		first_name: '',
-		last_name: '',
-		username: '',
-		role: '',
-		status: '',
-		added_on: '',
-	});
+	const [apiRes, setApiRes] = useState<userRoleTypes>();
+	const [isFilterModalOpen, setIsFilterModalOpen] = useState<boolean>(false);
+
+	// const [singleData, setSingleData] = useState<userRoleTypes>({
+	// 	id: '',
+	// 	first_name: '',
+	// 	last_name: '',
+	// 	username: '',
+	// 	role: '',
+	// 	status: '',
+	// 	added_on: '',
+	// });
 	const [pageNumber, setPageNumber] = useState<number>(1);
 	const [rowsPerPage, setRowsPerPage] = useState<string | number | undefined>(
 		10
@@ -115,6 +161,53 @@ const UsersPermission = () => {
 		setDataValue(event.currentTarget.getAttribute('data-value'));
 	};
 
+	// DATE CONVERTION
+	const now = new Date();
+	const dateNow = moment().format('YYYY-MM-DD');
+	const sevenDaysAgo = moment().subtract(7, 'day').format('YYYY-MM-DD');
+	const thirtyDaysAgo = moment().subtract(30, 'day').format('YYYY-MM-DD');
+	const startOfYear = moment().startOf('year').format('YYYY-MM-DD');
+	const endOfYear = moment().endOf('year').format('YYYY-MM-DD');
+
+	// FOR FILTER METHOD
+
+	const [fromDate, setFromDate] = useState('');
+	const [toDate, setToDate] = useState('');
+	const [email, setEmail] = useState('');
+	const [status, setStatus] = useState('');
+	const [event, setEvent] = useState('');
+	const [bearer, setBearer] = useState<boolean>(false);
+	const [reset, setReset] = useState<boolean>(false);
+
+	useEffect(() => {
+		if (event === 'today') {
+			setFromDate(dateNow);
+			setToDate(dateNow);
+		} else if (event === 'last7days') {
+			setFromDate(sevenDaysAgo);
+			setToDate(dateNow);
+		} else if (event === 'last30days') {
+			setFromDate(thirtyDaysAgo);
+			setToDate(dateNow);
+		} else if (event === 'oneyear') {
+			setFromDate(startOfYear);
+			setToDate(endOfYear);
+		} else {
+			setFromDate('');
+			setToDate('');
+		}
+	}, [event]);
+
+	const clearHandler = () => {
+		setEvent('');
+		setFromDate('');
+		setToDate('');
+		setStatus('');
+		setEmail('');
+		setBearer(true);
+		setIsFilterModalOpen(false);
+	};
+
 	const handleClose = () => {
 		setAnchorEl(null);
 	};
@@ -128,33 +221,39 @@ const UsersPermission = () => {
 		setRowsPerPage(value);
 	};
 
-	const { access_token } = useSelector((state) => state?.authPayReducer?.auth);
+	const fetchFunction = () => {
+		dispatch(openLoader());
 
-	useEffect(() => {
 		axios
-			.get<userRoleTypes[]>('axiosCall/respsData.json', { baseURL: '' })
+			.get<userRoleTypes>(
+				`/usermgt/users?perpage=${rowsPerPage}&page=${pageNumber}&fromdate=${fromDate}&todate=${toDate}`
+			)
 			.then((res) => {
 				setApiRes(res.data);
+				setBearer(false);
+				dispatch(closeLoader());
+			})
+			.catch((err) => {
+				console.log(err);
+				dispatch(closeLoader());
+			})
+			.finally(() => {
+				setIsFilterModalOpen(false);
 			});
-	}, []);
-
-	// useEffect(() => {
-	// 	axios
-	// 		.get<BusinessTableApiTypes>(
-	// 			`https://staging.itex-pay.com/ipg/api/v1/admin/business?perpage=${rowsPerPage}&page=${pageNumber}`,
-	// 			{
-	// 				headers: {
-	// 					Authorization: `Bearer ${access_token}`,
-	// 				},
-	// 			}
-	// 		)
-	// 		.then((res) => {
-	// 			setApiRes(res.data);
-	// 		});
-	// }, [rowsPerPage, pageNumber, access_token]);
+	};
 
 	useEffect(() => {
-		setTotalRows(Number(apiRes?.length));
+		fetchFunction();
+	}, [rowsPerPage, pageNumber, bearer]);
+
+	const modalFunc = () => {
+		setReset(true);
+	};
+
+	useEffect(() => {
+		if (apiRes && apiRes?.users.length) {
+			setTotalRows(apiRes._metadata?.totalcount);
+		}
 	}, [apiRes]);
 
 	const editBusinessHandler = () => {
@@ -168,31 +267,25 @@ const UsersPermission = () => {
 				},
 				modalContent: (
 					<div className={styles.modalDiv}>
-						<UserModal title='Add a new user' />
+						<UserModal
+							link='/auth/user/create'
+							title='Add a new user'
+							setBearer={setBearer}
+						/>
 					</div>
 				),
 			})
 		);
 	};
-
 	const editHandler = (
 		id: number | string,
-		first_name: string,
-		last_name: string,
-		username: string,
-		role: string,
-		status: string,
-		added_on: string
+		firstname: string,
+		lastname: string,
+		userRole: any,
+		email: string,
+		phoneNumber: string,
+		institution: string
 	) => {
-		setSingleData({
-			id,
-			first_name,
-			last_name,
-			username,
-			role,
-			status,
-			added_on,
-		});
 		dispatch(
 			openModalAndSetContent({
 				modalStyles: {
@@ -203,7 +296,20 @@ const UsersPermission = () => {
 				},
 				modalContent: (
 					<div className={styles.modalDiv}>
-						<UserModal title='Edit user' />
+						<UserModal
+							editDetails={{
+								id,
+								firstname,
+								lastname,
+								userRole,
+								email,
+								phoneNumber,
+								institution,
+							}}
+							title='Edit user'
+							setBearer={setBearer}
+							link='/'
+						/>
 					</div>
 				),
 			})
@@ -246,6 +352,49 @@ const UsersPermission = () => {
 		);
 	};
 
+	const changeHandler = (id: number, firstname: string) => {
+		dispatch(
+			openModalAndSetContent({
+				modalStyles: {
+					padding: 0,
+					maxWidth: '653px',
+					height: '400px',
+					width: '100%',
+				},
+				modalContent: (
+					<UserRoleChangeModal
+						id={id}
+						firstname={firstname}
+						setBearer={setBearer}
+					/>
+				),
+			})
+		);
+	};
+
+	const permissionHandler = (id: number, email: string) => {
+		dispatch(
+			openModalAndSetContent({
+				modalStyles: {
+					padding: 0,
+					maxWidth: '653px',
+					minHeight: '600px',
+					width: '100%',
+				},
+				modalContent: (
+					<PermissionModal
+						id={id}
+						target={email}
+						setBearer={setBearer}
+						link1='/usermgt/user'
+						link2='/usermgt/user/assign/modules'
+						title='User Permission'
+					/>
+				),
+			})
+		);
+	};
+
 	//ENDS FUNCTIONS
 
 	interface Column {
@@ -279,37 +428,33 @@ const UsersPermission = () => {
 
 	const LoanRowTab = useCallback(
 		(
-			id: number | string,
-			first_name: string,
-			last_name: string,
+			id: number,
+			firstname: string,
+			lastname: string,
 			username: string,
-			role: string,
-			status: string,
-			added_on: string
+			userRole: any,
+			userStatus: string,
+			createdAt: string,
+			email: string,
+			phoneNumber: string,
+			institution: string
 		) => ({
-			first_name: first_name,
-			last_name: last_name,
+			first_name: firstname,
+			last_name: lastname,
 			username: username,
-			role: role,
+			role: userRole?.userRoleName,
 			status: (
 				<span
 					className={styles.tableSpan}
 					style={{
-						backgroundColor:
-							(status === 'Active' && '#27AE60') ||
-							(status === 'UnApproved' && '#EB5757') ||
-							(status === 'IN-REVIEW' && '#F2C94C') ||
-							'rgba(169, 170, 171, 0.22)',
-						color:
-							(status === 'Active' && '#FFFFFF') ||
-							(status === 'UnApproved' && '#FFFFFF') ||
-							(status === 'IN-REVIEW' && '#12122C') ||
-							'#FFFFFF',
+						backgroundColor: userStatus ? '#27AE60' : '#EB5757',
+
+						color: userStatus ? '#FFFFFF' : '#FFFFFF',
 					}}>
-					{status}
+					{userStatus ? 'Active' : 'InActive'}
 				</span>
 			),
-			added_on: added_on,
+			added_on: moment(createdAt).format('YYYY-MM-DD'),
 			actions: (
 				<div
 					id='basic-button'
@@ -323,12 +468,12 @@ const UsersPermission = () => {
 						onClick={() =>
 							editHandler(
 								id,
-								first_name,
-								last_name,
-								username,
-								role,
-								status,
-								added_on
+								firstname,
+								lastname,
+								userRole,
+								email,
+								phoneNumber,
+								institution
 							)
 						}
 						className={styles.icons}>
@@ -336,6 +481,16 @@ const UsersPermission = () => {
 					</div>
 					<div onClick={() => deleteHandler()} className={styles.icons}>
 						<Trash />
+					</div>
+					<div
+						onClick={() => changeHandler(id, firstname)}
+						className={styles.icons}>
+						<Change />
+					</div>
+					<div
+						onClick={() => permissionHandler(id, email)}
+						className={styles.icons}>
+						<Key />
 					</div>
 				</div>
 			),
@@ -345,16 +500,19 @@ const UsersPermission = () => {
 	useEffect(() => {
 		const newRowOptions: any[] = [];
 		apiRes &&
-			apiRes?.map((each: any) =>
+			apiRes?.users?.map((each: any) =>
 				newRowOptions.push(
 					LoanRowTab(
 						each.id,
-						each.first_name,
-						each.last_name,
+						each.firstname,
+						each.lastname,
 						each.username,
-						each.role,
-						each.status,
-						each.added_on
+						each.userRole,
+						each.userStatus,
+						each.createdAt,
+						each.email,
+						each.phoneNumber,
+						each.institution
 					)
 				)
 			);

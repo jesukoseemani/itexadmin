@@ -39,8 +39,8 @@ export default function OperantTable({
 	totalRows: number;
 	limit: (rowsPerPage: number) => void;
 	changePage: (pageNumber: number) => void;
-	setDataValue: React.Dispatch<React.SetStateAction<string | number>>;
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+	setDataValue?: React.Dispatch<React.SetStateAction<string | number>>;
+	setOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 	reset?: boolean;
 }) {
 	const classes = useStyles();
@@ -51,8 +51,8 @@ export default function OperantTable({
 	const dispatch = useDispatch();
 
 	const handleClick = (event: any) => {
-		setDataValue(event.target.getAttribute('data-value'));
-		setOpen(true);
+		setDataValue && setDataValue(event.target.getAttribute('data-value'));
+		setOpen && setOpen(true);
 		// dispatch(saveOpen(true));
 	};
 

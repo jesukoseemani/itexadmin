@@ -22,7 +22,6 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { ReactComponent as Trash } from '../../assets/images/trash-2.svg';
 import { ReactComponent as Edit } from '../../assets/images/edit-3.svg';
-import { ReactComponent as Key } from '../../assets/images/key-outline.svg';
 import UserModal from '../../components/ModalsReuse/UserModal';
 import RoleModal from '../../components/ModalsReuse/RoleModal';
 import moment from 'moment';
@@ -31,7 +30,6 @@ import {
 	openLoader,
 } from '../../redux/actions/loader/loaderActions';
 import { openToastAndSetContent } from '../../redux/actions/toast/toastActions';
-import PermissionModal from '../../components/ModalsReuse/PermissionModal';
 
 const useStyles = makeStyles({
 	root: {
@@ -89,14 +87,14 @@ const useStyles = makeStyles({
 });
 
 interface userRoleTypes {
-	roles: [
+	modules: [
 		{
 			id: number;
-			userRoleName: string;
-			roleDescription: string;
-			status: boolean;
-			createdBy: null | string;
+			controllerName: string;
+			description: string;
+			moduleStatus: number;
 			createdAt: string;
+			updatedAt: null | string;
 			deletedAt: null | string;
 			isDeleted: boolean;
 		}
@@ -105,7 +103,7 @@ interface userRoleTypes {
 	message: string;
 }
 
-const Roles = () => {
+const Modules = () => {
 	const classes = useStyles();
 	const [rows, setRows] = useState<any[]>([]);
 	const [apiRes, setApiRes] = useState<userRoleTypes>();
@@ -197,7 +195,7 @@ const Roles = () => {
 
 		axios
 			.get<userRoleTypes>(
-				`utility/roles?perpage=${rowsPerPage}&page=${pageNumber}&fromdate=${fromDate}&todate=${toDate}`
+				`utility/modules?perpage=${rowsPerPage}&page=${pageNumber}&fromdate=${fromDate}&todate=${toDate}`
 			)
 			.then((res) => {
 				setApiRes(res.data);
@@ -222,8 +220,8 @@ const Roles = () => {
 	};
 
 	useEffect(() => {
-		if (apiRes && apiRes?.roles.length) {
-			setTotalRows(apiRes?.roles.length);
+		if (apiRes && apiRes?.modules.length) {
+			setTotalRows(apiRes?.modules.length);
 		}
 	}, [apiRes]);
 
@@ -240,8 +238,8 @@ const Roles = () => {
 					<div className={styles.modalDiv}>
 						<RoleModal
 							link='/utility/role_module/add'
-							action='ROLE'
-							title='Add custom role'
+							action='MODULE'
+							title='Add custom module'
 							setBearer={setBearer}
 						/>
 					</div>
@@ -252,8 +250,8 @@ const Roles = () => {
 
 	const editHandler = (
 		id: number | string,
-		userRoleName: string,
-		roleDescription: string,
+		controllerName: string,
+		description: string,
 		createdAt: string
 	) => {
 		dispatch(
@@ -269,11 +267,11 @@ const Roles = () => {
 						<RoleModal
 							editDetails={{
 								id,
-								userRoleName,
-								roleDescription,
+								controllerName,
+								description,
 								createdAt,
 							}}
-							title='Edit role & permission'
+							title='Edit module'
 							setBearer={setBearer}
 							link='/'
 						/>
@@ -285,7 +283,7 @@ const Roles = () => {
 	const removeRoleHandler = (id: number) => {
 		dispatch(openLoader());
 		const values: any = {
-			action: 'ROLE',
+			action: 'MODULE',
 			id,
 		};
 		axios
@@ -328,14 +326,14 @@ const Roles = () => {
 				modalContent: (
 					<div className={styles.modalDiv}>
 						<div className={styles.account_wrap}>
-							<h1 className={styles.account_h1}>Remove role</h1>
+							<h1 className={styles.account_h1}>Remove module</h1>
 						</div>
 
 						<div className={styles.buttonModalwrap}>
 							<p className={styles.removeModal_p}>
-								Are you sure want to remove this role. This role will no longer
-								appear on the platform unless added. Click on ‘Remove’ to delete
-								this role.
+								Are you sure want to remove this module. This module will no
+								longer appear on the platform unless added. Click on ‘Remove’ to
+								delete this module.
 							</p>
 
 							<div className={styles.buttonModal}>
@@ -358,29 +356,6 @@ const Roles = () => {
 		);
 	};
 
-	const permissionHandler = (id: number, userRoleName: string) => {
-		dispatch(
-			openModalAndSetContent({
-				modalStyles: {
-					padding: 0,
-					maxWidth: '653px',
-					minHeight: '600px',
-					width: '100%',
-				},
-				modalContent: (
-					<PermissionModal
-						id={id}
-						target={userRoleName}
-						setBearer={setBearer}
-						link1='/utility/role'
-						link2='/utility/role/assign/modules'
-						title='Role Permission'
-					/>
-				),
-			})
-		);
-	};
-
 	//ENDS FUNCTIONS
 
 	interface Column {
@@ -391,10 +366,10 @@ const Roles = () => {
 		align?: 'right' | 'left' | 'center';
 	}
 	const columns: Column[] = [
-		{ id: 'role_name', label: 'Role Name', minWidth: 100 },
+		{ id: 'role_name', label: 'Module Name', minWidth: 100 },
 		{
 			id: 'role_description',
-			label: 'Role Description',
+			label: 'Module Description',
 			minWidth: 100,
 		},
 		{ id: 'added_on', label: 'Added On', minWidth: 100 },
@@ -404,12 +379,12 @@ const Roles = () => {
 	const LoanRowTab = useCallback(
 		(
 			id: number,
-			userRoleName: string,
-			roleDescription: string,
+			controllerName: string,
+			description: string,
 			createdAt: string
 		) => ({
-			role_name: userRoleName,
-			role_description: roleDescription,
+			role_name: controllerName,
+			role_description: description,
 			added_on: moment(createdAt).format('YYYY-MM-DD'),
 			actions: (
 				<div
@@ -422,18 +397,13 @@ const Roles = () => {
 					className={styles.tableVertIcon}>
 					<div
 						onClick={() =>
-							editHandler(id, userRoleName, roleDescription, createdAt)
+							editHandler(id, controllerName, description, createdAt)
 						}
 						className={styles.icons}>
 						<Edit />
 					</div>
 					<div onClick={() => deleteHandler(id)} className={styles.icons}>
 						<Trash />
-					</div>
-					<div
-						onClick={() => permissionHandler(id, userRoleName)}
-						className={styles.icons}>
-						<Key />
 					</div>
 				</div>
 			),
@@ -443,12 +413,12 @@ const Roles = () => {
 	useEffect(() => {
 		const newRowOptions: any[] = [];
 		apiRes &&
-			apiRes?.roles.map((each: any) =>
+			apiRes?.modules.map((each: any) =>
 				newRowOptions.push(
 					LoanRowTab(
 						each.id,
-						each.userRoleName,
-						each.roleDescription,
+						each.controllerName,
+						each.description,
 						each.createdAt
 					)
 				)
@@ -468,9 +438,7 @@ const Roles = () => {
 				<NavBar name='User' />
 				<div className={styles.header}>
 					<div className={styles.header_left}>
-						<h1 className={styles.header_left_h1}>
-							Roles & Permissions Management
-						</h1>
+						<h1 className={styles.header_left_h1}>Modules</h1>
 					</div>
 					<div className={styles.header_right}>
 						<div className={styles.selectwrapper}>Download</div>
@@ -479,7 +447,7 @@ const Roles = () => {
 								onClick={editBusinessHandler}
 								className={styles.button_business_button}>
 								<span className={styles.button_business_span}>+</span> &nbsp;
-								Add custom role
+								Add module
 							</button>
 						</div>
 					</div>
@@ -522,4 +490,4 @@ const Roles = () => {
 	);
 };
 
-export default Roles;
+export default Modules;
