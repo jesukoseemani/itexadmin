@@ -35,14 +35,7 @@ const SignIn = () => {
 			.required('Password is required'),
 	});
 
-	useEffect(() => {
-		axios
-			.get(`/transaction/banks`)
-			.then((res) => {
-				dispatch(saveCountry(res.data));
-			})
-			.catch((err) => console.log(err));
-	}, [dispatch]);
+	
 
 	return (
 		<Formik
@@ -55,35 +48,39 @@ const SignIn = () => {
 				dispatch(openLoader());
 
 				axios
-					.post('/merchant/account/authenticate', {
-						user: [{ ...values }],
-					})
+					.post('/auth/authenticate', values)
 					.then((res: any) => {
 						dispatch(closeLoader());
 						dispatch(saveAuth(res.data));
 
-						if (res?.data.business.account.type === 'admin') {
-							dispatch(saveLoading(true));
+						if (
+							res?.data.message ===
+							'Your are required to change your temporary password.'
+						) {
 							dispatch(
 								openToastAndSetContent({
-									toastContent: 'Login Successful',
+									toastContent: res.data.message,
 									toastStyles: {
 										backgroundColor: 'green',
 									},
 								})
 							);
 
-							history.push('/');
+							history.push({
+								pathname: '/newpassword',
+								state: { email: values.email },
+							});
 						} else {
-							dispatch(saveLoading(false));
+							dispatch(saveLoading(true));
 							dispatch(
 								openToastAndSetContent({
-									toastContent: 'You are not an admin',
+									toastContent: res.data.message,
 									toastStyles: {
-										backgroundColor: 'red',
+										backgroundColor: 'green',
 									},
 								})
 							);
+							history.push('/');
 						}
 					})
 					.catch((err) => {
@@ -91,7 +88,7 @@ const SignIn = () => {
 						dispatch(saveLoading(false));
 						dispatch(
 							openToastAndSetContent({
-								toastContent: 'Login Failed',
+								toastContent: err.data.message,
 								toastStyles: {
 									backgroundColor: 'red',
 								},
@@ -160,7 +157,9 @@ const SignIn = () => {
 										Sign In
 									</button>
 									<InputLabel>
-										<div className={styles.sub}>
+										<div
+											onClick={() => history.push('/forgotpassword')}
+											className={styles.sub}>
 											<p className={styles.formSub}>
 												<span>Forgot Password?</span>
 											</p>
@@ -168,17 +167,6 @@ const SignIn = () => {
 									</InputLabel>
 								</Form>
 							</div>
-						</div>
-					</div>
-
-					<div className={styles.sub}>
-						<div className={styles.mt2}>
-							<span className={styles.subP}>
-								<div className={styles.signinAnchor}>
-									<span className={styles.desc}>Don't have an account? </span>
-									Sign up
-								</div>
-							</span>
 						</div>
 					</div>
 				</div>

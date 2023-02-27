@@ -14,75 +14,66 @@ import Select from '../formUI/Select';
 import { Divider } from '@mui/material';
 import { closeModal } from '../../redux/actions/modal/modalActions';
 
-function RoleModal({
+interface userRoleTypes {
+	modules: [
+		{
+			id: number;
+			controllerName: string;
+			description: string;
+			moduleStatus: number;
+			createdAt: string;
+			updatedAt: null | string;
+			deletedAt: null | string;
+			isDeleted: boolean;
+		}
+	];
+	code: string;
+	message: string;
+}
+
+function PermissionModal({
 	title,
 	setBearer,
-	editDetails,
-	action,
-	link,
+	id,
+	target,
+	link1,
+	link2,
 }: {
 	title: string;
 	setBearer: React.Dispatch<React.SetStateAction<boolean>>;
-	editDetails?: any;
-	action?: string;
-	link?: string;
+	id: number;
+	target: string;
+	link1?: string;
+	link2?: string;
 }) {
 	const dispatch = useDispatch();
-	interface ResponseData {
-		role_name: string;
-		role: string;
-	}
+
+	const [accountTypes, setAccountTypes] = useState<any>();
+	const [module, setModule] = useState<any>();
 
 	const validate = Yup.object({
-		name: Yup.string().required('Role name is required'),
-		description: Yup.string().required('description is required'),
+		modules: Yup.string().notRequired(),
+		target: Yup.string().notRequired(),
 	});
 	const settlementOptions = [{ name: 'Super Admin' }, { name: 'Business' }];
 
-	const accountTypes = [
-		{
-			id: 1,
-			title: 'All modules',
-		},
+	useEffect(() => {
+		axios
+			.get<any>(`${link1}/${id}`)
+			.then((res) => {
+				setAccountTypes(res.data);
+			})
+			.catch((err) => console.log(err));
+	}, []);
 
-		{
-			id: 2,
-			title: 'Transactions',
-		},
-
-		{
-			id: 3,
-			title: 'Businesses',
-		},
-		{
-			id: 4,
-			title: 'Wallet Management',
-		},
-		{
-			id: 5,
-			title: 'Fees & Limits',
-		},
-		{
-			id: 6,
-			title: 'Users & Permissions',
-		},
-		{
-			id: 7,
-			title: 'POS',
-		},
-		{
-			id: 8,
-			title: 'Fraud & Risk Management',
-		},
-		{
-			id: 9,
-			title: 'Legal',
-		},
-		{
-			id: 10,
-			title: 'Chargeback Management',
-		},
-	];
+	useEffect(() => {
+		axios
+			.get<any>(`/utility/modules`)
+			.then((res) => {
+				setModule(res.data);
+			})
+			.catch((err) => console.log(err));
+	}, []);
 
 	interface pes {
 		id: number;
@@ -91,6 +82,29 @@ function RoleModal({
 
 	const [permission, setPermission] = useState<any>({});
 	const [singleData, setSingleData] = useState<any>({});
+
+	useEffect(() => {
+		// if (accountTypes?.modules.length >= 0) {
+		// 	const formulate = accountTypes?.modules?.reduce(
+		// 		(memo: any, { id }: { id: number }) => {
+		// 			memo[id] = true;
+		// 			return memo;
+		// 		},
+		// 		{}
+		// 	);
+		// }
+		setPermission(
+			accountTypes?.modules?.reduce((memo: any, { id }: { id: number }) => {
+				memo[id] = true;
+				return memo;
+			}, {})
+		);
+	}, [accountTypes]);
+
+	useEffect(() => {
+		console.log('ju', permission);
+	}, [permission]);
+
 	// memoize queries to avoid rerender
 	const handlePermission = (id: any, title: any) => {
 		setPermission((state: pes[]) => ({
@@ -105,19 +119,19 @@ function RoleModal({
 				color: 'rgba(0, 0, 0, 1)',
 				backgroundColor: '#ffffff',
 				overflowY: 'hidden',
-				height: '350px',
 			}}>
 			<Formik
 				initialValues={{
-					name: editDetails?.userRoleName || '',
-					description: editDetails?.roleDescription || '',
+					target,
 				}}
-				validationSchema={validate}
 				onSubmit={(values) => {
 					dispatch(openLoader());
 
 					axios
-						.post(`${link}`, { ...values, action: `${action}` })
+						.post(`${link2}`, {
+							userId: id,
+							modules: Object.keys(permission).map((n) => +n),
+						})
 						.then((res: any) => {
 							dispatch(closeLoader());
 							console.log('res:', res.data);
@@ -153,40 +167,53 @@ function RoleModal({
 							<div className={styles.signUpContent}>
 								<Form>
 									<InputLabel>
-										<span className={styles.formTitle}>Role name</span>
+										<span className={styles.formTitle}>name</span>
 									</InputLabel>
 									<Field
 										as={TextField}
 										helperText={
-											<ErrorMessage name='name'>
+											<ErrorMessage name='target'>
 												{(msg) => <span style={{ color: 'red' }}>{msg}</span>}
 											</ErrorMessage>
 										}
-										name='name'
+										name='target'
 										variant='outlined'
 										margin='normal'
 										type='text'
 										size='small'
 										fullWidth
+										disabled
 									/>
 
-									<InputLabel>
-										<span className={styles.formTitle}>Role Description</span>
-									</InputLabel>
-									<Field
-										as={TextField}
-										helperText={
-											<ErrorMessage name='description'>
-												{(msg) => <span style={{ color: 'red' }}>{msg}</span>}
-											</ErrorMessage>
-										}
-										name='description'
-										variant='outlined'
-										margin='normal'
-										type='text'
-										size='small'
-										fullWidth
-									/>
+									<div className={styles.listType}>
+										<h3 className={styles.listType_h2}>Permissions</h3>
+										<Divider />
+
+										<div className={styles.permisions}>
+											<div>
+												{module?.modules?.map(({ id, controllerName }: any) => (
+													<div
+														onClick={() => handlePermission(id, controllerName)}
+														className={styles.listType_wrap_permission}
+														key={id}>
+														<div className={styles.circle}>
+															<div
+																style={{
+																	background:
+																		permission && permission[id]
+																			? 'green'
+																			: 'white',
+																}}
+																className={styles.circle_inner}></div>
+														</div>
+														<h3 className={styles.listType_h3_permission}>
+															{controllerName}
+														</h3>
+													</div>
+												))}
+											</div>
+										</div>
+									</div>
 
 									<InputLabel className={styles.mt1}></InputLabel>
 									<button
@@ -201,54 +228,11 @@ function RoleModal({
 										}}
 										type='submit'
 										color='primary'>
-										{title === 'Add custom role'
-											? 'Add custom role'
-											: 'Save changes'}
+										Save changes
 									</button>
 								</Form>
 							</div>
 						</div>
-						{/* <div className={styles.listType}>
-							<h3 className={styles.listType_h2}>Permissions</h3>
-							<Divider />
-
-							<div className={styles.permisions}>
-								<div style={{ marginRight: '30px' }}>
-									{accountTypes.slice(0, 5).map(({ id, title }) => (
-										<div
-											onClick={() => handlePermission(id, title)}
-											className={styles.listType_wrap_permission}
-											key={id}>
-											<div className={styles.circle}>
-												<div
-													style={{
-														background: permission[id] ? 'green' : 'white',
-													}}
-													className={styles.circle_inner}></div>
-											</div>
-											<h3 className={styles.listType_h3_permission}>{title}</h3>
-										</div>
-									))}
-								</div>
-								<div>
-									{accountTypes.slice(5, 10).map(({ id, title }) => (
-										<div
-											onClick={() => handlePermission(id, title)}
-											className={styles.listType_wrap_permission}
-											key={id}>
-											<div className={styles.circle}>
-												<div
-													style={{
-														background: permission[id] ? 'green' : 'white',
-													}}
-													className={styles.circle_inner}></div>
-											</div>
-											<h3 className={styles.listType_h3_permission}>{title}</h3>
-										</div>
-									))}
-								</div>
-							</div>
-						</div> */}
 					</div>
 				)}
 			</Formik>
@@ -256,4 +240,4 @@ function RoleModal({
 	);
 }
 
-export default RoleModal;
+export default PermissionModal;
