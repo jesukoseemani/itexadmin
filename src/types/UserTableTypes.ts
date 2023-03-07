@@ -1239,79 +1239,54 @@ export interface BusinessTableApiTypes {
 	};
 	businesses: [
 		{
-			email: string;
-			phonenumber: string;
-			account: {
-				type: string;
-				subtype: string;
-			};
-			tradingname: string;
-			businesstype: string;
-			businessindustrycategory: string;
-			country: string;
-			identification: [
-				{
-					type: string;
-					number: string;
-					url: string;
-					added: string;
-					status: string;
-					verified: string;
-				}
-			];
-			meta: [
-				{
-					name: string;
-					value: string;
-				}
-			];
+			merchantaccountid: number;
 			merchantcode: string;
-			added: string;
+			businessemail: string;
+			businessphone: string;
+			merchantaccounttype: string;
+			merchantaccounttsubype: string;
+			islive: string;
+			isapproved: string;
+			tradingname: string;
+			biztype: null | string;
+			bizindustrycategory: string;
+			mcc: string;
+			parentmerchantaccountid: number;
+			country: string;
+			createdat: string;
+			updatedat: null | string;
+			deletedat: null | string;
 			status: string;
-			approved: string;
-			live: string;
-			address: [];
-			settlement: {
-				account: [
-					{
-						type: string;
-						bankname: string;
-						bankcode: string;
-						accountnumber: string;
-						accountname: string;
-						isdefault: string;
-						currency: string;
-						country: string;
-						added: string;
-						status: string;
-					}
-				];
-			};
-			user: [
-				{
-					email: string;
-					firstname: string;
-					middlename: string;
-					lastname: string;
-					phonenumber: string;
-					position: string;
-					dateofbirth: string;
-					country: string;
-					timezone: string;
-					identification: [];
-					key: [];
-					status: string;
-					verified: string;
-					lasttogglestatus: string;
-					added: string;
-					nin: null | string;
-					bvn: null | string;
-				}
-			];
-			feesetup: [];
-			limitsetup: [];
 		}
 	];
+	code: string;
+	message: string;
+}
+export interface BusinessDetailApiTypes {
+	business: {
+		merchantaccountid: number;
+		merchantcode: string;
+		businessemail: string;
+		businessphone: null | string;
+		merchantaccounttype: string;
+		merchantaccounttsubype: string;
+		islive: string;
+		isapproved: string;
+		tradingname: null | string;
+		biztype: null | string;
+		bizindustrycategory: null | string;
+		mcc: string;
+		parentmerchantaccountid: number;
+		country: string;
+		createdat: string;
+		updatedat: null | string;
+		deletedat: null | string;
+		status: string;
+	};
+	config: null | string;
+	address: null | string;
+	balances: [];
+	settlementAccount: null | string;
 	code: string;
 	message: string;
 }
@@ -1743,93 +1718,6 @@ export interface progressSuccessTypes {
 		{
 			chargetype: string;
 			percent: number;
-		}
-	];
-	code: string;
-	message: string;
-}
-
-export interface BusinessTableApiTypes {
-	_metadata: {
-		page: number;
-		perpage: number;
-		pagecount: number;
-		totalcount: number;
-		links: [];
-	};
-	businesses: [
-		{
-			email: string;
-			phonenumber: string;
-			account: {
-				type: string;
-				subtype: string;
-			};
-			tradingname: string;
-			businesstype: string;
-			businessindustrycategory: string;
-			country: string;
-			identification: [
-				{
-					type: string;
-					number: string;
-					url: string;
-					added: string;
-					status: string;
-					verified: string;
-				}
-			];
-			meta: [
-				{
-					name: string;
-					value: string;
-				}
-			];
-			merchantcode: string;
-			added: string;
-			status: string;
-			approved: string;
-			live: string;
-			address: [];
-			settlement: {
-				account: [
-					{
-						type: string;
-						bankname: string;
-						bankcode: string;
-						accountnumber: string;
-						accountname: string;
-						isdefault: string;
-						currency: string;
-						country: string;
-						added: string;
-						status: string;
-					}
-				];
-			};
-			user: [
-				{
-					email: string;
-					firstname: string;
-					middlename: string;
-					lastname: string;
-					phonenumber: string;
-					position: string;
-					dateofbirth: string;
-					country: string;
-					timezone: string;
-					identification: [];
-					key: [];
-					status: string;
-					verified: string;
-					lasttogglestatus: string;
-					added: string;
-					bvn: null | string;
-					nin: null | string;
-				}
-			];
-			feesetup: [];
-			limitsetup: [];
 		}
 	];
 	code: string;

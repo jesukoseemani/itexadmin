@@ -19,6 +19,7 @@ import {
 	openLoader,
 } from '../../redux/actions/loader/loaderActions';
 import { ExportToXLS } from '../../helpers/ExportToExcel';
+import aYAxios from '../axiosInstance';
 
 const useStyles = makeStyles({
 	root: {
@@ -168,7 +169,7 @@ function PendingInitComplianceTable() {
 	useEffect(() => {
 		dispatch(openLoader());
 
-		axios
+		aYAxios
 			.get<BusinessTableApiTypes>(
 				`/admin/business?perpage=${rowsPerPage}&page=${pageNumber}&fromdate=${fromDate}&todate=${toDate}&email=${email}&compliancestatus=PENDING_REVIEW`
 			)

@@ -32,9 +32,10 @@ import DeclineComplianceModal from '../declineComplianceModal/DeclineComplianceM
 import MessageComplianceModal from '../messageComplianceModal/MessageComplianceModal';
 import DeclineDocsModal from '../declineDocsModal/DeclineDocsModal';
 import StatusModal from '../statusModal/StatusModal';
+import aYAxios from '../axiosInstance';
 
 function ComplianceDetails() {
-	const [details, setDetails] = useState<BusinessTableApiTypes>();
+	const [details, setDetails] = useState<any>();
 	const [docsDetails, setDocsDetails] = useState<any>();
 	const [edit, setEdit] = useState<Boolean>(false);
 
@@ -64,7 +65,7 @@ function ComplianceDetails() {
 	}
 
 	useEffect(() => {
-		axios
+		aYAxios
 			.get<BusinessTableApiTypes>(`/admin/business?merchantcode=${urlId}`)
 			.then((res) => {
 				setDetails(res.data);

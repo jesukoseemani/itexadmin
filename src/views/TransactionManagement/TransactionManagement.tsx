@@ -22,6 +22,7 @@ import { CSVLink } from 'react-csv';
 import { openToastAndSetContent } from '../../redux/actions/toast/toastActions';
 import Button from '@mui/material/Button';
 import NumberFormat from 'react-number-format';
+import aYAxios from '../../components/axiosInstance';
 
 const TransactionManagement = () => {
 	const [value, setValue] = React.useState(0);
@@ -114,7 +115,7 @@ const TransactionManagement = () => {
 
 	const fetchFunction = () => {
 		dispatch(openLoader());
-		axios
+		aYAxios
 			.get<TransactionManagementApiTypes>(
 				`/admin/transactions?perpage=${rowsPerPage}&page=${pageNumber}&fromdate=${fromDate}&todate=${toDate}&transaction_reference=${ref}&responsecode=${status}&paymentmethod=${payment}`
 			)
@@ -239,10 +240,8 @@ const TransactionManagement = () => {
 	}, [apiRes, TransactionRowTab]);
 
 	useEffect(() => {
-		axios
-			.get(
-				`/admin/transactions/download`
-			)
+		aYAxios
+			.get(`/admin/transactions/download`)
 			.then((res: any) => {
 				setDownload(res.data);
 			})
