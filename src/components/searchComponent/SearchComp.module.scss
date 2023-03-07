@@ -1,0 +1,18 @@
+.searchwrapper {
+	position: relative;
+	max-width: 450px;
+	width: 100%;
+}
+.searchinput {
+	width: 400px;
+	height: 35px;
+	border-radius: 8px;
+	outline: none;
+	border: 0.2px solid rgb(199, 197, 197);
+	padding-left: 10px;
+}
+.searchicon {
+	position: absolute;
+	top: 25%;
+	right: 0;
+}

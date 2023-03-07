@@ -10,6 +10,7 @@ import { closeModal } from '../../redux/actions/modal/modalActions';
 
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
+import aYAxios from '../axiosInstance';
 
 interface IUrld {
 	urlId: string;
@@ -21,15 +22,12 @@ function AcceptComplianceModal({ urlId }: IUrld): JSX.Element {
 	const approvalHandler = () => {
 		dispatch(openLoader());
 
-		axios
-			.post(
-				`/admin/business/compliance?merchantcode=${urlId}`,
-				{
-					compliancestatus: 'APPROVED',
-					businessstatus: 'LIVE',
-					reason: 'Satisfactorily reviewed',
-				}
-			)
+		aYAxios
+			.post(`/admin/business/compliance?merchantcode=${urlId}`, {
+				compliancestatus: 'APPROVED',
+				businessstatus: 'LIVE',
+				reason: 'Satisfactorily reviewed',
+			})
 			.then((res: any) => {
 				dispatch(closeLoader());
 				dispatch(

@@ -11,6 +11,7 @@ export const SAVE_CARD = 'SAVE_CARD';
 export const SAVE_DRAWER = 'SAVE_DRAWER';
 export const SAVE_MENU = 'SAVE_MENU';
 export const SAVE_AUTH = 'SAVE_AUTH';
+export const SAVE_PERMISSION = 'SAVE_PERMISSION';
 export const LOG_OUT = 'LOG_OUT';
 export const ME = 'ME';
 export const COUNTRY = 'COUNTRY';

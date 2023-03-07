@@ -131,7 +131,7 @@ export default function OperantTableItexPay({
 												style={{ borderLeft: 'none', cursor: 'pointer' }}
 												onClick={handleClick}
 												data-value={
-													row.merchantcode || row.request_id || row.id
+													row.merchantaccountid || row.request_id || row.id
 												}>
 												{value}
 											</TableCell>

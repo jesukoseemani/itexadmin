@@ -13,6 +13,7 @@ import { closeModal } from '../../redux/actions/modal/modalActions';
 
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
+import aYAxios from '../axiosInstance';
 
 interface IUrld {
 	urlId: string;
@@ -55,15 +56,12 @@ function DeclineComplianceModal({ urlId }: IUrld) {
 	const approvalHandler = () => {
 		dispatch(openLoader());
 
-		axios
-			.post(
-				`/admin/business/compliance?merchantcode=${urlId}`,
-				{
-					compliancestatus: 'DECLINED',
-					// businessstatus: 'LIVE',
-					reason: value,
-				}
-			)
+		aYAxios
+			.post(`/admin/business/compliance?merchantcode=${urlId}`, {
+				compliancestatus: 'DECLINED',
+				// businessstatus: 'LIVE',
+				reason: value,
+			})
 			.then((res: any) => {
 				dispatch(closeLoader());
 				dispatch(

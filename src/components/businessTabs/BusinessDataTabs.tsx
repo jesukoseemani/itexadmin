@@ -49,7 +49,7 @@ function BusinessDataTabs({ id }: { id: string }) {
 		setValue(newValue);
 	};
 
-	const useStyles = makeStyles({
+	const useStyles = makeStyles({  
 		indicator: {
 			backgroundColor: '#27AE60',
 			width: '62px',
@@ -97,8 +97,21 @@ function BusinessDataTabs({ id }: { id: string }) {
 									color: value === 0 ? '#27AE60' : '#4F4F4F',
 									textTransform: 'capitalize',
 								}}
-								label='Transaction'
+								label='Business'
 								{...a11yProps(0)}
+							/>
+							<Tab
+								style={{
+									fontFamily: 'Roboto',
+									fontStyle: 'normal',
+									fontWeight: 'normal',
+									fontSize: '16px',
+									lineHeight: '19px',
+									color: value === 0 ? '#27AE60' : '#4F4F4F',
+									textTransform: 'capitalize',
+								}}
+								label='Transaction'
+								{...a11yProps(1)}
 							/>
 							<Tab
 								style={{
@@ -111,7 +124,7 @@ function BusinessDataTabs({ id }: { id: string }) {
 									textTransform: 'capitalize',
 								}}
 								label='Settlements'
-								{...a11yProps(1)}
+								{...a11yProps(2)}
 							/>
 							<Tab
 								style={{
@@ -125,7 +138,7 @@ function BusinessDataTabs({ id }: { id: string }) {
 									textTransform: 'capitalize',
 								}}
 								label='New Terminals'
-								{...a11yProps(2)}
+								{...a11yProps(3)}
 							/>
 							<Tab
 								style={{
@@ -139,7 +152,7 @@ function BusinessDataTabs({ id }: { id: string }) {
 									textTransform: 'capitalize',
 								}}
 								label='Terminals'
-								{...a11yProps(3)}
+								{...a11yProps(4)}
 							/>
 						</Tabs>
 					</Box>

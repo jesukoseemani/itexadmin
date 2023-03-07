@@ -127,11 +127,21 @@ function PermissionModal({
 				onSubmit={(values) => {
 					dispatch(openLoader());
 
-					axios
-						.post(`${link2}`, {
+					let newObject;
+					if (title === 'Role Permission') {
+						newObject = {
+							roleId: id,
+							modules: Object.keys(permission).map((n) => +n),
+						};
+					} else {
+						newObject = {
 							userId: id,
 							modules: Object.keys(permission).map((n) => +n),
-						})
+						};
+					}
+
+					axios
+						.post(`${link2}`, newObject)
 						.then((res: any) => {
 							dispatch(closeLoader());
 							console.log('res:', res.data);

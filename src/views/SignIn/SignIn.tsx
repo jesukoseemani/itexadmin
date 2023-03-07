@@ -16,6 +16,7 @@ import { saveAuth } from '../../redux/actions/auth/authActions';
 import { saveLoading } from '../../redux/actions/loadingState/loadingStateActions';
 import { saveCountry } from '../../redux/actions/country/countryActions';
 import aYAxios from '../../components/axiosInstance';
+import { savePermission } from '../../redux/actions/permission/permissionActions';
 
 const SignIn = () => {
 	const dispatch = useDispatch();
@@ -35,7 +36,16 @@ const SignIn = () => {
 			.required('Password is required'),
 	});
 
-	
+	const userPermissionHandler = (data: any, module: any) => {
+		// const permissions = Object.values(data).flat();
+		let permissionsObject: any = {};
+		for (var i = 0; i < data.length; i++) {
+			permissionsObject[data[i].controllerName] = module.includes(
+				data[i].controllerName
+			);
+		}
+		return permissionsObject;
+	};
 
 	return (
 		<Formik
@@ -52,6 +62,7 @@ const SignIn = () => {
 					.then((res: any) => {
 						dispatch(closeLoader());
 						dispatch(saveAuth(res.data));
+						const module = res.data.modules;
 
 						if (
 							res?.data.message ===
@@ -71,16 +82,40 @@ const SignIn = () => {
 								state: { email: values.email },
 							});
 						} else {
-							dispatch(saveLoading(true));
-							dispatch(
-								openToastAndSetContent({
-									toastContent: res.data.message,
-									toastStyles: {
-										backgroundColor: 'green',
-									},
+							axios
+								.get('/utility/modules')
+								.then((respond: any) => {
+									dispatch(closeLoader());
+									const newPermission = userPermissionHandler(
+										respond.data.modules,
+										module
+									);
+
+									console.log('permisiiii:', newPermission);
+									dispatch(savePermission(newPermission));
+									dispatch(saveLoading(true));
+									history.push('/');
+									dispatch(
+										openToastAndSetContent({
+											toastContent: res.data.message,
+											toastStyles: {
+												backgroundColor: 'green',
+											},
+										})
+									);
 								})
-							);
-							history.push('/');
+								.catch((err) => {
+									dispatch(closeLoader());
+									dispatch(saveLoading(false));
+									dispatch(
+										openToastAndSetContent({
+											toastContent: err.data.message,
+											toastStyles: {
+												backgroundColor: 'red',
+											},
+										})
+									);
+								});
 						}
 					})
 					.catch((err) => {

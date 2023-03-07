@@ -376,7 +376,8 @@ export default function MiniDrawer() {
 		pathname.toLowerCase() === '/merchant' ||
 		pathname.toLowerCase() === '/forgotpassword' ||
 		pathname.toLowerCase() === '/newpassword' ||
-		pathname.toLowerCase() === '/reset-password'
+		pathname.toLowerCase() === '/reset-password' ||
+		pathname.toLowerCase() === '/email_verification'
 	) {
 		return <div></div>;
 	}

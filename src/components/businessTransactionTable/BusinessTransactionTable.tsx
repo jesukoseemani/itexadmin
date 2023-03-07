@@ -4,6 +4,7 @@ import OperantTableItexPay from '../../components/tableItexPay/OperantTableItexP
 import { businessTransactiontabTypes } from '../../types/UserTableTypes';
 import { format, parseISO } from 'date-fns';
 import axios from 'axios';
+import aYAxios from '../axiosInstance';
 
 function BusinessTransactionTable({ id }: { id: string }) {
 	const [rows, setRows] = useState<any[]>([]);
@@ -26,7 +27,7 @@ function BusinessTransactionTable({ id }: { id: string }) {
 
 
 	useEffect(() => {
-		axios
+		aYAxios
 			.get<businessTransactiontabTypes>(
 				`/admin/transactions?perpage=${rowsPerPage}&page=${pageNumber}&merchantcode=${id}`
 			)

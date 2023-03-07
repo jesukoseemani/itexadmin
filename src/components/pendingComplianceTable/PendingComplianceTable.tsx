@@ -15,6 +15,7 @@ import {
 import { ExportToXLS } from '../../helpers/ExportToExcel';
 
 import { openToastAndSetContent } from '../../redux/actions/toast/toastActions';
+import aYAxios from '../axiosInstance';
 
 const useStyles = makeStyles({
 	root: {
@@ -157,7 +158,7 @@ function PendingComplianceTable() {
 	useEffect(() => {
 		dispatch(openLoader());
 
-		axios
+		aYAxios
 			.get<PendingComplianceTypes>(
 				`/admin/business/compliance/pending?perpage=${rowsPerPage}&page=${pageNumber}&approvalstatus=PENDING`
 			)
@@ -199,13 +200,10 @@ function PendingComplianceTable() {
 		// console.log('burna:', selected)
 		dispatch(openLoader());
 
-		axios
-			.put(
-				`/admin/business/compliance?actionid=${selected[0]}`,
-				{
-					action: 'APPROVED',
-				}
-			)
+		aYAxios
+			.put(`/admin/business/compliance?actionid=${selected[0]}`, {
+				action: 'APPROVED',
+			})
 			.then((res: any) => {
 				dispatch(closeLoader());
 				dispatch(

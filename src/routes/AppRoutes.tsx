@@ -75,6 +75,8 @@ export default function AppRoutes() {
 
 	axios.defaults.headers.common.Authorization = `Bearer ${access_token}`;
 	axios.defaults.baseURL = process.env.REACT_APP_ROOT_URL;
+	axios.defaults.headers.post['Content-Type'] = 'application/json';
+	axios.defaults.headers.delete['Content-Type'] = 'application/json';
 
 	axios?.interceptors?.response?.use(
 		(response) => {

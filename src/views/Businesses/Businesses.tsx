@@ -18,6 +18,8 @@ import {
 	closeLoader,
 	openLoader,
 } from '../../redux/actions/loader/loaderActions';
+import aYAxios from '../../components/axiosInstance';
+import SearchComp from '../../components/searchComponent/SearchComp';
 
 const useStyles = makeStyles({
 	root: {
@@ -80,7 +82,6 @@ function Businesses() {
 	const [rows, setRows] = useState<any[]>([]);
 	const [apiRes, setApiRes] = useState<BusinessTableApiTypes>();
 	const [pageNumber, setPageNumber] = useState<number>(1);
-	const [approved, setApproved] = useState<string>('');
 
 	const [rowsPerPage, setRowsPerPage] = useState<string | number | undefined>(
 		10
@@ -112,8 +113,7 @@ function Businesses() {
 
 	const [fromDate, setFromDate] = useState('');
 	const [toDate, setToDate] = useState('');
-	const [email, setEmail] = useState('');
-	const [status, setStatus] = useState('');
+	const [query, setQuery] = useState('');
 	const [event, setEvent] = useState('');
 	const [bearer, setBearer] = useState<boolean>(false);
 
@@ -140,8 +140,7 @@ function Businesses() {
 		setEvent('');
 		setFromDate('');
 		setToDate('');
-		setStatus('');
-		setEmail('');
+		setQuery('');
 		setBearer(true);
 		setIsFilterModalOpen(false);
 	};
@@ -169,7 +168,7 @@ function Businesses() {
 
 		axios
 			.get<BusinessTableApiTypes>(
-				`/admin/business?perpage=${rowsPerPage}&page=${pageNumber}&fromdate=${fromDate}&todate=${toDate}&email=${email}&paymentmethod=${status}&approved=${approved}`
+				`/business?perpage=${rowsPerPage}&page=${pageNumber}&fromdate=${fromDate}&todate=${toDate}&search=${query}`
 			)
 			.then((res) => {
 				setApiRes(res.data);
@@ -187,7 +186,7 @@ function Businesses() {
 
 	useEffect(() => {
 		fetchFunction();
-	}, [rowsPerPage, pageNumber, bearer, approved]);
+	}, [rowsPerPage, pageNumber, bearer, query]);
 
 	const modalFunc = () => {
 		setReset(true);
@@ -244,7 +243,7 @@ function Businesses() {
 			| 'merchantcode'
 			| 'business_name'
 			| 'email_address'
-			| 'contact_person'
+			| 'business_type'
 			| 'country'
 			| 'sign_up'
 			| 'actions';
@@ -263,51 +262,40 @@ function Businesses() {
 			align: 'center',
 			minWidth: 100,
 		},
-		{ id: 'contact_person', label: 'Contact person', minWidth: 100 },
+		{ id: 'business_type', label: 'Business Type', minWidth: 100 },
 		{ id: 'country', label: 'Country', minWidth: 100 },
 		{ id: 'sign_up', label: 'Sign up Date', minWidth: 100 },
 	];
 
 	const LoanRowTab = useCallback(
 		(
-			id: number | string,
+			id: number,
 			tradingname: string,
-			approved: string,
-			email: number,
-			firstname: string,
-			lastname: string,
+			status: string,
+			businessemail: string,
+			merchantaccounttype: string,
 			country: string,
-			added: string,
-			merchantcode: string
+			createdat: string,
+			merchantcode: string,
+			merchantaccountid: number
 		) => ({
 			business_name: tradingname,
 			status: (
 				<button
 					className={styles.tableSpan}
 					style={{
-						backgroundColor:
-							(approved === 'APPROVED' && '#25AC60') ||
-							(approved === 'DECLINED' && '#D92418') ||
-							(approved === 'PENDING' && '#CEA528') ||
-							'rgba(169, 170, 171, 0.22)',
-						color:
-							(approved === 'APPROVED' && '#FFFFFF') ||
-							(approved === 'DECLINED' && '#FFFFFF') ||
-							(approved === 'PENDING' && '#FFFFFF') ||
-							'#FFFFFF',
+						backgroundColor: status === '1' ? '#25AC60' : '#D92418',
+						color: '#FFFFFF',
 					}}>
-					{approved.toLocaleLowerCase()}
+					{status === '1' ? 'ACTIVE' : 'INACTIVE'}
 				</button>
 			),
-			email_address: email,
-			contact_person: (
-				<div>
-					{firstname ? firstname : ''} {lastname ? lastname : ''}
-				</div>
-			),
-			country: country === 'NG' ? 'Nigeria' : 'null',
-			sign_up: `${format(parseISO(added), 'MMMM dd, yyyy')}`,
+			email_address: businessemail,
+			business_type: merchantaccounttype,
+			country: country === 'NG' ? 'Nigeria' : country,
+			sign_up: createdat,
 			merchantcode: merchantcode,
+			merchantaccountid,
 		}),
 		[]
 	);
@@ -319,13 +307,13 @@ function Businesses() {
 					LoanRowTab(
 						each.id,
 						each.tradingname,
-						each.approved,
-						each.email,
-						each?.user[0]?.firstname,
-						each?.user[0]?.lastname,
+						each.status,
+						each.businessemail,
+						each.merchantaccounttype,
 						each.country,
-						each.added,
-						each.merchantcode
+						each.createdat,
+						each.merchantcode,
+						each.merchantaccountid
 					)
 				)
 			);
@@ -341,8 +329,6 @@ function Businesses() {
 					setEvent={setEvent}
 					setFromDate={setFromDate}
 					setToDate={setToDate}
-					setEmail={setEmail}
-					setStatus={setStatus}
 					eventDate={event}
 					clearHandler={clearHandler}
 					setBearer={setBearer}
@@ -358,7 +344,7 @@ function Businesses() {
 						</h1>
 					</div>
 					<div className={styles.header_right}>
-						<div className={styles.selectwrapper}>
+						{/* <div className={styles.selectwrapper}>
 							<button
 								className={styles.filterbutton}
 								onClick={() => setIsFilterModalOpen(true)}>
@@ -368,7 +354,9 @@ function Businesses() {
 									<ArrowDropDownIcon />
 								</span>
 							</button>
-						</div>
+						</div> */}
+
+						<SearchComp setSearch={setQuery} />
 						<div className={styles.button_business}>
 							<button
 								onClick={editBusinessHandler}
@@ -380,16 +368,16 @@ function Businesses() {
 					</div>
 				</div>
 
-				<div className={styles.box}>
+				{/* <div className={styles.box}>
 					{boxData?.map(({ title, number, identifier }) => (
 						<div
-							onClick={() => setApproved(identifier)}
+							// onClick={() => setApproved(identifier)}
 							className={styles.singleBox}>
 							<p>{title}</p>
 							<h3>{number}</h3>
 						</div>
 					))}
-				</div>
+				</div> */}
 
 				{/* TABLE */}
 				<div className={styles.maintable}>
