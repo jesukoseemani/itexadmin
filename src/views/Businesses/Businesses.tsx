@@ -86,7 +86,6 @@ function Businesses() {
 	const [rowsPerPage, setRowsPerPage] = useState<string | number | undefined>(
 		10
 	);
-	const [dataValue, setDataValue] = useState<number | string>(0);
 	const [reset, setReset] = useState<boolean>(false);
 
 	const history = useHistory();
@@ -143,15 +142,6 @@ function Businesses() {
 		setQuery('');
 		setBearer(true);
 		setIsFilterModalOpen(false);
-	};
-
-	const handleClick = (event: any) => {
-		setAnchorEl(event.currentTarget);
-		setDataValue(event.currentTarget.getAttribute('data-value'));
-	};
-
-	const handleClose = () => {
-		setAnchorEl(null);
 	};
 
 	const dispatch = useDispatch();

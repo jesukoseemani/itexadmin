@@ -437,66 +437,133 @@ export interface TransactionManagementApiTypes {
 		perpage: number;
 		pagecount: number;
 		totalcount: number;
-		links: [];
+		links: any[];
 	};
 	transactions: [
 		{
-			transaction: {
-				merchantreference: string;
-				reference: string;
-				linkingreference: string;
-				paymentmethod: string;
-				added: string | number;
-			};
-			order: {
-				amount: string | number;
-				description: string;
-				currency: string;
-				country: string;
-				fee: {};
-			};
-			source: {
-				customer: {
-					firstname: string;
-					lastname: string;
-					email: string;
-					msisdn: string | number;
-					card: {
-						number: string | number;
-						first6: string | number;
-						last4: string | number;
-						type: string;
-					};
-					device: {
-						fingerprint: string | number;
-						ip: string | number;
-					};
-					address: [];
-				};
-			};
-			code: string | number;
-			message: string;
+			id: number;
 			business: {
-				email: string;
-				phonenumber: string | number;
-				tradingname: string;
+				merchantaccountid: number;
 				merchantcode: string;
-				user: [
-					{
-						email: string;
-						phonenumber: string;
-						key: [
-							{
-								publickey: string | number;
-							}
-						];
-					}
-				];
-				feesetup: [];
-				limitsetup: [];
+				businessemail: string;
+				tradingname: string;
+				mcc: string;
 			};
+			linkingreference: null | string;
+			merchantreference: string;
+			reference: string;
+			authoption: string;
+			amount: number;
+			chargeamount: number;
+			currency: string;
+			fee: number;
+			country: null | string;
+			chargetype: string;
+			route: null | string;
+			timein: string;
+			cardtype: null | string;
+			issuer: null | string;
+			mask: null | string;
+			paymentid: null | string;
+			responsecode: string;
+			responsemessage: string;
+			rrn: null | string;
 		}
 	];
+	code: string;
+	message: string;
+}
+
+export interface TransactionDetailsManagementApiTypes {
+	transaction: {
+		id: number;
+		customer: {
+			customerid: number;
+			identifier: string;
+			email: string;
+			firstname: null | string;
+			lastname: null | string;
+			msisdn: null | string;
+			timein: string;
+			addressline1: null | string;
+			addressline2: null | string;
+			city: null | string;
+			state: null | string;
+			country: null | string;
+			postalcode: null | string;
+			phoneareacode: null | string;
+			dateofbirth: null | string;
+			timeupdated: string;
+			isblacklisted: boolean;
+			blacklistreason: null | string;
+			updatedby: string;
+			updaterid: null | string;
+		};
+		merchantaccount: {
+			merchantaccountid: number;
+			merchantcode: string;
+			businessemail: string;
+			businessphone: null | string;
+			merchantaccounttype: string;
+			merchantaccounttsubype: null | string;
+			islive: string;
+			isapproved: string;
+			tradingname: string;
+			biztype: string;
+			bizindustrycategory: string;
+			mcc: string;
+			parentmerchantaccountid: number;
+			country: string;
+			createdat: string;
+			updatedat: null | string;
+			deletedat: null | string;
+			status: string;
+		};
+		merchantreference: string;
+		paymentlinkreference: string;
+		modalreference: string;
+		reference: string;
+		paymentid: string;
+		linkingreference: string;
+		processorreference: null | string;
+		authoption: string;
+		amount: number;
+		currency: string;
+		chargeamount: 10.0;
+		country: null | string;
+		fee: number;
+		feecurrency: string;
+		feetype: null | string;
+		merchantbearfee: null | string;
+		chargetype: string;
+		route: null | string;
+		network: null | string;
+		timein: string;
+		timeout: string;
+		firstname: null | string;
+		lastname: null | string;
+		email: string;
+		msisdn: null | string;
+		narration: string;
+		cardtype: null | string;
+		issuer: null | string;
+		mask: null | string;
+		bankcode: null | string;
+		paylocationtype: null | string;
+		paylocationcountry: null | string;
+		devicefingerprint: string;
+		ipaddress: string;
+		validationstatus: null | string;
+		timevalidated: null | string;
+		responsecode: string;
+		responsemessage: string;
+		responseurl: null | string;
+		rrn: null | string;
+		authcode: null | string;
+		transactiontype: string;
+	};
+	refund: null | string;
+	events: [];
 	code: string;
 	message: string;
 }
@@ -942,75 +1009,6 @@ export interface RefundApiTypes {
 	message: string;
 }
 
-export interface TransactionManagementApiTypes {
-	_metadata: {
-		page: number;
-		perpage: number;
-		pagecount: number;
-		totalcount: number;
-		links: [];
-	};
-	transactions: [
-		{
-			transaction: {
-				merchantreference: string;
-				reference: string;
-				linkingreference: string;
-				paymentmethod: string;
-				added: string | number;
-			};
-			order: {
-				amount: string | number;
-				description: string;
-				currency: string;
-				country: string;
-				fee: {};
-			};
-			source: {
-				customer: {
-					firstname: string;
-					lastname: string;
-					email: string;
-					msisdn: string | number;
-					card: {
-						number: string | number;
-						first6: string | number;
-						last4: string | number;
-						type: string;
-					};
-					device: {
-						fingerprint: string | number;
-						ip: string | number;
-					};
-					address: [];
-				};
-			};
-			code: string | number;
-			message: string;
-			business: {
-				email: string;
-				phonenumber: string | number;
-				tradingname: string;
-				merchantcode: string;
-				user: [
-					{
-						email: string;
-						phonenumber: string;
-						key: [
-							{
-								publickey: string | number;
-							}
-						];
-					}
-				];
-				feesetup: [];
-				limitsetup: [];
-			};
-		}
-	];
-	code: string;
-	message: string;
-}
 
 export interface FilteredCode {
 	transaction: {
@@ -1326,75 +1324,7 @@ export interface RefundApiTypes {
 	message: string;
 }
 
-export interface TransactionManagementApiTypes {
-	_metadata: {
-		page: number;
-		perpage: number;
-		pagecount: number;
-		totalcount: number;
-		links: [];
-	};
-	transactions: [
-		{
-			transaction: {
-				merchantreference: string;
-				reference: string;
-				linkingreference: string;
-				paymentmethod: string;
-				added: string | number;
-			};
-			order: {
-				amount: string | number;
-				description: string;
-				currency: string;
-				country: string;
-				fee: {};
-			};
-			source: {
-				customer: {
-					firstname: string;
-					lastname: string;
-					email: string;
-					msisdn: string | number;
-					card: {
-						number: string | number;
-						first6: string | number;
-						last4: string | number;
-						type: string;
-					};
-					device: {
-						fingerprint: string | number;
-						ip: string | number;
-					};
-					address: [];
-				};
-			};
-			code: string | number;
-			message: string;
-			business: {
-				email: string;
-				phonenumber: string | number;
-				tradingname: string;
-				merchantcode: string;
-				user: [
-					{
-						email: string;
-						phonenumber: string;
-						key: [
-							{
-								publickey: string | number;
-							}
-						];
-					}
-				];
-				feesetup: [];
-				limitsetup: [];
-			};
-		}
-	];
-	code: string;
-	message: string;
-}
+
 
 export interface FilteredCode {
 	transaction: {

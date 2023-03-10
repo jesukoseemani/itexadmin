@@ -120,6 +120,7 @@ export default function OperantTableItexPay({
 					</TableHead>
 					<TableBody>
 						{rows.map((row, index) => {
+							console.log("row:", row)
 							return (
 								<TableRow hover role='checkbox' tabIndex={-1} key={index}>
 									{columns.map((column, secondIndex) => {
@@ -131,7 +132,10 @@ export default function OperantTableItexPay({
 												style={{ borderLeft: 'none', cursor: 'pointer' }}
 												onClick={handleClick}
 												data-value={
-													row.merchantaccountid || row.request_id || row.id
+													row.merchantaccountid ||
+													row.request_id ||
+													row.id ||
+													row.linkingreference
 												}>
 												{value}
 											</TableCell>

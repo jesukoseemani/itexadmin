@@ -23,6 +23,7 @@ import { openToastAndSetContent } from '../../redux/actions/toast/toastActions';
 import Button from '@mui/material/Button';
 import NumberFormat from 'react-number-format';
 import aYAxios from '../../components/axiosInstance';
+import OperantTableItexPay from '../../components/tableItexPay/OperantTableItexPay';
 
 const TransactionManagement = () => {
 	const [value, setValue] = React.useState(0);
@@ -39,6 +40,7 @@ const TransactionManagement = () => {
 	const [totalRows, setTotalRows] = useState<number>(0);
 	const [reset, setReset] = useState<boolean>(false);
 	const [dataValue, setDataValue] = useState<number | string>(0);
+	const [search, setSearch] = useState<string>('');
 
 	const [open, setOpen] = useState<boolean>(false);
 
@@ -115,9 +117,9 @@ const TransactionManagement = () => {
 
 	const fetchFunction = () => {
 		dispatch(openLoader());
-		aYAxios
+		axios
 			.get<TransactionManagementApiTypes>(
-				`/admin/transactions?perpage=${rowsPerPage}&page=${pageNumber}&fromdate=${fromDate}&todate=${toDate}&transaction_reference=${ref}&responsecode=${status}&paymentmethod=${payment}`
+				`/transaction?perpage=${rowsPerPage}&page=${pageNumber}&fromdate=${fromDate}&todate=${toDate}`
 			)
 			.then((res) => {
 				setApiRes(res?.data);
@@ -174,35 +176,16 @@ const TransactionManagement = () => {
 			id: number | string,
 			merchantcode: string | number,
 			tradingname: string,
-			code: string,
+			reference: string | number,
 			amount: string | number,
-			linkingreference: string | number,
-			paymentmethod: string | number,
-			added: string,
-			reference: string | number
+			responsecode: string,
+			authoption: string | number,
+			timein: string,
+			linkingreference: string | number
 		) => ({
-			status: (
-				<span
-					className={styles.tableSpan}
-					style={{
-						backgroundColor:
-							(code === '00' && '#27AE60') ||
-							(code !== '00' && code !== '09' && '#F2C94C') ||
-							(code === '09' && '#EB5757') ||
-							'rgba(169, 170, 171, 0.22)',
-						color:
-							(code === '00' && '#FFFFFF') ||
-							(code === '09' && '#FFFFFF') ||
-							(code !== '09' && '#333333') ||
-							'#002841',
-					}}>
-					{(code === '00' && 'Successful') ||
-						(code === '09' && 'Failed') ||
-						'Pending'}
-				</span>
-			),
 			merchant_id: merchantcode,
 			merchant_name: tradingname,
+			transaction_ref: reference,
 			amount: (
 				<NumberFormat
 					value={amount}
@@ -211,10 +194,25 @@ const TransactionManagement = () => {
 					displayType='text'
 				/>
 			),
-			transaction_ref: linkingreference,
-			payment_type: paymentmethod,
-			date: `${format(parseISO(added), 'dd MMM yyyy')}`,
-			reference: reference,
+			status: (
+				<span
+					className={styles.tableSpan}
+					style={{
+						backgroundColor:
+							(responsecode === '00' && '#27AE60') ||
+							(responsecode !== '00' && responsecode !== '09' && '#EB5757') ||
+							(responsecode === '09' && '#F2C94C') ||
+							'rgba(169, 170, 171, 0.22)',
+						color: '#FFFFFF',
+					}}>
+					{(responsecode === '00' && 'Successful') ||
+						(responsecode === '09' && 'Pending') ||
+						'Failed'}
+				</span>
+			),
+			payment_type: authoption,
+			date: timein,
+			linkingreference,
 		}),
 		[]
 	);
@@ -224,39 +222,39 @@ const TransactionManagement = () => {
 			apiRes?.transactions.map((each: any) =>
 				newRowOptions.push(
 					TransactionRowTab(
-						each.transaction.linkingreference,
+						each.id,
 						each.business.merchantcode,
 						each.business.tradingname,
-						each.code,
-						each.order.currency + parseInt(each.order.amount),
-						each.transaction.linkingreference,
-						each.transaction.paymentmethod,
-						each.transaction.added,
-						each.transaction.reference
+						each.reference,
+						each.currency + parseInt(each.amount),
+						each.responsecode,
+						each.authoption,
+						each.timein,
+						each.linkingreference
 					)
 				)
 			);
 		setRows(newRowOptions);
 	}, [apiRes, TransactionRowTab]);
 
-	useEffect(() => {
-		aYAxios
-			.get(`/admin/transactions/download`)
-			.then((res: any) => {
-				setDownload(res.data);
-			})
-			.catch((err) => {
-				console.log(err);
-				dispatch(
-					openToastAndSetContent({
-						toastContent: 'Failed to download transactions',
-						toastStyles: {
-							backgroundColor: 'red',
-						},
-					})
-				);
-			});
-	}, []);
+	// useEffect(() => {
+	// 	aYAxios
+	// 		.get(`/admin/transactions/download`)
+	// 		.then((res: any) => {
+	// 			setDownload(res.data);
+	// 		})
+	// 		.catch((err) => {
+	// 			console.log(err);
+	// 			dispatch(
+	// 				openToastAndSetContent({
+	// 					toastContent: 'Failed to download transactions',
+	// 					toastStyles: {
+	// 						backgroundColor: 'red',
+	// 					},
+	// 				})
+	// 			);
+	// 		});
+	// }, []);
 
 	return (
 		<div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
@@ -287,15 +285,6 @@ const TransactionManagement = () => {
 					</div>
 					<div className={styles.tableHeaderRight}>
 						<div className={styles.buttonDiv}>
-							{/* <button
-								className={styles.button1}
-								onClick={() => setIsFilterModalOpen(true)}>
-								<span className={styles.buttonSpan}>
-									filter
-									<ArrowDropDownIcon />
-								</span>
-							</button> */}
-
 							<button
 								className={styles.filterbutton}
 								onClick={() => setIsFilterModalOpen(true)}>
@@ -328,31 +317,16 @@ const TransactionManagement = () => {
 						</div>
 					</div>
 				</div>
-				{/* <div className={styles.m1}>
-					{apiRes && apiRes?.transactions?.length > 0 ? (
-						<OperantTable
-							columns={columns}
-							rows={rows}
-							totalRows={totalRows}
-							changePage={changePage}
-							limit={limit}
-							setDataValue={setDataValue}
-							setOpen={setOpen}
-						/>
-					) : (
-						'THERE IS NO DATA HERE...'
-					)}
-				</div> */}
+
 				<div className={styles.m1}>
-					<OperantTable
+					<OperantTableItexPay
 						columns={columns}
 						rows={rows}
 						totalRows={totalRows}
 						changePage={changePage}
 						limit={limit}
-						setDataValue={setDataValue}
-						setOpen={setOpen}
-						reset={reset}
+						setDataValue2={setDataValue}
+						setOpen2={setOpen}
 					/>
 				</div>
 			</div>
