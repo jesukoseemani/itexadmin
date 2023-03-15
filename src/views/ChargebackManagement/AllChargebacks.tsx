@@ -469,9 +469,9 @@ function AllChargebacks() {
 									textAlign: 'center',
 								},
 							}}>
-							<MenuItem>
+							{/* <MenuItem>
 								<p style={{ padding: '.4rem', fontSize: '0.7rem' }}>CSV</p>
-							</MenuItem>
+							</MenuItem> */}
 							<Divider />
 							<MenuItem>
 								<p style={{ padding: '.4rem', fontSize: '0.7rem' }}>Excel</p>
