@@ -74,7 +74,8 @@
 		"build": "react-scripts build",
 		"test": "react-scripts test",
 		"eject": "react-scripts eject",
-		"format": "lint-stage"
+		"format": "lint-stage",
+		"push": "git push origin dev && git push itexpayadmin dev"
 	},
 	"eslintConfig": {
 		"extends": [
