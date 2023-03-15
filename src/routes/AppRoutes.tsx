@@ -62,6 +62,7 @@ import BankDetails from '../components/bankDetails/BankDetails';
 import SalesTab from '../views/FraudRiskManagement/SalesTab/SalesTab';
 import ResetCompletePassword from '../components/accountSetUp/ResetCompletePassword';
 import Modules from '../views/UsersAndPermissions/Modules';
+import BusinessTab from '../components/businessDetails/BusinessTab';
 
 export default function AppRoutes() {
 	const dispatch = useDispatch();
@@ -179,7 +180,7 @@ export default function AppRoutes() {
 							<ProtectedRoute
 								exact
 								path='/businesses/:id'
-								component={BusinessDetails}
+								component={BusinessTab}
 								AuthUser={loadingState}
 							/>
 

@@ -308,18 +308,7 @@ function PendingInitComplianceTable() {
 
 	return (
 		<div style={{ paddingTop: '10px' }}>
-			<FilterModal
-				isOpen={isFilterModalOpen}
-				handleClose={() => setIsFilterModalOpen(false)}
-				setEvent={setEvent}
-				setFromDate={setFromDate}
-				setToDate={setToDate}
-				setEmail={setEmail}
-				setStatus={setStatus}
-				eventDate={event}
-				clearHandler={clearHandler}
-				setBearer={setBearer}
-			/>
+			
 			<div className={styles.header}>
 				<div className={styles.header_left}>
 					<h1 className={styles.header_left_h1}>

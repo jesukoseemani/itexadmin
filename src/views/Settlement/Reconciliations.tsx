@@ -272,10 +272,7 @@ const Reconciliations = () => {
       <NavBar name="" />
 
       <Box sx={{ width: "100%", marginTop: "1rem" }}>
-        <FilterModal
-          isOpen={isFilterModalOpen}
-          handleClose={() => setIsFilterModalOpen(false)}
-        />
+      
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <Tabs
             style={{ padding: "0 1rem", margin: "0" }}

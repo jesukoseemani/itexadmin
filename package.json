@@ -15,6 +15,7 @@
 		"@mui/icons-material": "^5.2.5",
 		"@mui/lab": "^5.0.0-alpha.63",
 		"@mui/material": "^5.0.3",
+		"@mui/x-date-pickers": "^5.0.16",
 		"@ramonak/react-progress-bar": "^4.4.0",
 		"@testing-library/jest-dom": "^5.11.4",
 		"@testing-library/react": "^11.1.0",
@@ -26,6 +27,7 @@
 		"@types/react-table": "^7.7.10",
 		"axios": "^0.23.0",
 		"date-fns": "^2.28.0",
+		"dayjs": "^1.11.7",
 		"eslint-config-react-app": "^6.0.0",
 		"export-to-csv": "^0.2.1",
 		"express": "^4.17.1",
@@ -51,7 +53,7 @@
 		"react-redux": "^7.2.6",
 		"react-router-dom": "^5.3.0",
 		"react-scripts": "^5.0.0",
-		"react-table": "^7.7.0",
+		"react-table": "^7.8.0",
 		"react-text-truncate": "^0.17.0",
 		"react-tooltip": "^4.2.21",
 		"recharts": "^2.1.8",
@@ -72,7 +74,8 @@
 		"build": "react-scripts build",
 		"test": "react-scripts test",
 		"eject": "react-scripts eject",
-		"format": "lint-stage"
+		"format": "lint-stage",
+		"push": "git push origin dev && git push itexpayadmin dev"
 	},
 	"eslintConfig": {
 		"extends": [
@@ -93,6 +96,7 @@
 		]
 	},
 	"devDependencies": {
+		"@types/file-saver": "^2.0.5",
 		"@types/react-copy-to-clipboard": "^5.0.2",
 		"@types/react-csv": "^1.1.2",
 		"@types/react-modal": "^3.13.1",

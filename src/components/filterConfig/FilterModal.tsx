@@ -1,242 +1,244 @@
-import { Backdrop, Button, Modal } from '@mui/material';
+import { Backdrop, Button, Divider, Modal } from '@mui/material';
 import styles from './FilterModal.module.scss';
-import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
-import { makeStyles } from '@material-ui/styles';
-
-const useModalBtnStyles = makeStyles({
-	root: {
-		display: 'flex',
-		justifyContent: 'flex-end',
-		padding: '1rem 1.5rem 1.5rem',
-		gap: '1.25rem',
-		'& .MuiButton-root': {
-			fontFamily: `'Roboto', sans-serif`,
-			fontWeight: '500',
-			fontSize: '.875rem',
-			color: 'black',
-			background: '#E0E0E0',
-			borderRadius: '3px',
-			textTransform: 'none',
-			padding: '.35rem .85rem',
-		},
-		'& .MuiButton-root:nth-child(2)': {
-			color: 'white',
-			background: '#27AE60',
-		},
-	},
-});
+import dayjs, { Dayjs } from 'dayjs';
+import TextField from '@mui/material/TextField';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
+import MenuItem from '@mui/material/MenuItem';
+import Box from '@mui/material/Box';
+import { useEffect } from 'react';
+import Mark from '../../assets/images/u-mark.svg';
+import Times from '../../assets/images/u_multiply (1).svg';
 
 interface FilterModalProps {
-	isOpen: boolean;
-	handleClose: () => void;
-	setEvent?: React.Dispatch<React.SetStateAction<string>>;
-	setFromDate?: React.Dispatch<React.SetStateAction<string>>;
-	setToDate?: React.Dispatch<React.SetStateAction<string>>;
-	setRef?: React.Dispatch<React.SetStateAction<string>>;
-	setEmail?: React.Dispatch<React.SetStateAction<string>>;
-	setStatus?: React.Dispatch<React.SetStateAction<string>>;
+	setEventDate?: React.Dispatch<React.SetStateAction<string>>;
+	dropdown: boolean;
+	setDropdown: React.Dispatch<React.SetStateAction<boolean>>;
+	setFromDate?: React.Dispatch<
+		React.SetStateAction<dayjs.Dayjs | null | string>
+	>;
+	setToDate?: React.Dispatch<React.SetStateAction<dayjs.Dayjs | null | string>>;
 	eventDate?: string;
-	clearHandler?: () => void;
+	fromDate?: dayjs.Dayjs | null | string;
+	toDate?: dayjs.Dayjs | null | string;
+	filteredArray?: {
+		name: string;
+		value: string;
+		setValue: React.Dispatch<React.SetStateAction<string>>;
+		selective?: any;
+		selectHelper?: boolean;
+	}[];
 	setBearer?: React.Dispatch<React.SetStateAction<boolean>>;
-	name?: String;
-	setPayment?: React.Dispatch<React.SetStateAction<string>>;
-	status?: string;
-	payment?: string;
-	filterFunction?: () => void;
-	changePage?: (value: number) => void;
+	clearHandler?: () => void;
+	oneDate?: boolean;
 }
 
 const FilterModal = ({
-	isOpen,
-	handleClose,
-	setEvent,
+	setEventDate,
+	dropdown,
+	setDropdown,
 	setFromDate,
 	setToDate,
-	setEmail,
-	setRef,
-	setStatus,
-	setPayment,
+	toDate,
+	fromDate,
 	eventDate,
-	clearHandler,
 	setBearer,
-	name,
-	status,
-	payment,
-	filterFunction,
-	changePage,
+	clearHandler,
+	filteredArray,
 }: FilterModalProps) => {
-	const classes = useModalBtnStyles();
-
 	const handleClick = (event: any) => {
-		setEvent?.(event.currentTarget.getAttribute('data-value'));
+		setEventDate?.(event.currentTarget.getAttribute('data-value'));
 	};
 
-	const fromDateHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setFromDate?.(e.target.value);
+	const fromDateHandler = (newValue: Dayjs | null) => {
+		setFromDate?.(dayjs(newValue).format('YYYY-MM-DD'));
 	};
 
-	const toDateHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setToDate?.(e.target.value);
-	};
-
-	const statusHandler = (e: any) => {
-		setStatus?.(e.target.value);
-	};
-
-	const paymentHandler = (e: any) => {
-		setPayment?.(e.target.value);
-	};
-
-	const emailHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setEmail?.(e.target.value);
-	};
-	const refHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setRef?.(e.target.value);
+	const toDateHandler = (newValue: Dayjs | null) => {
+		setToDate?.(dayjs(newValue).format('YYYY-MM-DD'));
 	};
 
 	const applyHandler = () => {
+		setDropdown(false);
 		setBearer?.(true);
-		filterFunction?.();
 	};
 
 	return (
-		<Modal
-			open={isOpen}
-			onClose={handleClose}
-			closeAfterTransition
-			BackdropComponent={Backdrop}
-			BackdropProps={{
-				timeout: 500,
-			}}>
-			<div className={styles.filterModalContainer}>
-				<p>Filters</p>
-				<hr style={{ border: '0.3px solid #E5E9EC' }} />
-
-				<div className={styles.modalContent}>
-					<div>
-						<p>Due date</p>
-						<div>
-							<p
-								style={{
-									color: eventDate === 'today' ? '#26AD60' : '',
-									border: eventDate === 'today' ? '1px solid #26AD60' : '',
-								}}
-								onClick={handleClick}
-								data-value='today'>
-								Today
-							</p>
-							<p
-								style={{
-									color: eventDate === 'last7days' ? '#26AD60' : '',
-									border: eventDate === 'last7days' ? '1px solid #26AD60' : '',
-								}}
-								onClick={handleClick}
-								data-value='last7days'>
-								Last 7 days
-							</p>
-							<p
-								style={{
-									color: eventDate === 'last30days' ? '#26AD60' : '',
-									border: eventDate === 'last30days' ? '1px solid #26AD60' : '',
-								}}
-								onClick={handleClick}
-								data-value='last30days'>
-								30 days
-							</p>
-							<p
-								style={{
-									color: eventDate === 'oneyear' ? '#26AD60' : '',
-									border: eventDate === 'oneyear' ? '1px solid #26AD60' : '',
-								}}
-								onClick={handleClick}
-								data-value='oneyear'>
-								1 year
-							</p>
-						</div>
+		<div className={styles.modalwrapper}>
+			<div className={styles.modalhead}>
+				<h3 className={styles.modalheadh3}>Filters</h3>
+			</div>
+			<Divider style={{ margin: 0, padding: 0 }} />
+			<div
+				style={{
+					padding: '32px 24px',
+				}}>
+				<div className={styles.dateWrapper}>
+					<p className={styles.dateWrapper_p}>Date range</p>
+					<div className={styles.dateWrapper_content}>
+						<button
+							className={styles.dateWrapper_contentbutton}
+							style={{
+								color: eventDate === 'today' ? '#00401C' : '#ADADAB',
+								background:
+									eventDate === 'today'
+										? '#ebf5f0'
+										: 'rgba(195, 202, 198, 0.3)',
+							}}
+							onClick={handleClick}
+							data-value='today'>
+							Today
+						</button>
+						<button
+							className={styles.dateWrapper_contentbutton}
+							style={{
+								color: eventDate === 'last7days' ? '#00401C' : '#ADADAB',
+								background:
+									eventDate === 'last7days'
+										? '#ebf5f0'
+										: 'rgba(195, 202, 198, 0.3)',
+							}}
+							onClick={handleClick}
+							data-value='last7days'>
+							Last 7 days
+						</button>
+						<button
+							className={styles.dateWrapper_contentbutton}
+							style={{
+								color: eventDate === 'last30days' ? '#00401C' : '#ADADAB',
+								background:
+									eventDate === 'last30days'
+										? '#ebf5f0'
+										: 'rgba(195, 202, 198, 0.3)',
+							}}
+							onClick={handleClick}
+							data-value='last30days'>
+							30 days
+						</button>
+						<button
+							className={styles.dateWrapper_contentbutton}
+							style={{
+								color: eventDate === 'oneyear' ? '#00401C' : '#ADADAB',
+								background:
+									eventDate === 'oneyear'
+										? '#ebf5f0'
+										: 'rgba(195, 202, 198, 0.3)',
+							}}
+							onClick={handleClick}
+							data-value='oneyear'>
+							1 year
+						</button>
 					</div>
-					<div>
-						<p>Custom date range</p>
-						<div>
-							<input type='date' onChange={fromDateHandler} />
-							<ArrowRightAltIcon />
-							<input type='date' onChange={toDateHandler} />
-						</div>
-					</div>
+				</div>
 
-					{name !== 'transaction' ? (
-						<div>
-							<p>Customer email</p>
-							<input placeholder='e.g test@mail.com' onChange={emailHandler} />
-						</div>
-					) : (
-						<div>
-							<p>Transaction Ref</p>
-							<input
-								placeholder='e.g ITXH0898383UY38383'
-								onChange={refHandler}
+				<div
+					style={{
+						margin: '27px 0px',
+						display: 'flex',
+						justifyContent: 'space-between',
+					}}>
+					<LocalizationProvider dateAdapter={AdapterDayjs}>
+						<div
+							style={{
+								marginLeft: '0px',
+							}}>
+							<MobileDatePicker
+								label='Start date'
+								inputFormat='MM/DD/YYYY'
+								disableFuture
+								value={fromDate}
+								onChange={fromDateHandler}
+								renderInput={(params: any) => <TextField {...params} />}
 							/>
 						</div>
-					)}
 
-					{name !== 'transaction' ? (
-						<div>
-							<p>Status</p>
-							<select
-								value={status}
-								name='status'
-								id='status'
-								onChange={statusHandler}>
-								<option value='' disabled selected hidden>
-									Choose status
-								</option>
-								<option value='APPROVED'>APPROVED</option>
-								<option value='PENDING_REVIEW'>PENDING</option>
-								<option value='DECLINED'>DECLINED</option>
-							</select>
+						<div
+							style={{
+								marginLeft: '16px',
+							}}>
+							<MobileDatePicker
+								label='End date'
+								inputFormat='MM/DD/YYYY'
+								disableFuture
+								value={toDate}
+								onChange={toDateHandler}
+								renderInput={(params: any) => <TextField {...params} />}
+							/>
 						</div>
-					) : (
-						<div>
-							<p>Status</p>
-							<select
-								value={status}
-								name='status'
-								id='status'
-								onChange={statusHandler}>
-								<option value='' disabled selected hidden>
-									Choose status
-								</option>
-								<option value='00'>Successful</option>
-								<option value='09'>Failed</option>
-								<option value='78'>Pending</option>
-							</select>
-						</div>
-					)}
-
-					<div>
-						<p>Payment type</p>
-						<select
-							value={payment}
-							name='payment_type'
-							id='payment_type'
-							onChange={paymentHandler}>
-							<option value='' disabled selected hidden>
-								Select payment type
-							</option>
-							<option value='card'>Card</option>
-							<option value='ussd'>USSD</option>
-							<option value='account'>Account</option>
-							<option value='bank_transfer'>Bank Transfers</option>
-							<option value='payvice'>Payvice</option>
-						</select>
-					</div>
+					</LocalizationProvider>
 				</div>
-				<hr style={{ border: '0.3px solid #E5E9EC' }} />
-				<div className={classes.root}>
-					<Button onClick={clearHandler}>Clear filter</Button>
-					<Button onClick={applyHandler}>Apply filter</Button>
+				<div
+					style={{
+						margin: '27px 0px',
+					}}>
+					{filteredArray?.map(
+						({ name, value, selective, setValue, selectHelper }, i) => (
+							<div
+								key={i}
+								style={{
+									marginBottom: '27px',
+								}}>
+								{!selective || selective?.length <= 0 ? (
+									<TextField
+										name={name}
+										variant='outlined'
+										margin='normal'
+										type='text'
+										size='small'
+										value={value}
+										onChange={(e: any) => setValue(e.target.value)}
+										fullWidth
+									/>
+								) : (
+									<div className={styles.select}>
+										<select
+											onChange={(e: any) => setValue(e.target.value)}
+											className={styles.select_text}
+											required>
+											<option key={i} value=''>
+												**Select**
+											</option>
+											{selective?.map(
+												(
+													{ name, value }: { name: any; value: any },
+													i: any
+												) => (
+													<option key={i} value={selectHelper ? name : value}>
+														{name}
+													</option>
+												)
+											)}
+										</select>
+										<span className={styles.select_highlight}></span>
+										<span className={styles.select_bar}></span>
+										<label className={styles.select_label}>{name}</label>
+									</div>
+								)}
+							</div>
+						)
+					)}
+				</div>
+
+				<div className={styles.buttonwrapper}>
+					<button
+						onClick={clearHandler}
+						className={styles.Downloadbutton_faint}>
+						<span className={styles.Downloadbutton_span}>
+							<img src={Times} alt='' />
+						</span>
+						Clear filter
+					</button>
+
+					<button onClick={applyHandler} className={styles.Downloadbutton}>
+						<span className={styles.Downloadbutton_span}>
+							<img src={Mark} alt='' />
+						</span>
+						Apply filter
+					</button>
 				</div>
 			</div>
-		</Modal>
+		</div>
 	);
 };
 

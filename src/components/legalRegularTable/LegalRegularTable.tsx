@@ -212,10 +212,7 @@ function LegalRegularTable() {
 
 	return (
 		<div style={{ paddingTop: '10px' }}>
-			<FilterModal
-				isOpen={isFilterModalOpen}
-				handleClose={() => setIsFilterModalOpen(false)}
-			/>
+			
 			<div className={styles.header}>
 				<div className={styles.header_left}>
 					<h1 className={styles.header_left_h1}>{apiRes?.length} regulators</h1>

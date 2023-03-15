@@ -33,22 +33,12 @@ const TransactionDetails = () => {
 
 	const history = useHistory();
 
-	const [apiRes, setApiRes] = useState<TransactionManagementApiTypes>();
-
-	const [rowsPerPage, setRowsPerPage] = useState<string | number | undefined>(
-		5
-	);
-
-	const [open, setOpen] = useState<boolean>(false);
+	const [apiRes, setApiRes] = useState<any>();
 
 	useEffect(() => {
-		axios
-			.get<TransactionManagementApiTypes>(
-				`/admin/transactions?reference=${id}`
-			)
-			.then((res) => {
-				setApiRes(res.data);
-			});
+		axios.get<any>(`transaction/${id}`).then((res) => {
+			setApiRes(res.data);
+		});
 	}, []);
 
 	const dispatch = useDispatch();
@@ -110,7 +100,7 @@ const TransactionDetails = () => {
 				width: '100%',
 				height: '100%',
 			}}>
-			<NavBar name='FraudulentTransaction' />
+			<NavBar name='Transaction Details' />
 
 			{/* <h1>Balance</h1> */}
 
@@ -124,34 +114,39 @@ const TransactionDetails = () => {
 						<Grid item md={6} xs={12} lg={6}>
 							<div>
 								<span className={styles.headerAmount}>
-									{apiRes?.transactions[0]?.order?.currency}{' '}
-									{/* {apiRes?.transactions[0]?.order?.amount?.split('.')[0]} */}
-									{apiRes?.transactions[0]?.order?.amount}
+									{apiRes?.transaction?.currency}
+									{apiRes?.transaction?.amount}
 								</span>
 								<button
 									style={{
 										backgroundColor:
-											(apiRes?.transactions[0].code === '00' && '#27AE60') ||
-											(apiRes?.transactions[0].code !== '00' &&
-												apiRes?.transactions[0].code !== '09' &&
+											(apiRes?.transaction.responsecode === '00' &&
+												'#27AE60') ||
+											(apiRes?.transaction.responsecode !== '00' &&
+												apiRes?.transaction.responsecode !== '09' &&
+												'#EB5757') ||
+											(apiRes?.transaction.responsecode === '09' &&
 												'#F2C94C') ||
-											(apiRes?.transactions[0].code === '09' && '#EB5757') ||
 											'rgba(169, 170, 171, 0.22)',
 										color:
-											(apiRes?.transactions[0].code === '00' && '#FFFFFF') ||
-											(apiRes?.transactions[0].code === '09' && '#FFFFFF') ||
-											(apiRes?.transactions[0].code !== '09' && '#333333') ||
+											(apiRes?.transaction.responsecode === '00' &&
+												'#FFFFFF') ||
+											(apiRes?.transaction.responsecode === '09' &&
+												'#FFFFFF') ||
+											(apiRes?.transaction.responsecode !== '09' &&
+												'#333333') ||
 											'#002841',
 									}}
 									className={styles.buttonSuccessful}>
 									{' '}
-									{(apiRes?.transactions[0].code === '00' && 'Successful') ||
-										(apiRes?.transactions[0].code === '09' && 'Failed') ||
-										'Pending'}
+									{(apiRes?.transaction.responsecode === '00' &&
+										'Successful') ||
+										(apiRes?.transaction.responsecode === '09' && 'Pending') ||
+										'Failedd'}
 								</button>
 							</div>
 						</Grid>
-						<Grid item md={6} xs={12} lg={6}>
+						{/* <Grid item md={6} xs={12} lg={6}>
 							<div className={styles.headerFlexRight}>
 								<button
 									className={styles.buttongrey}
@@ -169,7 +164,7 @@ const TransactionDetails = () => {
 									Log Chargeback
 								</button>
 							</div>
-						</Grid>
+						</Grid> */}
 					</Grid>
 				</Box>
 			</div>
@@ -182,31 +177,29 @@ const TransactionDetails = () => {
 							<Grid item md={2} xs={6} lg={2}>
 								<p className={styles.header}>Date / Time</p>
 								<p className={styles.detail}>
-									{apiRes?.transactions[0].transaction.added}
-									{/* <span className={styles.header}>2:21 PM</span> */}
+									Time In: {apiRes?.transaction.timein} <br />
+									Time In: {apiRes?.transaction.timeout}
 								</p>
 							</Grid>
 							<hr className={styles.dividerClass} />
 							<Grid item md={3} xs={6} lg={3}>
 								<p className={styles.header}>Customer</p>
 								<p className={styles.detail}>
-									{apiRes?.transactions[0]?.source?.customer?.email}
+									{apiRes?.transaction?.customer?.email}
 								</p>
 							</Grid>
 							<hr className={styles.dividerClass} />
 							<Grid item md={2} xs={6} lg={2}>
 								<p className={styles.header}>Card type</p>
-								<p className={styles.detail}>
-									{apiRes?.transactions[0]?.source?.customer?.card?.type}
-								</p>
+								<p className={styles.detail}>{apiRes?.transaction?.cardtype}</p>
 							</Grid>
 							<hr className={styles.dividerClass} />
-							<Grid item md={2} xs={6} lg={2}>
+							{/* <Grid item md={2} xs={6} lg={2}>
 								<p className={styles.header}>Card number</p>
 								<p className={styles.detail}>
-									{apiRes?.transactions[0]?.source?.customer?.card?.number}
+									{apiRes?.transaction?.source?.customer?.card?.number}
 								</p>
-							</Grid>
+							</Grid> */}
 							<Grid item md={2} xs={6} lg={2}>
 								<span className={styles.blacklist}>
 									Blacklist customer <BlockIcon fontSize='small' />
@@ -227,14 +220,11 @@ const TransactionDetails = () => {
 										<p className={styles.header}>Payment reference</p>
 										<div className={styles.paymentflex}>
 											<p className={styles.detail}>
-												{apiRes?.transactions[0]?.transaction?.reference}
+												{apiRes?.transaction?.reference}
 											</p>
 											<span className={styles.copy}>
 												<CopyToClipboard
-													text={
-														apiRes?.transactions[0]?.transaction?.reference ??
-														'...'
-													}>
+													text={apiRes?.transaction?.reference ?? '...'}>
 													<ContentCopyIcon fontSize='small' />
 												</CopyToClipboard>
 											</span>
@@ -244,23 +234,24 @@ const TransactionDetails = () => {
 								<Grid item md={2} xs={6} lg={2}>
 									<p className={styles.header}>Transaction Fee</p>
 									<p className={styles.detail}>
-										NGN {apiRes?.transactions[0]?.order?.amount}
+										NGN {apiRes?.transaction?.fee}
 									</p>
 								</Grid>
 								<Grid item md={2} xs={6} lg={2}>
 									<p className={styles.header}>Country/Region</p>
-									<p className={styles.detail}>
-										{apiRes?.transactions[0]?.order?.country}
-									</p>
+									<p className={styles.detail}>{apiRes?.transaction.country}</p>
 								</Grid>
-								<Grid item md={2} xs={6} lg={2}>
+								{/* <Grid item md={2} xs={6} lg={2}>
 									<p className={styles.header}>Bank name</p>
-									<p className={styles.detail}></p>
-								</Grid>
-								<Grid item md={3} xs={6} lg={3}>
-									<p className={styles.header}>ITEX Reference</p>
 									<p className={styles.detail}>
-										{apiRes?.transactions[0]?.transaction?.linkingreference}
+										{' '}
+										{apiRes?.transaction.country}
+									</p>
+								</Grid> */}
+								<Grid item md={3} xs={6} lg={3}>
+									<p className={styles.header}>Linking Reference</p>
+									<p className={styles.detail}>
+										{apiRes?.transaction?.linkingreference}
 									</p>
 								</Grid>
 							</Grid>
@@ -271,21 +262,27 @@ const TransactionDetails = () => {
 								<Grid item md={3} xs={6} lg={3}>
 									<p className={styles.header}>Merchant ID</p>
 									<p className={styles.detail}>
-										{apiRes?.transactions[0]?.business.merchantcode}
+										{apiRes?.transaction?.merchantaccount?.merchantcode}
 									</p>
 								</Grid>
 								<Grid item md={2} xs={6} lg={2}>
-									<p className={styles.header}>Provider</p>
-									<p className={styles.detail}></p>
+									<p className={styles.header}>Payment ID</p>
+									<p className={styles.detail}>
+										{apiRes?.transaction?.merchantaccount?.paymentid}
+									</p>
 								</Grid>
+
+								<Grid item md={2} xs={6} lg={2}>
+									<p className={styles.header}>Payment link reference</p>
+									<p className={styles.detail}>
+										{apiRes?.transaction?.merchantaccount?.paymentlinkreference}
+									</p>
+								</Grid>
+
 								<Grid item md={2} xs={6} lg={2}>
 									<p className={styles.header}>Payment location</p>
-									<p className={styles.detail}></p>
-								</Grid>
-								<Grid item md={5} xs={6} lg={5}>
-									<p className={styles.header}>ITEX Reference</p>
 									<p className={styles.detail}>
-										{apiRes?.transactions[0]?.transaction?.linkingreference}
+										{apiRes?.transaction?.merchantaccount?.paylocationcountry}
 									</p>
 								</Grid>
 							</Grid>
@@ -302,16 +299,13 @@ const TransactionDetails = () => {
 								<Grid item md={4} xs={12} lg={4}>
 									<p className={styles.header}>Device fingerprint</p>
 									<p className={styles.detail}>
-										{
-											apiRes?.transactions[0]?.source?.customer?.device
-												?.fingerprint
-										}
+										{apiRes?.transaction?.devicefingerprint}
 									</p>
 								</Grid>
 								<Grid item md={2} xs={12} lg={2}>
 									<p className={styles.header}>IP Address</p>
 									<p className={styles.detail}>
-										{apiRes?.transactions[0]?.source?.customer?.device?.ip}
+										{apiRes?.transaction?.ipaddress}
 									</p>
 								</Grid>
 							</Grid>

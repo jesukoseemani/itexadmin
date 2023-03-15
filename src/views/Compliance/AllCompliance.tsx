@@ -317,21 +317,7 @@ function AllCompliance() {
 	return (
 		<div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
 			<div className={styles.container}>
-				<FilterModal
-					isOpen={isFilterModalOpen}
-					handleClose={() => setIsFilterModalOpen(false)}
-					setEvent={setEvent}
-					setFromDate={setFromDate}
-					setToDate={setToDate}
-					setEmail={setEmail}
-					setStatus={setStatus}
-					eventDate={event}
-					clearHandler={clearHandler}
-					setBearer={setBearer}
-					name='business'
-					filterFunction={modalFunc}
-					changePage={changePage}
-				/>
+				
 				<NavBar name='business' />
 				<div className={styles.header}>
 					<div className={styles.header_left}>
