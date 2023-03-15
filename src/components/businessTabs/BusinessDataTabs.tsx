@@ -107,10 +107,10 @@ function BusinessDataTabs({ id }: { id: string }) {
 									fontWeight: 'normal',
 									fontSize: '16px',
 									lineHeight: '19px',
-									color: value === 0 ? '#27AE60' : '#4F4F4F',
+									color: value === 1 ? '#27AE60' : '#4F4F4F',
 									textTransform: 'capitalize',
 								}}
-								label='Transaction'
+								label='Users'
 								{...a11yProps(1)}
 							/>
 							<Tab
@@ -120,10 +120,10 @@ function BusinessDataTabs({ id }: { id: string }) {
 									fontWeight: 'normal',
 									fontSize: '16px',
 									lineHeight: '19px',
-									color: value === 1 ? '#27AE60' : '#4F4F4F',
+									color: value === 2 ? '#27AE60' : '#4F4F4F',
 									textTransform: 'capitalize',
 								}}
-								label='Settlements'
+								label='Transactions'
 								{...a11yProps(2)}
 							/>
 							<Tab
@@ -133,11 +133,11 @@ function BusinessDataTabs({ id }: { id: string }) {
 									fontWeight: 'normal',
 									fontSize: '16px',
 									lineHeight: '19px',
-									color: value === 2 ? '#27AE60' : '#4F4F4F',
+									color: value === 3 ? '#27AE60' : '#4F4F4F',
 
 									textTransform: 'capitalize',
 								}}
-								label='New Terminals'
+								label='Settlements'
 								{...a11yProps(3)}
 							/>
 							<Tab

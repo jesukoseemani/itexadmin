@@ -244,10 +244,7 @@ const AcquirerSummary = () => {
     <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
    
       <Box sx={{ width: "100%", marginTop: "1rem" }}>
-        <FilterModal
-          isOpen={isFilterModalOpen}
-          handleClose={() => setIsFilterModalOpen(false)}
-        />
+       
       
        <div className={styles.tableHeader}>
             <div className={styles.tableHeaderLeft}>

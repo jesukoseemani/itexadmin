@@ -1009,7 +1009,6 @@ export interface RefundApiTypes {
 	message: string;
 }
 
-
 export interface FilteredCode {
 	transaction: {
 		merchantreference: string | number;
@@ -1265,14 +1264,14 @@ export interface BusinessDetailApiTypes {
 		merchantaccountid: number;
 		merchantcode: string;
 		businessemail: string;
-		businessphone: null | string;
+		businessphone: string;
 		merchantaccounttype: string;
 		merchantaccounttsubype: string;
 		islive: string;
 		isapproved: string;
-		tradingname: null | string;
+		tradingname: string;
 		biztype: null | string;
-		bizindustrycategory: null | string;
+		bizindustrycategory: string;
 		mcc: string;
 		parentmerchantaccountid: number;
 		country: string;
@@ -1281,10 +1280,36 @@ export interface BusinessDetailApiTypes {
 		deletedat: null | string;
 		status: string;
 	};
-	config: null | string;
-	address: null | string;
-	balances: [];
-	settlementAccount: null | string;
+	config: {
+		id: number;
+		merchantaccountid: number;
+		allowapi: boolean;
+		enablerollingreserve: boolean;
+		rollingreservesetting: number;
+		rollingreserveperiod: number;
+		allownoauth: boolean;
+		allowpaymentlink: boolean;
+		settlementoption: string;
+		createdat: string;
+		updatedat: null | string;
+		deletedat: null | string;
+	};
+	address: any;
+	balances: [
+		{
+			merchantaccountbalanceid: number;
+			merchantaccountid: number;
+			availablebalance: number;
+			ledgerbalance: number;
+			currency: string;
+			createdat: string;
+			updatedat: null | string;
+			deletedat: null | string;
+			status: string;
+			reservebalance: number;
+		}
+	];
+	settlementAccount: null | number;
 	code: string;
 	message: string;
 }
@@ -1323,8 +1348,6 @@ export interface RefundApiTypes {
 	code: string;
 	message: string;
 }
-
-
 
 export interface FilteredCode {
 	transaction: {

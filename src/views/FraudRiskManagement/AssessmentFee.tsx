@@ -174,10 +174,7 @@ const AssessmentFee = () => {
       <NavBar name="Fraud Management" />
 
       <Box sx={{ width: "auto", margin: "1rem" }}>
-        <FilterModal
-          isOpen={isFilterModalOpen}
-          handleClose={() => setIsFilterModalOpen(false)}
-        />
+       
         <div className={styles.tableHeader}>
           <div className={styles.tableHeaderLeft}>
             <p className={styles.titleHead}>

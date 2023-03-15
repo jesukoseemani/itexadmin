@@ -14,7 +14,6 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { useHistory } from 'react-router';
 import Divider from '@mui/material/Divider';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import FilterModal2 from '../../components/filterConfig/FilterModal2';
 import SingleRefundModal from './SingleRefundModal';
 import BulkChargeRequest from '../../components/ModalsReuse/businessDetailsModal/BulkChargeRequest';
 import RefundTransaction from '../../components/transactionsModals/RefundTransaction';
@@ -290,16 +289,7 @@ const Refunds = () => {
 		<div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
 			<div className='container'>
 				<NavBar name='Refunds' />
-				<FilterModal2
-					isOpen={isFilterModalOpen}
-					handleClose={() => setIsFilterModalOpen(false)}
-					filters={filters}
-					setFilters={setFilters}
-					setFiltersApplied={setFiltersApplied}
-					fixedToDate={fixedToDate}
-					dateInterval={dateInterval}
-					setDateInterval={setDateInterval}
-				/>
+				
 
 				<SingleRefundModal
 					isOpen={isSingleModalOpen}

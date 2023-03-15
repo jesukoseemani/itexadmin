@@ -424,21 +424,7 @@ const Settlements = () => {
 								</span>
 							</button>
 
-							<FilterModal
-								isOpen={isFilterModalOpen}
-								handleClose={() => setIsFilterModalOpen(false)}
-								setEvent={setEvent}
-								setFromDate={setFromDate}
-								setToDate={setToDate}
-								setEmail={setEmail}
-								setStatus={setStatus}
-								eventDate={event}
-								clearHandler={clearHandler}
-								setBearer={setBearer}
-								name='business'
-								filterFunction={modalFunc}
-								changePage={changePage}
-							/>
+							
 
 							<button
 								className={styles.button1}
