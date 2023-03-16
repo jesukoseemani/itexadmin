@@ -36,7 +36,7 @@ function Limit({ id }: { id: number | undefined }) {
 
 	const dispatch = useDispatch();
 
-    // const modalProps = useSelector((state) => state.modal);
+	const { modalOpened } = useSelector((state) => state.modal);
 	//PAGINATION
 	const [pageNumber, setPageNumber] = React.useState<number>(1);
 	const [rowsPerPage, setRowsPerPage] = React.useState<number>(10);
@@ -124,9 +124,9 @@ function Limit({ id }: { id: number | undefined }) {
 		Object.values(contentAction).length > 0 && editConfigHandler('edit');
 	}, [contentAction]);
 
-	// useEffect(() => {
-	// 	setPageNumber(businesses?._metadata?.page || 1);
-	// }, [businesses]);
+	useEffect(() => {
+		if (!modalOpened) setContentAction({});
+	}, [modalOpened]);
 
 	const dataBusinesses = () => {
 		const tempArr: BusinessLimitModuleData[] = [];

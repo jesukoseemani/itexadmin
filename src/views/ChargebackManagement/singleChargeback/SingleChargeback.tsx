@@ -1,10 +1,10 @@
 import React from 'react';
-import styles from './BusinessConfig.module.scss';
+import styles from './SingleChargeback.module.scss';
 import { Divider } from '@material-ui/core';
 import { InputLabel, TextField } from '@material-ui/core';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
-import Select from '../../formUI/Select';
+import Select from '../../../components/formUI/Select';
 import { makeStyles } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
@@ -50,50 +50,25 @@ const useStyles = makeStyles({
 	},
 });
 
-function BusinessConfig({ id }: { id: number | undefined }) {
+function SingleChargeback({ id }: { id: number | undefined }) {
 	const classes = useStyles();
 
 	const dispatch = useDispatch();
+	
 
 	const validate = Yup.object({
-		allowAPI: Yup.string().required('Required'),
-		enableRollingReserve: Yup.string().required('Required'),
-		rollingReserveSetting: Yup.string().required('Required'),
-		allowNoauth: Yup.string().required('Required'),
-		settlementOption: Yup.string().required('Required'),
-		allowPaymentLink: Yup.string().required('Required'),
+		chargebackreason: Yup.string().required('Required'),
+		linkingreference: Yup.string().required('Required'),
 	});
 
-	const settlementOption = [
-		{
-			name: 'ACCOUNT',
-		},
-		{
-			name: 'BALANCE',
-		},
-	];
-
-	const contentBoolean = [
-		{
-			name: 'false',
-		},
-		{
-			name: 'true',
-		},
-	];
-
 	const INITIAL_VALUES = {
-		allowAPI: 'false',
-		enableRollingReserve: 'false',
-		rollingReserveSetting: '',
-		allowNoauth: 'false',
-		settlementOption: '',
-		allowPaymentLink: 'false',
+		chargebackreason: "",
+		linkingreference: "",
 	};
 
 	return (
 		<div className={styles.generalFourReuse}>
-			<h3 className={styles.generalh3}>Config Business</h3>
+			<h3 className={styles.generalh3}>Log Chargeback</h3>
 			<Divider />
 
 			<div className={styles.selectinput}>
@@ -105,14 +80,7 @@ function BusinessConfig({ id }: { id: number | undefined }) {
 						dispatch(openLoader());
 
 						axios
-							.post(`business/${id}/config`, {
-								allowAPI: Boolean(values.allowAPI),
-								enableRollingReserve: Boolean(values.enableRollingReserve),
-								rollingReserveSetting: values.rollingReserveSetting,
-								allowNoauth: Boolean(values.allowNoauth),
-								settlementOption: values.settlementOption,
-								allowPaymentLink: Boolean(values.allowPaymentLink),
-							})
+							.post(`business/${id}/config`, values)
 							.then((res: any) => {
 								dispatch(closeLoader());
 								dispatch(closeModal());
@@ -140,50 +108,6 @@ function BusinessConfig({ id }: { id: number | undefined }) {
 					{(props) => (
 						<Form>
 							<InputLabel>
-								<span className={styles.span}>ALLOW API</span>
-							</InputLabel>
-							<Field
-								as={Select}
-								helperText={
-									<ErrorMessage name='allowAPI'>
-										{(msg) => <span style={{ color: 'red' }}>{msg}</span>}
-									</ErrorMessage>
-								}
-								name='allowAPI'
-								size='small'
-								options={contentBoolean}
-								defaultValue={contentBoolean && contentBoolean[0]}
-								className={classes.select}
-								// fullWidth
-								style={{
-									marginTop: '8px',
-									marginBottom: '22px',
-								}}
-							/>
-
-							<InputLabel>
-								<span className={styles.span}>ROLLING RESERVE</span>
-							</InputLabel>
-							<Field
-								as={Select}
-								helperText={
-									<ErrorMessage name='enableRollingReserve'>
-										{(msg) => <span style={{ color: 'red' }}>{msg}</span>}
-									</ErrorMessage>
-								}
-								name='enableRollingReserve'
-								size='small'
-								options={contentBoolean}
-								defaultValue={contentBoolean && contentBoolean[0]}
-								className={classes.select}
-								// fullWidth
-								style={{
-									marginTop: '8px',
-									marginBottom: '22px',
-								}}
-							/>
-
-							<InputLabel>
 								<span className={styles.span}>RESERVE SETTING</span>
 							</InputLabel>
 							<Field
@@ -207,65 +131,22 @@ function BusinessConfig({ id }: { id: number | undefined }) {
 							/>
 
 							<InputLabel>
-								<span className={styles.span}>ALLOW NO AUTH</span>
+								<span className={styles.span}>RESERVE SETTING</span>
 							</InputLabel>
 							<Field
-								as={Select}
+								as={TextField}
 								helperText={
-									<ErrorMessage name='allowNoauth'>
+									<ErrorMessage name='rollingReserveSetting'>
 										{(msg) => <span style={{ color: 'red' }}>{msg}</span>}
 									</ErrorMessage>
 								}
-								name='allowNoauth'
+								name='rollingReserveSetting'
+								variant='outlined'
+								margin='normal'
+								type='text'
 								size='small'
-								options={contentBoolean}
+								fullWidth
 								className={classes.select}
-								defaultValue={contentBoolean && contentBoolean[0]}
-								// fullWidth
-								style={{
-									marginTop: '8px',
-									marginBottom: '22px',
-								}}
-							/>
-
-							<InputLabel>
-								<span className={styles.span}>SETTLEMENT OPTION</span>
-							</InputLabel>
-							<Field
-								as={Select}
-								helperText={
-									<ErrorMessage name='settlementOption'>
-										{(msg) => <span style={{ color: 'red' }}>{msg}</span>}
-									</ErrorMessage>
-								}
-								name='settlementOption'
-								size='small'
-								options={settlementOption}
-								className={classes.select}
-								defaultValue={settlementOption && settlementOption[0]}
-								// fullWidth
-								style={{
-									marginTop: '8px',
-									marginBottom: '22px',
-								}}
-							/>
-
-							<InputLabel>
-								<span className={styles.span}>ALLOW PAYMENT LINK</span>
-							</InputLabel>
-							<Field
-								as={Select}
-								helperText={
-									<ErrorMessage name='allowPaymentLink'>
-										{(msg) => <span style={{ color: 'red' }}>{msg}</span>}
-									</ErrorMessage>
-								}
-								name='allowPaymentLink'
-								size='small'
-								options={contentBoolean}
-								defaultValue={contentBoolean && contentBoolean[0]}
-								className={classes.select}
-								// fullWidth
 								style={{
 									marginTop: '8px',
 									marginBottom: '22px',
@@ -301,4 +182,4 @@ function BusinessConfig({ id }: { id: number | undefined }) {
 	);
 }
 
-export default BusinessConfig;
+export default SingleChargeback;

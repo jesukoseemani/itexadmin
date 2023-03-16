@@ -20,14 +20,13 @@ interface TabPanelProps {
 
 function BusinessDetails({
 	details,
-	id
+	id,
 }: {
 	details: BusinessDetailApiTypes | undefined;
-	id: number
+	id: number;
 }) {
 	const history = useHistory();
 	const dispatch = useDispatch();
-
 
 	const editConfigHandler = () => {
 		dispatch(
@@ -159,7 +158,9 @@ function BusinessDetails({
 							<div className={styles.customerInfo}>
 								<div className={styles.detailsValue}>Address</div>
 								<div className={styles.detailsKey}>
-									{details?.address.addressline1 || 'Not provider'}
+									{details?.address
+										? details?.address?.addressline1
+										: 'Not provider'}
 								</div>
 							</div>
 						</Grid>
@@ -175,7 +176,7 @@ function BusinessDetails({
 					</Grid>
 				</div>
 			</div>
-			<BusinessSubTab id={id}  />
+			<BusinessSubTab id={id} />
 		</div>
 	);
 }

@@ -174,11 +174,11 @@ const TransactionDetails = () => {
 				<div>
 					<Box sx={{ flexGrow: 1, margin: '0 1rem 1rem 1rem' }}>
 						<Grid container spacing={1}>
-							<Grid item md={2} xs={6} lg={2}>
+							<Grid item md={2} xs={6} lg={4}>
 								<p className={styles.header}>Date / Time</p>
 								<p className={styles.detail}>
-									Time In: {apiRes?.transaction.timein} <br />
-									Time In: {apiRes?.transaction.timeout}
+									<strong>Time In:</strong> {apiRes?.transaction.timein} <br />
+									<strong>Time Out:</strong> {apiRes?.transaction.timeout}
 								</p>
 							</Grid>
 							<hr className={styles.dividerClass} />

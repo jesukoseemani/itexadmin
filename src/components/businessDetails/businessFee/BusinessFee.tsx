@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from './BusinessFee.module.scss';
 import { Divider } from '@material-ui/core';
 import { InputLabel, TextField } from '@material-ui/core';
@@ -12,6 +12,7 @@ import {
 	openLoader,
 	closeLoader,
 } from '../../../redux/actions/loader/loaderActions';
+import { closeModal } from '../../../redux/actions/modal/modalActions';
 
 import { makeStyles } from '@material-ui/core';
 
@@ -70,7 +71,7 @@ function BusinessFee({
 		feeSetting: Yup.string().required('Required'),
 		feeCap: Yup.string().required('Required'),
 		feeMin: Yup.string().required('Required'),
-		merchantBearsFee: Yup.boolean().required('Required'),
+		merchantBearsFee: Yup.string().required('Required'),
 	});
 
 	const authOption = [
@@ -138,13 +139,17 @@ function BusinessFee({
 		authOption: content ? content.auth : '',
 		paymentMethod: content ? content.payment : '',
 		transactionLocale: content ? content.transactionlocale : '',
-		minLimit: content ? content.min : '',
-		maxLimit: content ? content.max : '',
+		minLimit: content ? content.min.split(' ')[1] : '',
+		maxLimit: content ? content.max.split(' ')[1] : '',
 		cumulativeTransactionLimit: content
 			? content.cumulativeTransactionLimit
 			: '',
-		merchantBearsFee: content ? content.merchantbearsfee : '',
+		merchantBearsFee: content ? content.bear : '',
 	};
+
+	useEffect(() => {
+		console.log('hey:', content);
+	}, [content]);
 
 	return (
 		<div className={styles.generalFourReuse}>
@@ -174,6 +179,8 @@ function BusinessFee({
 							.post(`business/${id}/fees`, newObject)
 							.then((res: any) => {
 								dispatch(closeLoader());
+								dispatch(closeModal());
+
 								dispatch(
 									openToastAndSetContent({
 										toastContent: res.data.message,

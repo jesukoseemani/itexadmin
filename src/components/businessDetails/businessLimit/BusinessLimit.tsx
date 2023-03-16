@@ -14,6 +14,7 @@ import {
 } from '../../../redux/actions/loader/loaderActions';
 
 import { makeStyles } from '@material-ui/core';
+import { closeModal } from '../../../redux/actions/modal/modalActions';
 
 const useStyles = makeStyles({
 	root: {
@@ -121,8 +122,8 @@ function BusinessLimit({
 		authOption: content ? content.auth : '',
 		paymentMethod: content ? content.payment : '',
 		transactionLocale: content ? content.transactionlocale : '',
-		minLimit: content ? content.min : '',
-		maxLimit: content ? content.max : '',
+		minLimit: content ? content.min.split(' ')[1] : '',
+		maxLimit: content ? content.max.split(' ')[1] : '',
 		cumulativeTransactionLimit: content ? content.limit : '',
 	};
 
@@ -155,6 +156,8 @@ function BusinessLimit({
 							.post(`business/${id}/limit`, newObject)
 							.then((res: any) => {
 								dispatch(closeLoader());
+								dispatch(closeModal());
+
 								dispatch(
 									openToastAndSetContent({
 										toastContent: res.data.message,
