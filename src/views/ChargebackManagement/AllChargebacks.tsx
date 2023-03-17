@@ -31,6 +31,8 @@ import { openModalAndSetContent } from '../../redux/actions/modal/modalActions';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { Divider } from '@mui/material';
+import Resolve from './resolveChargeback/Resolve';
+import ChargebackDetails from './ChargebackDetails';
 
 function AllChargebacks() {
 	const [tableRow, setTableRow] = useState<any[]>();
@@ -103,11 +105,13 @@ function AllChargebacks() {
 		},
 	];
 
+	// status=${status}&date=${toDate}&search=${value}&
+
 	const fetchBusinesses = async () => {
 		dispatch(openLoader());
 		try {
 			const { data } = await axios.get(
-				`/chargeback?status=${status}&date=${toDate}&search=${value}&perpage=${rowsPerPage}&page=${pageNumber}`
+				`/chargeback?perpage=${rowsPerPage}&page=${pageNumber}`
 			);
 			setBusinesses(data);
 			dispatch(closeLoader());
@@ -136,8 +140,6 @@ function AllChargebacks() {
 		setPageNumber(businesses?._metadata?.page || 1);
 	}, [businesses]);
 
-	
-
 	const dataBusinesses = () => {
 		const tempArr: ChargebackModuleData[] = [];
 		businesses?.chargebacks
@@ -147,22 +149,12 @@ function AllChargebacks() {
 				return tempArr.push({
 					amount: business?.amount,
 					status: (
-						<span
-							className={styles.tableSpan}
-							style={{
-								backgroundColor:
-									(business?.status === 'won' && '#27AE60') ||
-									(business?.status === 'failed' && '#EB5757') ||
-									(business?.status === 'pending' && '#F2C94C') ||
-									'rgba(169, 170, 171, 0.22)',
-								color:
-									(business?.status === 'won' && '#FFFFFF') ||
-									(business?.status === 'failed' && '#FFFFFF') ||
-									(business?.status === 'pending' && '#12122C') ||
-									'#FFFFFF',
-							}}>
-							{business?.status}
-						</span>
+						<StatusView
+							status={business.status}
+							green='won'
+							red='lost'
+							orange='pending'
+						/>
 					),
 					business_name: business?.business?.tradingname,
 					customeremail: business?.customeremail,
@@ -172,14 +164,19 @@ function AllChargebacks() {
 					date_due: business?.duedate,
 					action: (
 						<div className={styles.actionWrapper}>
-							<button className={styles.actionButtonResolve}>
-							Resolve
-						</button>
-						<button className={styles.actionButtonDetails}>
-							Details
-						</button>
+							{business?.status === 'pending' && (
+								<button
+									onClick={() => resolveHandler(business?.id)}
+									className={styles.actionButtonResolve}>
+									Resolve
+								</button>
+							)}
+							<button
+								onClick={() => history.push(`/chargebackmgt/${business?.id}`)}
+								className={styles.actionButtonDetails}>
+								Details
+							</button>
 						</div>
-						
 					),
 					id: business?.id,
 				});
@@ -222,10 +219,24 @@ function AllChargebacks() {
 			})
 		);
 	};
+	const resolveHandler = (id: number) => {
+		dispatch(
+			openModalAndSetContent({
+				modalStyles: {
+					padding: 0,
+				},
+				modalContent: (
+					<>
+						<Resolve id={id} fn={fetchBusinesses} />
+					</>
+				),
+			})
+		);
+	};
 
 	return (
 		<div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-			<NavBar name='business' />
+			<NavBar name='chargeback' />
 			<div className={styles.container}>
 				<TableHeader
 					pageName='Chargeback'
@@ -238,30 +249,32 @@ function AllChargebacks() {
 					placeHolder='Search'
 					newButton={
 						<>
-							<button className={styles.button_mark_button} onClick={handleClick}>
-							Log chargeback
-						</button>
-						<Menu
-							id='basic-menu'
-							anchorEl={anchorEl}
-							open={open}
-							onClose={handleClose}
-							MenuListProps={{
-								'aria-labelledby': 'basic-button',
-							}}
-							style={{ margin: '10px 0px' }}>
-							<MenuItem
-								onClick={singleChargeHandler}
-								style={{ padding: '0px 30px' }}>
-								Single chargeback
-							</MenuItem>
-							<Divider />
-							<MenuItem
-								onClick={bulkChargeHandler}
-								style={{ padding: '0px 30px' }}>
-								Bulk chargeback
-							</MenuItem>
-						</Menu>
+							<button
+								className={styles.button_mark_button}
+								onClick={handleClick}>
+								Log chargeback
+							</button>
+							<Menu
+								id='basic-menu'
+								anchorEl={anchorEl}
+								open={open}
+								onClose={handleClose}
+								MenuListProps={{
+									'aria-labelledby': 'basic-button',
+								}}
+								style={{ margin: '10px 0px' }}>
+								<MenuItem
+									onClick={singleChargeHandler}
+									style={{ padding: '0px 30px' }}>
+									Single chargeback
+								</MenuItem>
+								<Divider />
+								<MenuItem
+									onClick={bulkChargeHandler}
+									style={{ padding: '0px 30px' }}>
+									Bulk chargeback
+								</MenuItem>
+							</Menu>
 						</>
 					}
 					FilterComponent={

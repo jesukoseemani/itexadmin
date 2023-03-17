@@ -105,7 +105,7 @@ function BusinessConfig({ id }: { id: number | undefined }) {
 						dispatch(openLoader());
 
 						axios
-							.post(`business/${id}/config`, {
+							.post(`/business/${id}/config`, {
 								allowAPI: Boolean(values.allowAPI),
 								enableRollingReserve: Boolean(values.enableRollingReserve),
 								rollingReserveSetting: values.rollingReserveSetting,

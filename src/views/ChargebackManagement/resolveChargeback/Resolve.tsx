@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './SingleChargeback.module.scss';
+import styles from './resolve.module.scss';
 import { Divider } from '@material-ui/core';
 import { InputLabel, TextField } from '@material-ui/core';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
@@ -50,25 +50,38 @@ const useStyles = makeStyles({
 	},
 });
 
-function SingleChargeback({ id }: { id: number | undefined }) {
+function Resolve({
+	id,
+	fn,
+}: {
+	id: number | undefined;
+	fn: () => Promise<void>;
+}) {
 	const classes = useStyles();
 
 	const dispatch = useDispatch();
-	
-
 	const validate = Yup.object({
-		chargebackreason: Yup.string().required('Required'),
-		linkingreference: Yup.string().required('Required'),
+		response: Yup.string().required('Required'),
+		status: Yup.string().required('Required'),
 	});
 
 	const INITIAL_VALUES = {
-		chargebackreason: "",
-		linkingreference: "",
+		response: '',
+		status: '',
 	};
+
+	const contentStatus = [
+		{
+			name: 'won',
+		},
+		{
+			name: 'lost',
+		},
+	];
 
 	return (
 		<div className={styles.generalFourReuse}>
-			<h3 className={styles.generalh3}>Log Chargeback</h3>
+			<h3 className={styles.generalh3}>Resolve Chargeback</h3>
 			<Divider />
 
 			<div className={styles.selectinput}>
@@ -80,10 +93,11 @@ function SingleChargeback({ id }: { id: number | undefined }) {
 						dispatch(openLoader());
 
 						axios
-							.post(`/chargeback/log`, values)
+							.post(`/chargeback/${id}/resolve`, values)
 							.then((res: any) => {
 								dispatch(closeLoader());
 								dispatch(closeModal());
+								fn();
 								dispatch(
 									openToastAndSetContent({
 										toastContent: res.data.message,
@@ -108,16 +122,16 @@ function SingleChargeback({ id }: { id: number | undefined }) {
 					{(props) => (
 						<Form>
 							<InputLabel>
-								<span className={styles.span}>Reason</span>
+								<span className={styles.span}>RESPONSE</span>
 							</InputLabel>
 							<Field
 								as={TextField}
 								helperText={
-									<ErrorMessage name='chargebackreason'>
+									<ErrorMessage name='response'>
 										{(msg) => <span style={{ color: 'red' }}>{msg}</span>}
 									</ErrorMessage>
 								}
-								name='chargebackreason'
+								name='response'
 								variant='outlined'
 								margin='normal'
 								type='text'
@@ -131,22 +145,21 @@ function SingleChargeback({ id }: { id: number | undefined }) {
 							/>
 
 							<InputLabel>
-								<span className={styles.span}>LINKING REFERENCE</span>
+								<span className={styles.span}>STATUS</span>
 							</InputLabel>
 							<Field
-								as={TextField}
+								as={Select}
 								helperText={
-									<ErrorMessage name='linkingreference'>
+									<ErrorMessage name='status'>
 										{(msg) => <span style={{ color: 'red' }}>{msg}</span>}
 									</ErrorMessage>
 								}
-								name='linkingreference'
-								variant='outlined'
-								margin='normal'
-								type='text'
+								name='status'
 								size='small'
-								fullWidth
+								options={contentStatus}
 								className={classes.select}
+								defaultValue={contentStatus && contentStatus[0]}
+								// fullWidth
 								style={{
 									marginTop: '8px',
 									marginBottom: '22px',
@@ -182,4 +195,4 @@ function SingleChargeback({ id }: { id: number | undefined }) {
 	);
 }
 
-export default SingleChargeback;
+export default Resolve;

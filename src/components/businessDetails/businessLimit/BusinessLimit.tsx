@@ -153,7 +153,7 @@ function BusinessLimit({
 								  };
 
 						axios
-							.post(`business/${id}/limit`, newObject)
+							.post(`/business/${id}/limit`, newObject)
 							.then((res: any) => {
 								dispatch(closeLoader());
 								dispatch(closeModal());
