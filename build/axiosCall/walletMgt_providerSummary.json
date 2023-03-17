@@ -1,0 +1,83 @@
+[
+	{
+		"id": "1",
+		"provider": "James Haliday Ventures",
+		"amount": "NGN 45,000",
+		"cost": "NGN 45,000",
+		"income": "NGN4,700,000",
+		"date": "Aug 13 2020"
+	},
+	{
+		"id": "2",
+		"provider": "James Haliday Ventures",
+		"amount": "NGN 5,000",
+		"cost": "NGN 4,000",
+		"income": "NGN700,000",
+		"date": "Aug 13 2020"
+	},
+	{
+		"id": "3",
+		"provider": "Kingdom Chaser Inc",
+		"amount": "NGN 5,000",
+		"cost": "NGN 4,000",
+		"income": "NGN700,000",
+		"date": "Aug 13 2020"
+	},
+	{
+		"id": "4",
+		"provider": "Jameson Winery",
+		"amount": "NGN 45,000",
+		"cost": "NGN 45,000",
+		"income": "NGN4,700,000",
+		"date": "Aug 13 2020"
+	},
+	{
+		"id": "5",
+		"provider": "James Haliday Ventures",
+		"amount": "NGN 45,000",
+		"cost": "NGN 45,000",
+		"income": "NGN7,000,000",
+		"date": "Aug 13 2020"
+	},
+	{
+		"id": "6",
+		"provider": "James Haliday Ventures",
+		"amount": "NGN 45,000",
+		"cost": "NGN 45,000",
+		"income": "NGN4,700,000",
+		"date": "Aug 13 2020"
+	},
+	{
+		"id": "7",
+		"provider": "James Haliday Ventures",
+		"amount": "NGN 5,000",
+		"cost": "NGN 4,000",
+		"income": "NGN700,000",
+		"date": "Aug 13 2020"
+	},
+	{
+		"id": "8",
+		"provider": "Kingdom Chaser Inc",
+		"amount": "NGN 5,000",
+		"cost": "NGN 4,000",
+		"income": "NGN700,000",
+		"date": "Aug 13 2020"
+	},
+	{
+		"id": "9",
+		"provider": "Jameson Winery",
+		"amount": "NGN 45,000",
+		"cost": "NGN 45,000",
+		"income": "NGN4,700,000",
+		"date": "Aug 13 2020"
+	},
+	{
+		"id": "10",
+		"provider": "James Haliday Ventures",
+		"amount": "NGN 45,000",
+		"cost": "NGN 45,000",
+		"income": "NGN7,000,000",
+		"date": "Aug 13 2020"
+	}
+	
+]
