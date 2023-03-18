@@ -1,0 +1,63 @@
+[
+	{
+		"id": "1",
+		"card_scheme": "VISA",
+		"amount": "NGN 500",
+		"document": "James_haliday_fee.pdf"
+	},
+	{
+		"id": "2",
+		"card_scheme": "MasterCard",
+		"amount": "NGN 500",
+		"document": "James_haliday_fee.pdf"
+	},
+	{
+		"id": "3",
+		"card_scheme": "VISA",
+		"amount": "NGN 500",
+		"document": "James_haliday_fee.pdf"
+	},
+	{
+		"id": "4",
+		"card_scheme": "MasterCard",
+		"amount": "NGN 500",
+		"document": "James_haliday_fee.pdf"
+	},
+	{
+		"id": "5",
+		"card_scheme": "MasterCard",
+		"amount": "NGN 500",
+		"document": "James_haliday_fee.pdf"
+	},
+	{
+		"id": "6",
+		"card_scheme": "MasterCard",
+		"amount": "NGN 500",
+		"document": "James_haliday_fee.pdf"
+	},
+	{
+		"id": "7",
+		"card_scheme": "VISA",
+		"amount": "NGN 500",
+		"document": "James_haliday_fee.pdf"
+	},
+	{
+		"id": "8",
+		"card_scheme": "VISA",
+		"amount": "NGN 500",
+		"document": "James_haliday_fee.pdf"
+	},
+	{
+		"id": "9",
+		"card_scheme": "MasterCard",
+		"amount": "NGN 500",
+		"document": "James_haliday_fee.pdf"
+	},
+	{     
+		"id": "10 ",
+		"card_scheme": "VISA",
+		"amount": "NGN 500",
+		"document": "James_haliday_fee.pdf"
+	}
+
+]

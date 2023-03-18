@@ -15,7 +15,7 @@ import {
 	openLoader,
 } from '../../redux/actions/loader/loaderActions';
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { openToastAndSetContent } from '../../redux/actions/toast/toastActions';
 import {
 	ColumnBusinessFeeModule,
@@ -35,6 +35,8 @@ function Fee({ id }: { id: number | undefined }) {
 	const history = useHistory();
 
 	const dispatch = useDispatch();
+	const { modalOpened } = useSelector((state) => state.modal);
+
 	//PAGINATION
 	const [pageNumber, setPageNumber] = React.useState<number>(1);
 	const [rowsPerPage, setRowsPerPage] = React.useState<number>(10);
@@ -118,13 +120,13 @@ function Fee({ id }: { id: number | undefined }) {
 		fetchBusinesses();
 	}, [bearer, value, pageNumber, rowsPerPage]);
 
-		useEffect(() => {
-			Object.values(contentAction).length > 0 && editConfigHandler("edit");
-		}, [contentAction]);
+	useEffect(() => {
+		Object.values(contentAction).length > 0 && editConfigHandler('edit');
+	}, [contentAction]);
 
-	// useEffect(() => {
-	// 	setPageNumber(businesses?._metadata?.page || 1);
-	// }, [businesses]);
+useEffect(() => {
+	if (!modalOpened) setContentAction({});
+}, [modalOpened]);
 
 	const dataBusinesses = () => {
 		const tempArr: BusinessFeeModuleData[] = [];
@@ -137,8 +139,8 @@ function Fee({ id }: { id: number | undefined }) {
 					transactiontype: business?.transactiontype,
 					auth: business?.authoption,
 					fee: business?.feesetting,
-					min: `${business?.feecurrency}${business?.feemin}`,
-					max: `${business?.feecurrency}${business?.feecap}`,
+					min: `${business?.feecurrency} ${business?.feemin}`,
+					max: `${business?.feecurrency} ${business?.feecap}`,
 					bear: business?.merchantbearsfee,
 					status: (
 						<StatusView
@@ -152,7 +154,7 @@ function Fee({ id }: { id: number | undefined }) {
 					payment: business?.paymentmethod,
 					transactionlocale: business?.transactionlocale,
 					cumulativeTransactionLimit: business?.cumulativeTransactionLimit,
-					id: business.id
+					id: business.id,
 				});
 			});
 		return tempArr;
@@ -170,7 +172,11 @@ function Fee({ id }: { id: number | undefined }) {
 				},
 				modalContent: (
 					<div className={styles.modalDiv}>
-						<BusinessFee id={id} content={contentAction} identifier={identifier}/>
+						<BusinessFee
+							id={id}
+							content={contentAction}
+							identifier={identifier}
+						/>
 					</div>
 				),
 			})
@@ -181,7 +187,7 @@ function Fee({ id }: { id: number | undefined }) {
 		<div className={styles.containerHeader}>
 			<div className={styles.buttonmove}>
 				<button
-					onClick={() => editConfigHandler("add")}
+					onClick={() => editConfigHandler('add')}
 					className={styles.downloadbutton}>
 					Add Fee
 				</button>

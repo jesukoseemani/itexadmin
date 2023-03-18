@@ -191,7 +191,7 @@ function Businesses() {
 					data={tableRow ? tableRow : []}
 					columns={ColumnBusinessModule ? ColumnBusinessModule : []}
 					emptyPlaceHolder={
-						businesses?.businesses?.totalcount == 0
+						businesses?._metadata?.totalcount == 0
 							? 'You currently do not have any data'
 							: 'Loading...'
 					}

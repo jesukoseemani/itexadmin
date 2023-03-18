@@ -13,6 +13,7 @@ import {
 	openLoader,
 	closeLoader,
 } from '../../../redux/actions/loader/loaderActions';
+import { closeModal } from '../../../redux/actions/modal/modalActions';
 
 const useStyles = makeStyles({
 	root: {
@@ -49,19 +50,18 @@ const useStyles = makeStyles({
 	},
 });
 
-function BusinessConfig({id}:{id: number | undefined}) {
+function BusinessConfig({ id }: { id: number | undefined }) {
 	const classes = useStyles();
 
 	const dispatch = useDispatch();
 
-
 	const validate = Yup.object({
-		allowAPI: Yup.boolean().required('Required'),
-		enableRollingReserve: Yup.boolean().required('Required'),
+		allowAPI: Yup.string().required('Required'),
+		enableRollingReserve: Yup.string().required('Required'),
 		rollingReserveSetting: Yup.string().required('Required'),
-		allowNoauth: Yup.boolean().required('Required'),
+		allowNoauth: Yup.string().required('Required'),
 		settlementOption: Yup.string().required('Required'),
-		allowPaymentLink: Yup.boolean().required('Required'),
+		allowPaymentLink: Yup.string().required('Required'),
 	});
 
 	const settlementOption = [
@@ -75,20 +75,20 @@ function BusinessConfig({id}:{id: number | undefined}) {
 
 	const contentBoolean = [
 		{
-			name: false,
+			name: 'false',
 		},
 		{
-			name: true,
+			name: 'true',
 		},
 	];
 
 	const INITIAL_VALUES = {
-		allowAPI: false,
-		enableRollingReserve: false,
+		allowAPI: 'false',
+		enableRollingReserve: 'false',
 		rollingReserveSetting: '',
-		allowNoauth: false,
+		allowNoauth: 'false',
 		settlementOption: '',
-		allowPaymentLink: false,
+		allowPaymentLink: 'false',
 	};
 
 	return (
@@ -105,9 +105,17 @@ function BusinessConfig({id}:{id: number | undefined}) {
 						dispatch(openLoader());
 
 						axios
-							.post(`business/${id}/config`, values)
+							.post(`/business/${id}/config`, {
+								allowAPI: Boolean(values.allowAPI),
+								enableRollingReserve: Boolean(values.enableRollingReserve),
+								rollingReserveSetting: values.rollingReserveSetting,
+								allowNoauth: Boolean(values.allowNoauth),
+								settlementOption: values.settlementOption,
+								allowPaymentLink: Boolean(values.allowPaymentLink),
+							})
 							.then((res: any) => {
 								dispatch(closeLoader());
+								dispatch(closeModal());
 								dispatch(
 									openToastAndSetContent({
 										toastContent: res.data.message,
@@ -128,7 +136,6 @@ function BusinessConfig({id}:{id: number | undefined}) {
 									})
 								);
 							});
-
 					}}>
 					{(props) => (
 						<Form>

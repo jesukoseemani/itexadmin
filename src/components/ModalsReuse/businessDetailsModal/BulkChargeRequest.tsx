@@ -9,7 +9,7 @@ import { closeModal } from '../../../redux/actions/modal/modalActions';
 function BulkChargeRequest({
 	setGotopage,
 }: {
-	setGotopage: React.Dispatch<React.SetStateAction<boolean>>;
+	setGotopage?: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
 	const [docs, setDocs] = useState('');
 	const [active, setActive] = useState(true);
@@ -21,7 +21,7 @@ function BulkChargeRequest({
 	};
 
 	const continueHandler = () => {
-		setGotopage(true);
+		// setGotopage(true);
 		dispatch(closeModal());
 	};
 	return (
