@@ -1,0 +1,92 @@
+[
+	{
+		"id": "1",
+		"status": "Pending",
+		"business_name": "James Haliday Ventures",
+		"transaction_amount": "NGN 34000",
+		"transaction_reference": "ITEX-ab95cf96f454669a4",
+		"debit_type": "Refund",
+		"date": "Aug 13 2020"
+	},
+	{
+		"id": "2",
+		"status": "Pending",
+		"business_name": "James Haliday Ventures",
+		"transaction_amount": "NGN 34000",
+		"transaction_reference": "ITEX-ab95cf96f454669a4",
+		"debit_type": "Transfers",
+		"date": "Aug 13 2020"
+	},
+	{
+		"id": "3",
+		"status": "Pending",
+		"business_name": "Kingdom Chasers Inc",
+		"transaction_amount": "NGN 45000",
+		"transaction_reference": "ITEX-ab95cf96f454669a4",
+		"debit_type": "Chargeback",
+		"date": "Aug 13 2020"
+	},
+	{
+		"id": "4",
+		"status": "Approved",
+		"business_name": "Jameson Winery",
+		"transaction_amount": "NGN 6000",
+		"transaction_reference": "ITEX-ab95cf96f454669a4",
+		"debit_type": "Settlement reversal",
+		"date": "Aug 13 2020"
+	},
+	{
+		"id": "5",
+		"status": "Approved",
+		"business_name": "James Haliday Ventures",
+		"transaction_amount": "NGN 34000",
+		"transaction_reference": "ITEX-ab95cf96f454669a4",
+		"debit_type": "Settlement reversal",
+		"date": "Aug 13 2020"
+	},
+	{
+		"id": "6",
+		"status": "Declined",
+		"business_name": "James Haliday Ventures",
+		"transaction_amount": "NGN 45000",
+		"transaction_reference": "ITEX-ab95cf96f454669a4",
+		"debit_type": "Chargeback",
+		"date": "Aug 13 2020"
+	},
+	{
+		"id": "7",
+		"status": "Pending",
+		"business_name": "Jameson Winery",
+		"transaction_amount": "NGN 45000",
+		"transaction_reference": "ITEX-ab95cf96f454669a4",
+		"debit_type": "Transfers",
+		"date": "Aug 13 2020"
+	},
+	{
+		"id": "8",
+		"status": "Pending",
+		"business_name": "Kingdom Chasers Inc",
+		"transaction_amount": "NGN 45000",
+		"transaction_reference": "ITEX-ab95cf96f454669a4",
+		"debit_type": "Chargeback",
+		"date": "Aug 13 2020"
+	},
+	{
+		"id": "9",
+		"status": "Pending",
+		"business_name": "Jameson Winery",
+		"transaction_amount": "NGN 6000",
+		"transaction_reference": "ITEX-ab95cf96f454669a4",
+		"debit_type": "Settlement reversal",
+		"date": "Aug 13 2020"
+	},
+	{
+		"id": "10",
+		"status": "Approved",
+		"business_name": "Jameson Winery",
+		"transaction_amount": "NGN 45000",
+		"transaction_reference": "ITEX-ab95cf96f454669a4",
+		"debit_type": "Transfers",
+		"date": "Aug 13 2020"
+	}
+]

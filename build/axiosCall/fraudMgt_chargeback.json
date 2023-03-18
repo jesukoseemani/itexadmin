@@ -1,0 +1,102 @@
+[
+	{
+		"id": "1",
+		"acquirer": "Access Bank",
+		"merchant_name": "James Haliday Ventures",
+		"rrn": "09827736andb1234567r",
+		"transaction_reference": "ITEX-ab5673sdej3647s3",
+		"amount": "NGN 234,567,890",
+		"account": "Zenith Bank"
+	},
+	
+	{
+		"id": "2",
+		"acquirer": "Access Bank",
+		"merchant_name": "Jameson Winery",
+		"rrn": "09827736andb1234567r",
+		"transaction_reference": "ITEX-ab5673sdej3647s3",
+		"amount": "NGN 234,567,890",
+		"account": "Access Bank"
+	},
+		
+	{
+		"id": "3",
+		"acquirer": "Access Bank",
+		"merchant_name": "Kingdom Chaser Inc",
+		"rrn": "09827736andb1234567r",
+		"transaction_reference": "ITEX-ab5673sdej3647s3",
+		"amount": "NGN 234,567,890",
+		"account": "Zenith Bank"
+	},
+
+	{
+		"id": "4",
+		"acquirer": "Access Bank",
+		"merchant_name": "James Haliday Ventures",
+		"rrn": "09827736andb1234567r",
+		"transaction_reference": "ITEX-ab5673sdej3647s3",
+		"amount": "NGN 234,567,890",
+		"account": "Zenith Bank"
+	},
+	
+	{
+		"id": "5",
+		"acquirer": "Access Bank",
+		"merchant_name": "Jameson Winery",
+		"rrn": "09827736andb1234567r",
+		"transaction_reference": "ITEX-ab5673sdej3647s3",
+		"amount": "NGN 234,567,890",
+		"account": "Access Bank"
+	},
+		
+	{
+		"id": "6",
+		"acquirer": "Access Bank",
+		"merchant_name": "Kingdom Chaser Inc",
+		"rrn": "09827736andb1234567r",
+		"transaction_reference": "ITEX-ab5673sdej3647s3",
+		"amount": "NGN 234,567,890",
+		"account": "Zenith Bank"
+	},
+
+	{
+		"id": "7",
+		"acquirer": "Access Bank",
+		"merchant_name": "James Haliday Ventures",
+		"rrn": "09827736andb1234567r",
+		"transaction_reference": "ITEX-ab5673sdej3647s3",
+		"amount": "NGN 234,567,890",
+		"account": "Zenith Bank"
+	},
+	
+	{
+		"id": "8",
+		"acquirer": "Access Bank",
+		"merchant_name": "Jameson Winery",
+		"rrn": "09827736andb1234567r",
+		"transaction_reference": "ITEX-ab5673sdej3647s3",
+		"amount": "NGN 234,567,890",
+		"account": "Access Bank"
+	},
+		
+	{
+		"id": "9",
+		"acquirer": "Access Bank",
+		"merchant_name": "Kingdom Chaser Inc",
+		"rrn": "09827736andb1234567r",
+		"transaction_reference": "ITEX-ab5673sdej3647s3",
+		"amount": "NGN 234,567,890",
+		"account": "Zenith Bank"
+	},
+	
+	{
+		"id": "10",
+		"acquirer": "Access Bank",
+		"merchant_name": "James Haliday Ventures",
+		"rrn": "09827736andb1234567r",
+		"transaction_reference": "ITEX-ab5673sdej3647s3",
+		"amount": "NGN 234,567,890",
+		"account": "Zenith Bank"
+	}
+
+]
