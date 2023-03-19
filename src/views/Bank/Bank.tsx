@@ -261,9 +261,6 @@ function Bank() {
 	// 	fetchFunction();
 	// }, [rowsPerPage, pageNumber, bearer, approved]);
 
-	const modalFunc = () => {
-		setReset(true);
-	};
 
 	useEffect(() => {
 		if (apiRes && apiRes?.length) {
