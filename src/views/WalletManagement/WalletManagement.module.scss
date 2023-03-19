@@ -133,7 +133,7 @@
 .headerFlexRight {
     display: flex;
     flex-wrap: wrap;
-    justify-content: end;
+    justify-content: flex-end;
 }
 
 .headerAmount {
@@ -189,7 +189,7 @@
 .blacklist {
     color: #EB5757;
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
     align-items: center;
     flex-wrap: wrap;
     font-size: 13px;
