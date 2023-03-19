@@ -127,20 +127,20 @@ function ChargebackExport() {
 		setTotalRows(Number(apiRes?.length));
 	}, [apiRes]);
 
-	const editBusinessHandler = () => {
-		dispatch(
-			openModalAndSetContent({
-				modalStyles: {
-					padding: 0,
-				},
-				modalContent: (
-					<div className={styles.modalDiv}>
-						<AddTerminal />
-					</div>
-				),
-			})
-		);
-	};
+	// const editBusinessHandler = () => {
+	// 	dispatch(
+	// 		openModalAndSetContent({
+	// 			modalStyles: {
+	// 				padding: 0,
+	// 			},
+	// 			modalContent: (
+	// 				<div className={styles.modalDiv}>
+	// 					<AddTerminal />
+	// 				</div>
+	// 			),
+	// 		})
+	// 	);
+	// };
 
 	//ENDS FUNCTIONS
 
@@ -223,14 +223,10 @@ function ChargebackExport() {
 				</div>
 				<div className={styles.header_right}>
 					<div>
-						<button
-							className={styles.button_business_cancel}>
-							Cancel
-						</button>
+						<button className={styles.button_business_cancel}>Cancel</button>
 					</div>
 					<div className={styles.button_business}>
-						<button
-							className={styles.button_business_button}>
+						<button className={styles.button_business_button}>
 							Log chargeback
 						</button>
 					</div>
