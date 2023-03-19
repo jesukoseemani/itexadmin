@@ -13,7 +13,7 @@ const UploadChargeback = () => {
 			<NavBar name='All Chargebacks' />
 			<div className={styles.error_wrapper}>
 				<div style={{ display: 'flex', alignItems: 'center' }}>
-					<FontAwesomeIcon icon={faExclamationCircle} color='red' />
+					{/* <FontAwesomeIcon icon={fasExclamationCircle} color='red' /> */}
 					<p className={styles.error_errorcontent}>
 						227 entries contain errors-
 					</p>
@@ -23,7 +23,7 @@ const UploadChargeback = () => {
 					</p>
 				</div>
 				<div>
-					<FontAwesomeIcon icon={faTimes} color='#000000' />
+					{/* <FontAwesomeIcon icon={faTimes} color='#000000' /> */}
 				</div>
 			</div>
 			<div style={{ margin: '20px 50px' }}>

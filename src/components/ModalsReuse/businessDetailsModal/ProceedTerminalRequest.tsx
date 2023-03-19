@@ -7,7 +7,6 @@ import MuiMenuItem from '@material-ui/core/MenuItem';
 import { closeModal } from '../../../redux/actions/modal/modalActions';
 import { useDispatch } from 'react-redux';
 import { openModalAndSetContent } from '../../../redux/actions/modal/modalActions';
-import { Checkbox } from '../../../components/Checlbox';
 import { makeStyles } from '@material-ui/core';
 import ConfirmTerminalApproval from './ConfirmTerminalApproval';
 
@@ -110,9 +109,9 @@ function ProceedTerminalRequest({ apiRes }: any) {
 				{
 					id: 'selection',
 					Header: ({ getToggleAllRowsSelectedProps }:any) => (
-						<Checkbox {...getToggleAllRowsSelectedProps()} />
+						<div></div>
 					),
-					Cell: ({ row }:any) => <Checkbox {...row.getToggleRowSelectedProps()} />,
+					Cell: ({ row }:any) => <div></div>,
 				},
 				...columns,
 			]);

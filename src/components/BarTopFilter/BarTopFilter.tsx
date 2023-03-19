@@ -83,7 +83,7 @@ function BarTopFilter({ title }: { title?: string }) {
 							inputFormat='MM/dd/yyyy'
 							value={value}
 							onChange={handleChangeFrom}
-							renderInput={(params) => (
+							renderInput={(params: any) => (
 								<TextField className={classes.root} {...params} />
 							)}
 						/>
@@ -95,7 +95,7 @@ function BarTopFilter({ title }: { title?: string }) {
 							inputFormat='MM/dd/yyyy'
 							value={valueTo}
 							onChange={handleChangeTo}
-							renderInput={(params) => (
+							renderInput={(params: any) => (
 								<TextField className={classes.root} {...params} />
 							)}
 						/>
