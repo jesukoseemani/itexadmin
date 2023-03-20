@@ -1,4 +1,4 @@
-import React, { useState, ReactNode, useEffect, CSSProperties } from 'react';
+import React, { useState, ReactNode, useEffect, CSSProperties, ChangeEvent } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -29,10 +29,7 @@ export default function ZijelaTabs({
 }: TabsType) {
 	const [value, setValue] = useState(0);
 	const [display, setDisplay] = useState<ReactNode>('');
-	const handleChange = (
-		event: React.ChangeEvent<Record<string, unknown>>,
-		newValue: number
-	) => {
+	const handleChange = (event: ChangeEvent<{}>, newValue: any) => {
 		setValue(newValue);
 	};
 
