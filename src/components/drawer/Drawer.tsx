@@ -67,19 +67,19 @@ const transactionManagement = [
 ];
 
 const feesAndLimits = [
-	{
-		id: 'DPF',
-		title: 'Fees',
-		route: '/fees',
-		icon: <DonutLargeIcon />,
-	},
+	// {
+	// 	id: 'DPF',
+	// 	title: 'Fees',
+	// 	route: '/fees',
+	// 	icon: <DonutLargeIcon />,
+	// },
 
-	{
-		id: 'DFL',
-		title: 'Limits',
-		route: '/fees/limits',
-		icon: <DonutSmallIcon />,
-	},
+	// {
+	// 	id: 'DFL',
+	// 	title: 'Limits',
+	// 	route: '/fees/limits',
+	// 	icon: <DonutSmallIcon />,
+	// },
 
 	{
 		id: 'DAP',
@@ -96,14 +96,14 @@ const feesAndLimits = [
 	},
 ];
 
-const walletManagement = [
-	{
-		id: 'DC',
-		title: 'Wallet Management',
-		route: '/walletmgt',
-		icon: <AccountBalanceWalletIcon />,
-	},
-];
+// const walletManagement = [
+// 	{
+// 		id: 'DC',
+// 		title: 'Wallet Management',
+// 		route: '/walletmgt',
+// 		icon: <AccountBalanceWalletIcon />,
+// 	},
+// ];
 
 const settlement = [
 	{
@@ -112,99 +112,99 @@ const settlement = [
 		route: '/settlements',
 		icon: <ListIcon />,
 	},
-	{
-		id: 'DSR',
-		title: 'Reconciliation',
-		route: '/settlements/reconciliation',
-		icon: <FactCheckIcon />,
-	},
-	{
-		id: 'DSP',
-		title: 'Pending Approval',
-		route: '/settlements/pending_approval',
-		icon: <PendingIcon />,
-	},
+	// {
+	// 	id: 'DSR',
+	// 	title: 'Reconciliation',
+	// 	route: '/settlements/reconciliation',
+	// 	icon: <FactCheckIcon />,
+	// },
+	// {
+	// 	id: 'DSP',
+	// 	title: 'Pending Approval',
+	// 	route: '/settlements/pending_approval',
+	// 	icon: <PendingIcon />,
+	// },
 ];
 
-const compliance = [
+// const compliance = [
+// 	{
+// 		id: 'DAC',
+// 		title: 'Compliance',
+// 		route: '/compliance',
+// 		icon: <AssuredWorkloadIcon />,
+// 	},
+// ];
+
+// const pointOfSale = [
+// 	{
+// 		id: 'DPOS',
+// 		title: 'POS',
+// 		route: '/pos',
+// 		icon: <PointOfSaleIcon />,
+// 	},
+// ];
+
+// const legal = [
+// 	{
+// 		id: 'DLB',
+// 		title: 'Legal',
+// 		route: '/legal',
+// 		icon: <PolicyIcon />,
+// 	},
+// ];
+
+const customerManagement = [
 	{
-		id: 'DAC',
-		title: 'Compliance',
-		route: '/compliance',
+		id: 'DBCM',
+		title: 'Customer',
+		route: '/customermgt',
 		icon: <AssuredWorkloadIcon />,
 	},
 ];
 
-const pointOfSale = [
-	{
-		id: 'DPOS',
-		title: 'POS',
-		route: '/pos',
-		icon: <PointOfSaleIcon />,
-	},
-];
+// const fraudRiskManagement = [
+// 	{
+// 		id: 'DFMS',
+// 		title: 'Sales',
+// 		route: '/fraudmgt_sales',
+// 		icon: <PriceCheckIcon />,
+// 	},
 
-const legal = [
-	{
-		id: 'DLB',
-		title: 'Legal',
-		route: '/legal',
-		icon: <PolicyIcon />,
-	},
-];
+// 	{
+// 		id: 'DFCB',
+// 		title: 'Chargeback Breakdown',
+// 		route: '/fraudmgt/chargeback',
+// 		icon: <MapsHomeWorkIcon />,
+// 	},
 
-const Bank = [
-	{
-		id: 'DBBB',
-		title: 'Bank Balances',
-		route: '/bank',
-		icon: <AssuredWorkloadIcon />,
-	},
-];
+// 	{
+// 		id: 'DFCF',
+// 		title: 'CB & Fraud Summary',
+// 		route: '/fraudmgt/fraud_summary',
+// 		icon: <SummarizeIcon />,
+// 	},
 
-const fraudRiskManagement = [
-	{
-		id: 'DFMS',
-		title: 'Sales',
-		route: '/fraudmgt_sales',
-		icon: <PriceCheckIcon />,
-	},
+// 	{
+// 		id: 'DFCR',
+// 		title: 'CB & Fraud Ratio',
+// 		route: '/fraudmgt/fraud_ratio',
+// 		icon: <AspectRatioIcon />,
+// 	},
 
-	{
-		id: 'DFCB',
-		title: 'Chargeback Breakdown',
-		route: '/fraudmgt/chargeback',
-		icon: <MapsHomeWorkIcon />,
-	},
+// 	{
+// 		id: 'DFRA',
+// 		title: 'Assessment Fee',
+// 		route: '/fraudmgt/fraud_assessment_fee',
+// 		icon: <AssessmentIcon />,
+// 	},
 
-	{
-		id: 'DFCF',
-		title: 'CB & Fraud Summary',
-		route: '/fraudmgt/fraud_summary',
-		icon: <SummarizeIcon />,
-	},
-
-	{
-		id: 'DFCR',
-		title: 'CB & Fraud Ratio',
-		route: '/fraudmgt/fraud_ratio',
-		icon: <AspectRatioIcon />,
-	},
-
-	{
-		id: 'DFRA',
-		title: 'Assessment Fee',
-		route: '/fraudmgt/fraud_assessment_fee',
-		icon: <AssessmentIcon />,
-	},
-
-	{
-		id: 'DFRAT',
-		title: 'Audit Trail',
-		route: '/fraudmgt/audittrail',
-		icon: <ReceiptLongIcon />,
-	},
-];
+// 	{
+// 		id: 'DFRAT',
+// 		title: 'Audit Trail',
+// 		route: '/fraudmgt/audittrail',
+// 		icon: <ReceiptLongIcon />,
+// 	},
+// ];
 
 const chargebackManagement = [
 	{
@@ -214,6 +214,11 @@ const chargebackManagement = [
 		icon: <WarehouseIcon />,
 	},
 
+	
+];
+const refundManagement = [
+	
+
 	{
 		id: 'DCR',
 		title: 'Refunds',
@@ -221,6 +226,7 @@ const chargebackManagement = [
 		icon: <ChangeCircleIcon />,
 	},
 ];
+
 
 const usersAndPermissions = [
 	{
@@ -455,7 +461,7 @@ export default function MiniDrawer() {
 								/>
 							))}
 
-							<h2 style={styledH2} className={styles.sectionTitle}>
+							{/* <h2 style={styledH2} className={styles.sectionTitle}>
 								Fees &amp; Limits
 							</h2>
 							{feesAndLimits.map(({ route, title, id, icon }) => (
@@ -467,12 +473,12 @@ export default function MiniDrawer() {
 									icon={icon}
 									open={open}
 								/>
-							))}
+							))} */}
 
-							<h2 style={styledH2} className={styles.sectionTitle}>
+							{/* <h2 style={styledH2} className={styles.sectionTitle}>
 								Wallet Management
-							</h2>
-							{walletManagement.map(({ route, title, id, icon }) => (
+							</h2> */}
+							{/* {walletManagement.map(({ route, title, id, icon }) => (
 								<ComponentListItem
 									key={id}
 									route={route}
@@ -481,12 +487,12 @@ export default function MiniDrawer() {
 									icon={icon}
 									open={open}
 								/>
-							))}
+							))} */}
 
-							<h2 style={styledH2} className={styles.sectionTitle}>
-								Bank
+							 <h2 style={styledH2} className={styles.sectionTitle}>
+								Customer Management
 							</h2>
-							{Bank.map(({ route, title, id, icon }) => (
+							{customerManagement.map(({ route, title, id, icon }) => (
 								<ComponentListItem
 									key={id}
 									route={route}
@@ -495,7 +501,7 @@ export default function MiniDrawer() {
 									icon={icon}
 									open={open}
 								/>
-							))}
+							))} 
 
 							<h2 style={styledH2} className={styles.sectionTitle}>
 								Settlement
@@ -511,7 +517,7 @@ export default function MiniDrawer() {
 								/>
 							))}
 
-							<h2 style={styledH2} className={styles.sectionTitle}>
+							{/* <h2 style={styledH2} className={styles.sectionTitle}>
 								Compliance
 							</h2>
 							{compliance.map(({ route, title, id, icon }) => (
@@ -523,12 +529,12 @@ export default function MiniDrawer() {
 									icon={icon}
 									open={open}
 								/>
-							))}
+							))} */}
 
-							<h2 style={styledH2} className={styles.sectionTitle}>
+							{/* <h2 style={styledH2} className={styles.sectionTitle}>
 								Point Of Sale
-							</h2>
-							{pointOfSale.map(({ route, title, id, icon }) => (
+							</h2> */}
+							{/* {pointOfSale.map(({ route, title, id, icon }) => (
 								<ComponentListItem
 									key={id}
 									route={route}
@@ -565,12 +571,25 @@ export default function MiniDrawer() {
 									icon={icon}
 									open={open}
 								/>
-							))}
+							))} */}
 
 							<h2 style={styledH2} className={styles.sectionTitle}>
 								Chargeback Management
 							</h2>
 							{chargebackManagement.map(({ route, title, id, icon }) => (
+								<ComponentListItem
+									key={id}
+									route={route}
+									title={title}
+									id={id}	
+									icon={icon}
+									open={open}
+								/>
+							))}
+							<h2 style={styledH2} className={styles.sectionTitle}>
+								Refund Management
+							</h2>
+							{refundManagement.map(({ route, title, id, icon }) => (
 								<ComponentListItem
 									key={id}
 									route={route}

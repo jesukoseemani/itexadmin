@@ -14,6 +14,9 @@ import axios from 'axios';
 import ActivityTypes from '../../types/ActivityTypes';
 import OperantTable from '../../components/table/OperantTable';
 import UnflagTransactions from '../../components/transactionsModals/UnflagTransactions';
+import { closeLoader, openLoader } from '../../redux/actions/loader/loaderActions';
+import { openToastAndSetContent } from '../../redux/actions/toast/toastActions';
+import { SettlementModuleData } from '../../types/SettlementTypes';
 
 const SettlementDetails = () => {
 	interface ParamTypes {
@@ -41,39 +44,74 @@ const SettlementDetails = () => {
 	const [rowsPerPage, setRowsPerPage] = useState<string | number | undefined>(
 		5
 	);
+	const [fromDate, setFromDate] = useState('');
+	const [toDate, setToDate] = useState('');
+
+
 	const [pageNumber, setPageNumber] = useState<number>(1);
 	const [totalRows, setTotalRows] = useState<number>(0);
 	const [dataValue, setDataValue] = useState<number | string>(0);
 	const [open, setOpen] = useState<boolean>(false);
 
-	const history = useHistory();
+	const [settlement, setSettlement] = useState<any>()
 
+	const history = useHistory();
 	const changePage = (value: number) => {
 		setPageNumber(value);
 	};
+
+
+
+
+
 
 	const limit = (value: number) => {
 		setRowsPerPage(value);
 	};
 
-	useEffect(() => {
-		axios
-			.get<GetSettlements>(
-				`/admin/settlement/upload?uploaduniquereference=${id}`
-			)
-			.then((res) => {
-				setApiRes(res.data);
-				// dispatch(saveOpen(false));
-			});
-	}, [rowsPerPage, pageNumber]);
+	// useEffect(() => {
+	// 	axios
+	// 		.get<GetSettlements>(
+	// 			`/settlement/upload?uploaduniquereference=${id}`
+	// 		)
+	// 		.then((res) => {
+	// 			setApiRes(res.data);
+	// 			// dispatch(saveOpen(false));
+	// 		});
+	// }, [rowsPerPage, pageNumber]);
 
-	useEffect(() => {
-		axios
-			.get<TransactionManagementApiTypes>(`/admin/transactions?`)
-			.then((res) => {
-				setApiTrans(res.data);
-			});
-	}, []);
+
+
+	const gettransactionlist = async () => {
+		try {
+			const { data } = await axios.get(
+				`/settlement/${id}/transactions?perpage=${rowsPerPage}&page=${pageNumber}`
+			);
+			console.log(data, "lists")
+			console.log(id, "id")
+			setSettlement(data)
+		} catch (err: any) {
+			dispatch(closeLoader());
+			const { message } = err?.response.data;
+			dispatch(
+				dispatch(
+					openToastAndSetContent({
+						toastContent: message,
+						toastStyles: {
+							backgroundColor: 'red',
+						},
+					})
+				)
+			);
+
+		} finally {
+			dispatch(closeLoader());
+
+		}
+	}
+	// useEffect(() => {
+	// }, [id]);
+
 	const dispatch = useDispatch();
 
 	const handleBackToSettlements = () => {
@@ -112,12 +150,12 @@ const SettlementDetails = () => {
 
 	interface Column {
 		id:
-			| 'amount'
-			| 'status'
-			| 'customer_id'
-			| 'business_name'
-			| 'transaction_ref'
-			| 'date';
+		| 'amount'
+		| 'status'
+		| 'customer_id'
+		| 'business_name'
+		| 'transaction_ref'
+		| 'date';
 		label: string;
 		minWidth?: number;
 		align?: 'right' | 'left' | 'center';
@@ -174,7 +212,7 @@ const SettlementDetails = () => {
 	useEffect(() => {
 		const newRowOptions: any[] = [];
 		apiTrans &&
-			apiTrans?.transactions.map((each: any) =>
+			apiTrans?.transactions?.map((each: any) =>
 				newRowOptions.push(
 					TransactionRowTab(
 						each.transaction.linkingreference,
@@ -190,6 +228,51 @@ const SettlementDetails = () => {
 			);
 		setRows(newRowOptions);
 	}, [apiTrans, TransactionRowTab]);
+
+
+
+
+
+
+
+
+
+
+	// settlement by id
+	const getSettlementbyId = async () => {
+		dispatch(openLoader());
+		try {
+			const { data } = await axios.get<SettlementModuleData>(`/settlement/${id}`)
+			setSettlement(data)
+			console.log(data, "settlementid")
+		} catch (err: any) {
+			dispatch(closeLoader());
+			const { message } = err?.response.data;
+			dispatch(
+				dispatch(
+					openToastAndSetContent({
+						toastContent: message,
+						toastStyles: {
+							backgroundColor: 'red',
+						},
+					})
+				)
+			);
+
+		} finally {
+			dispatch(closeLoader());
+
+		}
+
+	}
+
+	useEffect(() => {
+		getSettlementbyId()
+		gettransactionlist()
+
+	}, [id])
+
+
 
 	return (
 		<div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
@@ -208,7 +291,8 @@ const SettlementDetails = () => {
 							<div>
 								<span className={styles.headerAmount}>
 									{/* NGN {apiRes?.settlements[0]?.amount} */}
-									NGN 50,000
+									NGN {settlement?.settlement?.amount}
+
 								</span>
 								<button className={styles.buttonSuccessful}>Live</button>
 								<button className={styles.buttonPending}>Settlement due</button>
@@ -240,8 +324,9 @@ const SettlementDetails = () => {
 							<Grid item md={2} xs={6} lg={2}>
 								<p className={styles.header}>Transaction date</p>
 								<p className={styles.detail}>
-									{/* {apiRes?.settlements[0]?.initiatedat} */}Aug 13 2020
-									{/* <span className={styles.header}>2:21 PM</span> */}
+									{/* {apiRes?.settlements[0]?.initiatedat} */}
+									{settlement?.settlement?.startedat}
+
 								</p>
 							</Grid>
 
@@ -249,7 +334,7 @@ const SettlementDetails = () => {
 								<p className={styles.header}>Settlement date</p>
 								<p className={styles.detail}>
 									{/* {apiRes?.settlements[0]?.initiatedat} */}
-									Aug 13 2020
+									{settlement?.settlement?.settlementdate}
 								</p>
 							</Grid>
 
@@ -257,24 +342,28 @@ const SettlementDetails = () => {
 								<p className={styles.header}>Merchant ID</p>
 								<p className={styles.detail}>
 									{/* {apiRes?.settlements[0]?.settlementid} */}
-									0912345
+									{settlement?.settlement?.settlementid}
+
 								</p>
 							</Grid>
 
 							<Grid item md={2} xs={6} lg={2}>
-								<p className={styles.header}>Merchant Name</p>
+								<p className={styles.header}>Merchant email</p>
 								<p className={styles.detail}>
 									{/* {apiRes?.settlements[0]?.tradingname} */}
-									James Haliday
+									{settlement?.settlement?.merchantaccount?.businessemail}
+
 								</p>
 							</Grid>
 							<Grid item md={2} xs={6} lg={2}>
-								<p className={styles.header}>Total transaction amount</p>
+								<p className={styles.header}>Merchant phone</p>
 								<p className={styles.detail}>
 									{/* {apiRes?.settlements[0]?.amount} */}
-									NGN 50,000
+									{settlement?.settlement?.merchantaccount?.businessphone}
+
 								</p>
 							</Grid>
+
 						</Grid>
 
 						<div className={styles.mt1}>
@@ -283,27 +372,32 @@ const SettlementDetails = () => {
 									<p className={styles.header}>Total fee</p>
 									<p className={styles.detail}>
 										{/* <span className={styles.header}>2:21 PM</span> */}
-										NGN 45
+										NGN {settlement?.settlement?.chargeamount}
+
 									</p>
 								</Grid>
 
 								<Grid item md={2} xs={6} lg={2}>
 									<p className={styles.header}>Settlement type</p>
 									<p className={styles.detail}>
-										{/* {apiRes?.settlements[0]?.settlementaccounttype} */}
-										Bank account
+										{settlement?.settlement?.settlementaccounttype}
+
 									</p>
 								</Grid>
 
 								<Grid item md={3} xs={6} lg={3}>
-									<p className={styles.header}>Settlement bank</p>
-									<p className={styles.detail}>Access Bank</p>
+									<p className={styles.header}>Settlement Account name</p>
+									<p className={styles.detail}>
+										{settlement?.settlement?.settlementaccountname}
+
+									</p>
 								</Grid>
 								<Grid item md={2} xs={6} lg={2}>
 									<p className={styles.header}>Bank Code</p>
 									<p className={styles.detail}>
 										{/* {apiRes?.settlements[0]?.settlementbankcode} */}
-										0912345
+										{settlement?.settlement?.settlementbankcode}
+
 									</p>
 								</Grid>
 
@@ -311,7 +405,8 @@ const SettlementDetails = () => {
 									<p className={styles.header}>Account number</p>
 									<p className={styles.detail}>
 										{/* {apiRes?.settlements[0]?.settlementaccountnumber} */}
-										1234567819
+										{settlement?.settlement?.settlementaccountnumber}
+
 									</p>
 								</Grid>
 							</Grid>

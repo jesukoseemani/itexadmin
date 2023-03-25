@@ -83,7 +83,7 @@ const SignIn = () => {
 							});
 						} else {
 							axios
-								.get('/utility/modules')
+								.get('/v1/utility/modules')
 								.then((respond: any) => {
 									dispatch(closeLoader());
 									const newPermission = userPermissionHandler(

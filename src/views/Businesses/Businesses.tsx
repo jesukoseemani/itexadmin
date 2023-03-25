@@ -98,6 +98,7 @@ function Businesses() {
 			setBusinesses(data);
 			dispatch(closeLoader());
 			setBearer(false);
+			console.log(data, "data")
 		} catch (error: any) {
 			dispatch(closeLoader());
 			const { message } = error.response.data;

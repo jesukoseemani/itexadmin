@@ -68,7 +68,7 @@ function PermissionModal({
 
 	useEffect(() => {
 		axios
-			.get<any>(`/utility/modules`)
+			.get<any>(`/v1/utility/modules`)
 			.then((res) => {
 				setModule(res.data);
 			})

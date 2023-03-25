@@ -113,6 +113,7 @@ function TransactionManagement() {
 			setTransaction(data);
 			dispatch(closeLoader());
 			setBearer(false);
+			// console.log(transaction)
 		} catch (error: any) {
 			dispatch(closeLoader());
 			const { message } = error.response.data;
@@ -139,7 +140,8 @@ function TransactionManagement() {
 
 	useEffect(() => {
 		Object.values(contentAction).length > 0 &&
-			history.push(`/transactionmgt/${contentAction?.transaction_ref}`);
+		history.push(`/transactionmgt/${contentAction?.paymentid}`);
+		console.log(contentAction)
 	}, [contentAction]);
 
 	const dataBusinesses = () => {
@@ -154,6 +156,7 @@ function TransactionManagement() {
 					transaction_ref: transaction.linkingreference,
 					amount: `${transaction.currency}${transaction.amount.toFixed(2)}`,
 					payment_type: transaction.merchantcode,
+					paymentid:transaction.paymentid,
 					status: (
 						<StatusView
 							status={

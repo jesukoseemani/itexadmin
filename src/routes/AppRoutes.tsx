@@ -65,6 +65,7 @@ import Modules from '../views/UsersAndPermissions/Modules';
 import BusinessTab from '../components/businessDetails/BusinessTab';
 import ChargebackNDetails from '../views/ChargebackManagement/ChargebackDetails';
 import ChargebackDetailsNew from '../views/ChargebackManagement/ChargebackDetails';
+import Customermgt from '../views/customer/Customermgt';
 
 export default function AppRoutes() {
 	const dispatch = useDispatch();
@@ -316,12 +317,21 @@ export default function AppRoutes() {
 								component={Legal}
 								AuthUser={loadingState}
 							/>
+							<ProtectedRoute
+								exact
+								path='/customermgt'
+								component={Customermgt}
+								AuthUser={loadingState}
+							/>
 							{/* <ProtectedRoute
               exact
               path="/legal/partners_banks"
               component={PartnersBanksProvider}
               AuthUser={loadingState}
             /> */}
+
+
+
 							<ProtectedRoute
 								exact
 								path='/fraudmgt_sales'

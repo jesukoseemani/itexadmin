@@ -46,7 +46,7 @@ interface dataTypes {
 	date: string;
 }
 
-const Settlements = () => {
+const DueSettlements = () => {
 	const [tabValue, setTabValue] = React.useState(0);
 	const [settlementLogged, setSettlementLogged] = useState<boolean>(false);
 	const [isFilterModalOpen, setIsFilterModalOpen] = useState<boolean>(false);
@@ -244,12 +244,6 @@ const Settlements = () => {
 		setRowsPerPage(value);
 	};
 
-	// useEffect(() => {
-	// 	if (open && dataValue !== null) {
-	// 		history.push(`/settlement/${dataValue}`);
-	// 	}
-	// }, [dataValue, open]);
-
 
 	const { access_token } = useSelector((state) => state?.authPayReducer?.auth);
 
@@ -257,9 +251,11 @@ const Settlements = () => {
 		dispatch(openLoader());
 		try {
 			const { data } = await axios.get(
-				`/settlement?fromdate=${fromDate}&todate=${toDate}&perpage=${rowsPerPage}&page=${pageNumber}`
+				`/settlement/due/?fromdate=${fromDate}&todate=${toDate}&perpage=${rowsPerPage}&page=${pageNumber}`
 			);
+            console.log(data, "due settlement")
 			setSettlement(data)
+            
 			dispatch(closeLoader());
 			setBearer(false);
 		} catch (error: any) {
@@ -326,198 +322,13 @@ const Settlements = () => {
 		setTableRow(dataBusinesses());
 	}, [settlement?.settlements]);
 
-
-
-
-
-	// download settlement list
-	const handleDownloadSettlement = async () => {
-		dispatch(openLoader());
-
-		try {
-			const { data } = await axios.get(`/settlement/download?fromdate=${fromDate}&todate=${toDate}&perpage=${rowsPerPage}&page=${pageNumber}`)
-			console.log(data)
-		} catch (error:any) {
-			dispatch(closeLoader());
-			const { message } = error.response.data;
-			dispatch(
-				dispatch(
-					openToastAndSetContent({
-						toastContent: message,
-						toastStyles: {
-							backgroundColor: 'red',
-						},
-					})
-				)
-			);
-		}finally{
-			dispatch(closeLoader());
-
-		}
-	}
-
+	
 	return (
 		<div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-			<NavBar name='' />
 
 			<Box sx={{ width: '100%', marginTop: '1rem' }}>
-				<Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-					<Tabs
-						style={{ padding: '0 1rem', margin: '0' }}
-						value={tabValue}
-						onChange={handleChange}
-						aria-label='basic tabs example'
-						TabIndicatorProps={{
-							style: {
-								background: '#27AE60',
-								borderRadius: '8px',
-								height: '4px',
-							},
-						}}>
-						<Tab
-							label='All Settlements'
-							style={{
-								margin: '0 1rem',
-								textTransform: 'capitalize',
-								color: tabValue === 0 ? '#27AE60' : '#333333',
-							}}
-						/>
-						<Tab
-							label='settlements Due'
-							style={{
-								textTransform: 'capitalize',
-								margin: '0 1rem',
-								color: tabValue === 1 ? '#27AE60' : '#333333',
-							}}
-						/>
-						{/* <Tab
-							label='Failed settlements'
-							style={{
-								textTransform: 'capitalize',
-								margin: '0 1rem',
-								color: value === 2 ? '#27AE60' : '#333333',
-							}}
-						/>
-						<Tab
-							label='Reports'
-							style={{
-								textTransform: 'capitalize',
-								margin: '0 1rem',
-								color: value === 3 ? '#27AE60' : '#333333',
-							}}
-						/> */}
-					</Tabs>
-				</Box>
-				<div className={styles.tableHeader}>
-					<div className={styles.tableHeaderLeft}>
-						{/* <p className={styles.tableTitle}>
-							{
-								apiRes?.filter((item: dataTypes) => item.status === 'Due')
-									.length
-							}{' '}
-							{value === 0
-								? 'settlement due fees'
-								: value === 1
-								? 'Reviewed settlements'
-								: value === 2
-								? 'Failed settlements'
-								: 'Reports'}
-						</p> */}
-					</div>
-					<div className={styles.tableHeaderRight}>
-						<div>
-							<button
-								onClick={() => setIsFilterModalOpen(true)}
-								className={styles.button1}>
-								<span className={styles.buttonSpan}>
-									All Settlements
-									<ArrowDropDownIcon />
-								</span>
-							</button>
-
-
-
-							<button
-								className={styles.button1}
-								id='download-menu'
-								aria-controls={openDownload ? 'download-menu' : undefined}
-								aria-haspopup='true'
-								aria-expanded={openDownload ? 'true' : undefined}
-								onClick={handleMenuDownloadClick}>
-								<p className={styles.buttonSpan}>
-									Download
-									<span className={styles.mlhalf}>
-										<CloudDownloadIcon style={{ fontSize: 15 }} />
-									</span>
-								</p>
-							</button>
-
-							<Menu
-								id='download-menu'
-								anchorEl={anchorElDownload}
-								open={showDownload}
-								onClose={handleMenuDownloadClose}
-								MenuListProps={{
-									'aria-labelledby': 'log-refund-button',
-								}}
-								PaperProps={{
-									style: {
-										width: '150px',
-										padding: '.25rem',
-										textAlign: 'center',
-									},
-								}}>
-								<MenuItem onClick={handleDownloadSettlement}>
-									<p style={{ padding: '.4rem', fontSize: '0.7rem' }}>CSV</p>
-								</MenuItem>
-								<Divider />
-								<MenuItem>
-									<p style={{ padding: '.4rem', fontSize: '0.7rem' }}>Excel</p>
-								</MenuItem>
-								<Divider />
-								<MenuItem>
-									<p style={{ padding: '.4rem', fontSize: '0.7rem' }}>Pdf</p>
-								</MenuItem>
-							</Menu>
-
-							<button
-								className={styles.buttonAdd}
-								id='log-refund-button'
-								aria-controls={open ? 'refund-menu' : undefined}
-								aria-haspopup='true'
-								aria-expanded={open ? 'true' : undefined}
-								onClick={handleMenuClick}>
-								Log settlement
-							</button>
-							<Menu
-								id='refund-menu'
-								anchorEl={anchorEl}
-								open={show}
-								onClose={handleMenuClose}
-								MenuListProps={{
-									'aria-labelledby': 'log-refund-button',
-								}}
-								PaperProps={{
-									style: {
-										maxWidth: '150px',
-										padding: '.25rem',
-									},
-								}}>
-								<MenuItem onClick={openSingleModal}>
-									<p style={{ padding: '.4rem', fontSize: '0.7rem' }}>
-										Single settlement
-									</p>
-								</MenuItem>
-								<Divider />
-								<MenuItem onClick={openBulkModal}>
-									<p style={{ padding: '.4rem', fontSize: '0.7rem' }}>
-										Bulk settlement
-									</p>
-								</MenuItem>
-							</Menu>
-						</div>
-					</div>
-				</div>
+			
+				
 				<TabPanel value={tabValue} index={0}>
 					<div className={styles.m1}>
 						{/* <OperantTable
@@ -568,21 +379,10 @@ const Settlements = () => {
 					</div>
 				</TabPanel>
 
-				<TabPanel value={tabValue} index={1}>
-					<DueSettlement />
-
-				</TabPanel>
-
-				{/* <TabPanel value={tabValue} index={2}>
-					<DueSettlement />
-				</TabPanel> */}
-
-				{/* <TabPanel value={tabValue} index={3}>
-					<Report />
-				</TabPanel> */}
+				
 			</Box>
 		</div>
 	);
 };
 
-export default Settlements;
+export default DueSettlements;
