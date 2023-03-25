@@ -76,10 +76,13 @@ export default function AppRoutes() {
 	const auth = useSelector((state) => state?.authPayReducer?.auth);
 	const access_token = auth?.access_token;
 
-	axios.defaults.headers.common.Authorization = `Bearer ${access_token}`;
+	console.log('access_token:', access_token);
+
+	axios.defaults.headers.common.authorization = `Bearer ${access_token}`;
 	axios.defaults.baseURL = process.env.REACT_APP_ROOT_URL;
-	axios.defaults.headers.post['Content-Type'] = 'application/json';
-	axios.defaults.headers.delete['Content-Type'] = 'application/json';
+	// axios.defaults.headers.post['Content-Type'] = 'application/json';
+	// axios.defaults.headers.delete['Content-Type'] = 'application/json';
+	// axios.defaults.headers.get['Content-Type'] = 'application/json';
 
 	axios?.interceptors?.response?.use(
 		(response) => {

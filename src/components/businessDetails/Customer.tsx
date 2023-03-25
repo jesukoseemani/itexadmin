@@ -93,7 +93,7 @@ function Customer({ id }: { id: number | undefined }) {
 		dispatch(openLoader());
 		try {
 			const { data } = await axios.get(
-				`/business/${id}/customers?status=${status}&date=${toDate}&search=${value}&perpage=${rowsPerPage}&page=${pageNumber}`
+				`/v1/business/${id}/customers?status=${status}&date=${toDate}&search=${value}&perpage=${rowsPerPage}&page=${pageNumber}`
 			);
 			setBusinesses(data);
 			dispatch(closeLoader());

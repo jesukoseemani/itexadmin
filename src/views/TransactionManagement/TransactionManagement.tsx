@@ -108,7 +108,7 @@ function TransactionManagement() {
 		dispatch(openLoader());
 		try {
 			const { data } = await axios.get(
-				`/transaction?fromdate=${fromDate}&todate=${toDate}&perpage=${rowsPerPage}&page=${pageNumber}`
+				`/v1/transaction?fromdate=${fromDate}&todate=${toDate}&perpage=${rowsPerPage}&page=${pageNumber}`
 			);
 			setTransaction(data);
 			dispatch(closeLoader());

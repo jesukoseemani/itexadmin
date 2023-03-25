@@ -92,7 +92,7 @@ function RecentSettlement({ id }: { id: number | undefined }) {
 	const fetchBusinesses = async () => {
 		dispatch(openLoader());
 		try {
-			const { data } = await axios.get(`/business/${id}/recent/settlement`);
+			const { data } = await axios.get(`/v1/business/${id}/recent/settlement`);
 			setBusinesses(data);
 			dispatch(closeLoader());
 			setBearer(false);

@@ -36,7 +36,7 @@ const TransactionDetails = () => {
 	const [apiRes, setApiRes] = useState<any>();
 
 	useEffect(() => {
-		axios.get<any>(`transaction/${id}`).then((res) => {
+		axios.get<any>(`/v1/transaction/${id}`).then((res) => {
 			setApiRes(res.data);
 		});
 	}, []);

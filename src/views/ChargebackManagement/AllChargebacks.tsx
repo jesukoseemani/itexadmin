@@ -111,7 +111,7 @@ function AllChargebacks() {
 		dispatch(openLoader());
 		try {
 			const { data } = await axios.get(
-				`/chargeback?perpage=${rowsPerPage}&page=${pageNumber}`
+				`/v1/chargeback?perpage=${rowsPerPage}&page=${pageNumber}`
 			);
 			setBusinesses(data);
 			dispatch(closeLoader());

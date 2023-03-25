@@ -35,7 +35,7 @@ const ChargebackDetailsNew = () => {
 	const fetchData = async () => {
 		dispatch(openLoader());
 		try {
-			const res: any = await axios.get(`/chargeback/${id}`);
+			const res: any = await axios.get(`/v1/chargeback/${id}`);
 			setChargebackDetails(res.data);
 			console.log(res);
 			dispatch(closeLoader());
