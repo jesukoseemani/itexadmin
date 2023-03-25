@@ -50,7 +50,7 @@ function BusinessTab() {
 	const [details, setDetails] = useState<BusinessDetailApiTypes>();
 
 	useEffect(() => {
-		axios.get<BusinessDetailApiTypes>(`/business/${id}`).then((res) => {
+		axios.get<BusinessDetailApiTypes>(`/v1/business/${id}`).then((res) => {
 			setDetails(res.data);
 		});
 	}, [id]);

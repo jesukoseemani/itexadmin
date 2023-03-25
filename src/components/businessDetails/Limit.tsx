@@ -96,7 +96,7 @@ function Limit({ id }: { id: number | undefined }) {
 	const fetchBusinesses = async () => {
 		dispatch(openLoader());
 		try {
-			const { data } = await axios.get(`/business/${id}/limit`);
+			const { data } = await axios.get(`/v1/business/${id}/limit`);
 			setBusinesses(data);
 			dispatch(closeLoader());
 			setBearer(false);

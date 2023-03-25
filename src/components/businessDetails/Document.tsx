@@ -72,7 +72,7 @@ function Document({ id }: { id: number | undefined }) {
 	const fetchBusinesses = async () => {
 		dispatch(openLoader());
 		try {
-			const data:any = await axios.get(`/business/${id}/documents`);
+			const data: any = await axios.get(`/v1/business/${id}/documents`);
 			 const docs = data.data.documents?.map((item:any, i: number) => ({...item, id: i + 1}) )
 			setBusinesses(docs);
 			dispatch(closeLoader());

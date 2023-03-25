@@ -93,7 +93,7 @@ function Refund() {
 		dispatch(openLoader());
 		try {
 			const { data } = await axios.get(
-				`/refund?perpage=${rowsPerPage}&page=${pageNumber}`
+				`/v1/refund?perpage=${rowsPerPage}&page=${pageNumber}`
 			);
 			setBusinesses(data);
 			dispatch(closeLoader());

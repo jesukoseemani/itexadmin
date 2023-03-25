@@ -92,7 +92,7 @@ function RecentTransactions({ id }: { id: number | undefined }) {
 	const fetchBusinesses = async () => {
 		dispatch(openLoader());
 		try {
-			const { data } = await axios.get(`/business/${id}/recent/transaction`);
+			const { data } = await axios.get(`/v1/business/${id}/recent/transaction`);
 			setBusinesses(data);
 			dispatch(closeLoader());
 			setBearer(false);

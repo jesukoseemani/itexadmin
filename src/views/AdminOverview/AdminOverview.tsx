@@ -22,7 +22,6 @@ interface businessData {
 	message: string;
 }
 
-
 const AdminOverview = () => {
 	const [businessData, setBusinessData] = useState<businessData>();
 	const [overviewData, setOverviewData] = useState<trendTypes>();
@@ -36,12 +35,11 @@ const AdminOverview = () => {
 	const [topBusinessByR, setTopBusinessByR] = useState<any>();
 	const [cardNetwork, setCardNetwork] = useState<any>();
 
-
 	const dispatch = useDispatch();
 
 	useEffect(() => {
 		axios
-			.get(`/auth/me`)
+			.get(`/v1/profile/me`)
 			.then((res) => {
 				dispatch(saveMe(res.data));
 			})
@@ -50,7 +48,7 @@ const AdminOverview = () => {
 
 	const trendTransaction = () => {
 		axios
-			.get<trendTypes>(`/trend/transactions`)
+			.get<trendTypes>(`/v1/trend/transactions`)
 			.then((res) => {
 				setOverviewData(res.data);
 				dispatch(
@@ -77,7 +75,7 @@ const AdminOverview = () => {
 
 	const trendBusiness = () => {
 		axios
-			.get<businessData>(`/trend/business`)
+			.get<businessData>(`/v1/trend/business`)
 			.then((res) => {
 				setBusinessData(res.data);
 
@@ -105,7 +103,7 @@ const AdminOverview = () => {
 
 	const trendSuccess = () => {
 		axios
-			.get<progressSuccessTypes>(`/trend/successtrxpercent`)
+			.get<progressSuccessTypes>(`/v1/trend/successtrxpercent`)
 			.then((res) => {
 				setProgressSuccessData(res.data);
 
@@ -131,37 +129,37 @@ const AdminOverview = () => {
 			});
 	};
 
-		const trendFailed = () => {
-			axios
-				.get<progressSuccessTypes>(`/trend/failtrxpercent`)
-				.then((res) => {
-					setProgressSuccessData(res.data);
+	const trendFailed = () => {
+		axios
+			.get<progressSuccessTypes>(`/v1/trend/failtrxpercent`)
+			.then((res) => {
+				setProgressSuccessData(res.data);
 
-					dispatch(
-						openToastAndSetContent({
-							toastContent: res?.data?.message,
-							toastStyles: {
-								backgroundColor: 'green',
-							},
-						})
-					);
-				})
-				.catch((err) => {
-					console.log(err);
-					dispatch(
-						openToastAndSetContent({
-							toastContent: err?.data?.message,
-							toastStyles: {
-								backgroundColor: 'red',
-							},
-						})
-					);
-				});
-		};
+				dispatch(
+					openToastAndSetContent({
+						toastContent: res?.data?.message,
+						toastStyles: {
+							backgroundColor: 'green',
+						},
+					})
+				);
+			})
+			.catch((err) => {
+				console.log(err);
+				dispatch(
+					openToastAndSetContent({
+						toastContent: err?.data?.message,
+						toastStyles: {
+							backgroundColor: 'red',
+						},
+					})
+				);
+			});
+	};
 
 	const topBusinessFN = () => {
 		axios
-			.get<any>(`/trend/topbusiness`)
+			.get<any>(`/v1/trend/topbusiness`)
 			.then((res) => {
 				setTopBusiness(res.data);
 
@@ -187,114 +185,114 @@ const AdminOverview = () => {
 			});
 	};
 
-		const topSBusinessFN = () => {
-			axios
-				.get<any>(`/trend/topbusinessbysuccess`)
-				.then((res) => {
-					setTopBusinessByS(res.data);
+	const topSBusinessFN = () => {
+		axios
+			.get<any>(`/v1/trend/topbusinessbysuccess`)
+			.then((res) => {
+				setTopBusinessByS(res.data);
 
-					dispatch(
-						openToastAndSetContent({
-							toastContent: res?.data?.message,
-							toastStyles: {
-								backgroundColor: 'green',
-							},
-						})
-					);
-				})
-				.catch((err) => {
-					console.log(err);
-					dispatch(
-						openToastAndSetContent({
-							toastContent: err?.data?.message,
-							toastStyles: {
-								backgroundColor: 'red',
-							},
-						})
-					);
-				});
-		};
-			const topFBusinessFN = () => {
-				axios
-					.get<any>(`/trend/topbusinessbyfail`)
-					.then((res) => {
-						setTopBusinessByF(res.data);
-
-						dispatch(
-							openToastAndSetContent({
-								toastContent: res?.data?.message,
-								toastStyles: {
-									backgroundColor: 'green',
-								},
-							})
-						);
+				dispatch(
+					openToastAndSetContent({
+						toastContent: res?.data?.message,
+						toastStyles: {
+							backgroundColor: 'green',
+						},
 					})
-					.catch((err) => {
-						console.log(err);
-						dispatch(
-							openToastAndSetContent({
-								toastContent: err?.data?.message,
-								toastStyles: {
-									backgroundColor: 'red',
-								},
-							})
-						);
-					});
-			};
-				const topRBusinessFN = () => {
-					axios
-						.get<any>(`/trend/topbusinessbyrefund`)
-						.then((res) => {
-							setTopBusinessByR(res.data);
+				);
+			})
+			.catch((err) => {
+				console.log(err);
+				dispatch(
+					openToastAndSetContent({
+						toastContent: err?.data?.message,
+						toastStyles: {
+							backgroundColor: 'red',
+						},
+					})
+				);
+			});
+	};
+	const topFBusinessFN = () => {
+		axios
+			.get<any>(`/v1/trend/topbusinessbyfail`)
+			.then((res) => {
+				setTopBusinessByF(res.data);
 
-							dispatch(
-								openToastAndSetContent({
-									toastContent: res?.data?.message,
-									toastStyles: {
-										backgroundColor: 'green',
-									},
-								})
-							);
-						})
-						.catch((err) => {
-							console.log(err);
-							dispatch(
-								openToastAndSetContent({
-									toastContent: err?.data?.message,
-									toastStyles: {
-										backgroundColor: 'red',
-									},
-								})
-							);
-						});
-				};
-					const cardNetworkFN = () => {
-						axios
-							.get<any>(`/trend/cardnetworks`)
-							.then((res) => {
-								setCardNetwork(res.data);
+				dispatch(
+					openToastAndSetContent({
+						toastContent: res?.data?.message,
+						toastStyles: {
+							backgroundColor: 'green',
+						},
+					})
+				);
+			})
+			.catch((err) => {
+				console.log(err);
+				dispatch(
+					openToastAndSetContent({
+						toastContent: err?.data?.message,
+						toastStyles: {
+							backgroundColor: 'red',
+						},
+					})
+				);
+			});
+	};
+	const topRBusinessFN = () => {
+		axios
+			.get<any>(`/v1/trend/topbusinessbyrefund`)
+			.then((res) => {
+				setTopBusinessByR(res.data);
 
-								dispatch(
-									openToastAndSetContent({
-										toastContent: res?.data?.message,
-										toastStyles: {
-											backgroundColor: 'green',
-										},
-									})
-								);
-							})
-							.catch((err) => {
-								console.log(err);
-								dispatch(
-									openToastAndSetContent({
-										toastContent: err?.data?.message,
-										toastStyles: {
-											backgroundColor: 'red',
-										},
-									})
-								);
-							});
-					};
+				dispatch(
+					openToastAndSetContent({
+						toastContent: res?.data?.message,
+						toastStyles: {
+							backgroundColor: 'green',
+						},
+					})
+				);
+			})
+			.catch((err) => {
+				console.log(err);
+				dispatch(
+					openToastAndSetContent({
+						toastContent: err?.data?.message,
+						toastStyles: {
+							backgroundColor: 'red',
+						},
+					})
+				);
+			});
+	};
+	const cardNetworkFN = () => {
+		axios
+			.get<any>(`/v1/trend/cardnetworks`)
+			.then((res) => {
+				setCardNetwork(res.data);
+
+				dispatch(
+					openToastAndSetContent({
+						toastContent: res?.data?.message,
+						toastStyles: {
+							backgroundColor: 'green',
+						},
+					})
+				);
+			})
+			.catch((err) => {
+				console.log(err);
+				dispatch(
+					openToastAndSetContent({
+						toastContent: err?.data?.message,
+						toastStyles: {
+							backgroundColor: 'red',
+						},
+					})
+				);
+			});
+	};
 
 	useEffect(() => {
 		trendTransaction();
@@ -526,7 +524,6 @@ const AdminOverview = () => {
 								figured={false}
 							/>
 						</Grid>
-					
 					</Grid>
 				</div>
 			</div>

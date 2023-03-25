@@ -96,7 +96,7 @@ function Fee({ id }: { id: number | undefined }) {
 	const fetchBusinesses = async () => {
 		dispatch(openLoader());
 		try {
-			const { data } = await axios.get(`/business/${id}/fees`);
+			const { data } = await axios.get(`/v1/business/${id}/fees`);
 			setBusinesses(data);
 			dispatch(closeLoader());
 			setBearer(false);

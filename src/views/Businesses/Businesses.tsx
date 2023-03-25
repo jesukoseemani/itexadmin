@@ -88,12 +88,12 @@ function Businesses() {
 			selective: [{ name: 'YES' }, { name: 'NO' }],
 		},
 	];
-
+// ?status=${status}&date=${toDate}&search=${value}&perpage=${rowsPerPage}&page=${pageNumber}
 	const fetchBusinesses = async () => {
 		dispatch(openLoader());
 		try {
 			const { data } = await axios.get(
-				`/business?status=${status}&date=${toDate}&search=${value}&perpage=${rowsPerPage}&page=${pageNumber}`
+				`/v1/business`
 			);
 			setBusinesses(data);
 			dispatch(closeLoader());

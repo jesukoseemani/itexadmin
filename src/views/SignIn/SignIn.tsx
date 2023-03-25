@@ -62,6 +62,16 @@ const SignIn = () => {
 					.then((res: any) => {
 						dispatch(closeLoader());
 						dispatch(saveAuth(res.data));
+						dispatch(saveLoading(true));
+						history.push('/');
+						dispatch(
+							openToastAndSetContent({
+								toastContent: res.data.message,
+								toastStyles: {
+									backgroundColor: 'green',
+								},
+							})
+						);
 						const module = res.data.modules;
 
 						if (
