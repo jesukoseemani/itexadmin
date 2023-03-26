@@ -144,14 +144,14 @@ const settlement = [
 // 	},
 // ];
 
-// const legal = [
-// 	{
-// 		id: 'DLB',
-// 		title: 'Legal',
-// 		route: '/legal',
-// 		icon: <PolicyIcon />,
-// 	},
-// ];
+const RollingReserveManagement = [
+	{
+		id: 'RRM',
+		title: 'Rolling reserve',
+		route: '/rollingreserve',
+		icon: <PolicyIcon />,
+	},
+];
 
 const customerManagement = [
 	{
@@ -504,7 +504,7 @@ export default function MiniDrawer() {
 							))} 
 
 							<h2 style={styledH2} className={styles.sectionTitle}>
-								Settlement
+								Settlement Management
 							</h2>
 							{settlement.map(({ route, title, id, icon }) => (
 								<ComponentListItem
@@ -557,12 +557,12 @@ export default function MiniDrawer() {
 									icon={icon}
 									open={open}
 								/>
-							))}
+							))}*/}
 
 							<h2 style={styledH2} className={styles.sectionTitle}>
-								Fraud &amp; Risk Management
+								Rolling Reserve   Management
 							</h2>
-							{fraudRiskManagement.map(({ route, title, id, icon }) => (
+							{RollingReserveManagement?.map(({ route, title, id, icon }) => (
 								<ComponentListItem
 									key={id}
 									route={route}
@@ -571,7 +571,7 @@ export default function MiniDrawer() {
 									icon={icon}
 									open={open}
 								/>
-							))} */}
+							))} 
 
 							<h2 style={styledH2} className={styles.sectionTitle}>
 								Chargeback Management

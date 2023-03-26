@@ -197,10 +197,10 @@ const Settlements = () => {
 
 	const [fromDate, setFromDate] = useState('');
 	const [toDate, setToDate] = useState('');
-	const [email, setEmail] = useState('');
 	const [status, setStatus] = useState('');
-	const [event, setEvent] = useState('');
 	const [bearer, setBearer] = useState<boolean>(false);
+	const [email, setEmail] = useState('');
+	const [event, setEvent] = useState('');
 	const [reset, setReset] = useState<boolean>(false);
 
 	//PAGINATION
@@ -257,7 +257,7 @@ const Settlements = () => {
 		dispatch(openLoader());
 		try {
 			const { data } = await axios.get(
-				`/settlement?fromdate=${fromDate}&todate=${toDate}&perpage=${rowsPerPage}&page=${pageNumber}`
+				`/v1/settlement?fromdate=${fromDate}&search=${value}&todate=${toDate}&perpage=${rowsPerPage}&page=${pageNumber}`
 			);
 			setSettlement(data)
 			dispatch(closeLoader());
@@ -335,7 +335,7 @@ const Settlements = () => {
 		dispatch(openLoader());
 
 		try {
-			const { data } = await axios.get(`/settlement/download?fromdate=${fromDate}&todate=${toDate}&perpage=${rowsPerPage}&page=${pageNumber}`)
+			const { data } = await axios.get(`/v1/settlement/download?fromdate=${fromDate}&todate=${toDate}&perpage=${rowsPerPage}&page=${pageNumber}`)
 			console.log(data)
 		} catch (error:any) {
 			dispatch(closeLoader());
@@ -520,16 +520,7 @@ const Settlements = () => {
 				</div>
 				<TabPanel value={tabValue} index={0}>
 					<div className={styles.m1}>
-						{/* <OperantTable
-							columns={columns}
-							rows={rows}
-							totalRows={totalRows}
-							changePage={changePage}
-							limit={limit}
-							setDataValue={setDataValue}
-							setOpen={setOpen}
-						/> */}
-
+					
 
 						<TableHeader
 							pageName='Settlements'

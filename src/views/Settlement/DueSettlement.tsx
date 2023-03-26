@@ -251,7 +251,7 @@ const DueSettlements = () => {
 		dispatch(openLoader());
 		try {
 			const { data } = await axios.get(
-				`/settlement/due/?fromdate=${fromDate}&todate=${toDate}&perpage=${rowsPerPage}&page=${pageNumber}`
+				`/v1/settlement/due/?fromdate=${fromDate}&search=${value}&todate=${toDate}&perpage=${rowsPerPage}&page=${pageNumber}`
 			);
             console.log(data, "due settlement")
 			setSettlement(data)
