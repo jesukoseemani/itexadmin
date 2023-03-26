@@ -60,7 +60,6 @@ const SignIn = () => {
 				axios
 					.post('/auth/authenticate', values)
 					.then((res: any) => {
-						dispatch(closeLoader());
 						dispatch(saveAuth(res.data));
 						dispatch(saveLoading(true));
 						history.push('/');
@@ -72,61 +71,64 @@ const SignIn = () => {
 								},
 							})
 						);
-						// const module = res.data.modules;
+						const module = res.data.modules;
 
-						// if (
-						// 	res?.data.message ===
-						// 	'Your are required to change your temporary password.'
-						// ) {
-						// 	dispatch(
-						// 		openToastAndSetContent({
-						// 			toastContent: res.data.message,
-						// 			toastStyles: {
-						// 				backgroundColor: 'green',
-						// 			},
-						// 		})
-						// 	);
+						if (
+							res?.data.message ===
+							'Your are required to change your temporary password.'
+						) {
+							dispatch(
+								openToastAndSetContent({
+									toastContent: res.data.message,
+									toastStyles: {
+										backgroundColor: 'green',
+									},
+								})
+							);
+							dispatch(closeLoader());
 
-						// 	history.push({
-						// 		pathname: '/newpassword',
-						// 		state: { email: values.email },
-						// 	});
-						// } else {
-						// 	axios
-						// 		.get('/v1/utility/modules')
-						// 		.then((respond: any) => {
-						// 			dispatch(closeLoader());
-						// 			const newPermission = userPermissionHandler(
-						// 				respond.data.modules,
-						// 				module
-						// 			);
+							history.push({
+								pathname: '/newpassword',
+								state: { email: values.email },
+							});
+						} else {
+							axios
+								.get('/v1/utility/modules')
+								.then((respond: any) => {
+									dispatch(closeLoader());
+									const newPermission = userPermissionHandler(
+										respond.data.modules,
+										module
+									);
 
-						// 			console.log('permisiiii:', newPermission);
-						// 			dispatch(savePermission(newPermission));
-						// 			dispatch(saveLoading(true));
-						// 			history.push('/');
-						// 			dispatch(
-						// 				openToastAndSetContent({
-						// 					toastContent: res.data.message,
-						// 					toastStyles: {
-						// 						backgroundColor: 'green',
-						// 					},
-						// 				})
-						// 			);
-						// 		})
-						// 		.catch((err) => {
-						// 			dispatch(closeLoader());
-						// 			dispatch(saveLoading(false));
-						// 			dispatch(
-						// 				openToastAndSetContent({
-						// 					toastContent: err.data.message,
-						// 					toastStyles: {
-						// 						backgroundColor: 'red',
-						// 					},
-						// 				})
-						// 			);
-						// 		});
-						// }
+									console.log('permisiiii:', newPermission);
+									dispatch(savePermission(newPermission));
+									dispatch(saveLoading(true));
+									dispatch(closeLoader());
+
+									history.push('/');
+									dispatch(
+										openToastAndSetContent({
+											toastContent: res.data.message,
+											toastStyles: {
+												backgroundColor: 'green',
+											},
+										})
+									);
+								})
+								.catch((err) => {
+									dispatch(closeLoader());
+									dispatch(saveLoading(false));
+									dispatch(
+										openToastAndSetContent({
+											toastContent: err.data.message,
+											toastStyles: {
+												backgroundColor: 'red',
+											},
+										})
+									);
+								});
+						}
 					})
 					.catch((err) => {
 						dispatch(closeLoader());
