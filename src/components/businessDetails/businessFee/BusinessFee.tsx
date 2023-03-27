@@ -176,7 +176,7 @@ function BusinessFee({
 								  };
 
 						axios
-							.post(`/business/${id}/fees`, newObject)
+							.post(`/v1/business/${id}/fees`, newObject)
 							.then((res: any) => {
 								dispatch(closeLoader());
 								dispatch(closeModal());

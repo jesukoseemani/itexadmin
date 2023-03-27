@@ -48,3 +48,51 @@ export const ColumnSettlementModule = [
 		accessor: 'date',
 	},
 ];
+export interface SettlementTransactionModuleData {
+	merchantId: string;
+	amount: string;
+	currency: string;
+	status: number;
+	linkingreference:string;
+	chargetype:string;
+	// settlement_id: string;
+	date: string;
+
+}
+
+
+
+export const ColumnSettlementTransactionModule = [
+	// {
+	// 	Header: 'Settlement ID',
+	// 	accessor: 'settlement_id',
+	// },
+	{
+		Header: 'Linking reference',
+		accessor: 'linkingreference',
+	},
+	{
+		Header: 'Charge type',
+		accessor: 'chargetype',
+	},
+    {
+        Header: 'Amount',
+        accessor: 'amount',
+    },
+	{
+		Header: 'Status',
+		accessor: 'status',
+	},
+	{
+		Header: 'Machant id',
+		accessor: 'merchantId',
+	},
+	{
+		Header: 'Currency',
+		accessor: 'currency',
+	},
+	{
+		Header: 'Date',
+		accessor: 'date',
+	},
+];

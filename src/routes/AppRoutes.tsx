@@ -66,6 +66,8 @@ import BusinessTab from '../components/businessDetails/BusinessTab';
 import ChargebackNDetails from '../views/ChargebackManagement/ChargebackDetails';
 import ChargebackDetailsNew from '../views/ChargebackManagement/ChargebackDetails';
 import Customermgt from '../views/customer/Customermgt';
+import CustomerDetails from '../views/customer/CustomerDetails';
+import RollingReserve from '../views/rollingReserve/RollingReserve';
 
 export default function AppRoutes() {
 	const dispatch = useDispatch();
@@ -324,6 +326,18 @@ export default function AppRoutes() {
 								exact
 								path='/customermgt'
 								component={Customermgt}
+								AuthUser={loadingState}
+							/>
+							<ProtectedRoute
+								exact
+								path='/customer/:id'
+								component={CustomerDetails}
+								AuthUser={loadingState}
+							/>
+							<ProtectedRoute
+								exact
+								path='/rollingreserve'
+								component={RollingReserve}
 								AuthUser={loadingState}
 							/>
 							{/* <ProtectedRoute
