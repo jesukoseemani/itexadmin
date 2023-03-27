@@ -159,10 +159,10 @@ function Refund() {
 
 	return (
 		<div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-			<NavBar name='business' />
+			<NavBar name='refund' />
 			<div className={styles.container}>
 				<TableHeader
-					pageName='Businesses'
+					pageName='Refund'
 					data={businesses?.businesses}
 					dataLength={businesses?._metadata.totalcount}
 					value={value}

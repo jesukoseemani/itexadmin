@@ -195,7 +195,7 @@ const Modules = () => {
 
 		axios
 			.get<userRoleTypes>(
-				`utility/modules?perpage=${rowsPerPage}&page=${pageNumber}&fromdate=${fromDate}&todate=${toDate}`
+				`/v1/utility/modules?perpage=${rowsPerPage}&page=${pageNumber}&fromdate=${fromDate}&todate=${toDate}`
 			)
 			.then((res) => {
 				setApiRes(res.data);
@@ -237,7 +237,7 @@ const Modules = () => {
 				modalContent: (
 					<div className={styles.modalDiv}>
 						<RoleModal
-							link='/utility/role_module/add'
+							link='/v1/utility/role_module/add'
 							action='MODULE'
 							title='Add custom module'
 							setBearer={setBearer}
@@ -287,7 +287,7 @@ const Modules = () => {
 			id,
 		};
 		axios
-			.delete('/utility/role_module/delete', values)
+			.delete('/v1/utility/role_module/delete', values)
 			.then((res: any) => {
 				dispatch(closeLoader());
 				console.log('res:', res.data);

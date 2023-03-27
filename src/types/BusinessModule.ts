@@ -241,7 +241,6 @@ export interface BusinessFeeModuleData {
 	fee: string;
 	min: string;
 	max: string;
-	bear: string;
 	status: React.ReactNode;
 	createdat: string;
 	timein: string;
@@ -275,10 +274,6 @@ export const ColumnBusinessFeeModule = [
 	{
 		Header: 'Fee Cap',
 		accessor: 'max',
-	},
-	{
-		Header: 'Merchant has bearer',
-		accessor: 'bear',
 	},
 	{
 		Header: 'Status',
@@ -349,5 +344,97 @@ export const ColumnBusinessScheduleModule = [
 	{
 		Header: 'Time Approved',
 		accessor: 'timein',
+	},
+];
+
+export interface BusinessSettlementScheduleData {
+	merchantaccountid: any;
+	periodsetting: string;
+	periodsettingvalue: string;
+	status: React.ReactNode;
+	createdat: string;
+	locale: string;
+	id: string | number;
+}
+
+export const ColumnBusinessSettlementScheduleData = [
+	{
+		Header: 'Merchant ID',
+		accessor: 'merchantaccountid',
+	},
+	{
+		Header: 'Period Setting',
+		accessor: 'periodsetting',
+	},
+	{
+		Header: 'Period Value',
+		accessor: 'periodsettingvalue',
+	},
+	{
+		Header: 'Status',
+		accessor: 'status',
+	},
+	{
+		Header: 'Locale',
+		accessor: 'locale',
+	},
+
+	{
+		Header: 'Created At',
+		accessor: 'createdat',
+	},
+];
+
+
+export interface BusinessRollingReserveData {
+	rolling_id: number;
+	settlement_id: string;
+	amount: string;
+	currency: string;
+	status: number;
+	merchantcode: string;
+	balanceBefore: string;
+	balanceAfter: string;
+	duedate: string;
+	date: string;
+}
+
+export const ColumnRollingReserveData = [
+	{
+		Header: 'settlement ID',
+		accessor: 'settlement_id',
+	},
+	{
+		Header: 'Currency',
+		accessor: 'currency',
+	},
+	{
+		Header: 'Amount',
+		accessor: 'amount',
+	},
+
+	{
+		Header: 'Status',
+		accessor: 'status',
+	},
+	{
+		Header: 'Machant code',
+		accessor: 'merchantcode',
+	},
+	{
+		Header: 'Balance before',
+		accessor: 'balanceBefore',
+	},
+	{
+		Header: 'Balance after',
+		accessor: 'balanceAfter',
+	},
+	{
+		Header: 'Due date',
+		accessor: 'duedate',
+	},
+	{
+		Header: 'Created Date',
+		accessor: 'date',
 	},
 ];

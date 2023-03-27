@@ -73,7 +73,10 @@ function Document({ id }: { id: number | undefined }) {
 		dispatch(openLoader());
 		try {
 			const data: any = await axios.get(`/v1/business/${id}/documents`);
-			 const docs = data.data.documents?.map((item:any, i: number) => ({...item, id: i + 1}) )
+			const docs = data?.data?.documents?.map((item: any, i: number) => ({
+				...item,
+				id: i + 1,
+			}));
 			setBusinesses(docs);
 			dispatch(closeLoader());
 		} catch (error: any) {
@@ -99,48 +102,52 @@ function Document({ id }: { id: number | undefined }) {
 	return (
 		<>
 			<div className={styles.containerHeader}>
-				{businesses?.documents.map(
-					(
-						{
-							idurl,
-							idtype,
-							status,
-							merchantaccountidentificationid,
-						}: {
-							idurl: string;
-							idtype: string;
-							status: string;
-							merchantaccountidentificationid: number;
-						},
-						i: number
-					) => (
-						<div
-							key={merchantaccountidentificationid}
-							onClick={() =>
-								imageViewerHandler(
-									idurl,
-									idtype,
-									status,
-									merchantaccountidentificationid,
-									i
-								)
-							}
-							className={styles.singleDocs}>
-							<p>{idtype}</p>
-							<div className={styles.singleDocsImage}>
-								<img src={idurl} alt='' />
-								<span>
-									{status === 'APPROVED' ? (
-										<ApprovedIcon />
-									) : status === 'PENDING' ? (
-										<PendingIcon />
-									) : (
-										<DangerIcon />
-									)}
-								</span>
+				{businesses?.documents?.length > 0 ? (
+					businesses?.documents?.map(
+						(
+							{
+								idurl,
+								idtype,
+								status,
+								merchantaccountidentificationid,
+							}: {
+								idurl: string;
+								idtype: string;
+								status: string;
+								merchantaccountidentificationid: number;
+							},
+							i: number
+						) => (
+							<div
+								key={merchantaccountidentificationid}
+								onClick={() =>
+									imageViewerHandler(
+										idurl,
+										idtype,
+										status,
+										merchantaccountidentificationid,
+										i
+									)
+								}
+								className={styles.singleDocs}>
+								<p>{idtype}</p>
+								<div className={styles.singleDocsImage}>
+									<img src={idurl} alt='' />
+									<span>
+										{status === 'APPROVED' ? (
+											<ApprovedIcon />
+										) : status === 'PENDING' ? (
+											<PendingIcon />
+										) : (
+											<DangerIcon />
+										)}
+									</span>
+								</div>
 							</div>
-						</div>
+						)
 					)
+				) : (
+					<h1>NO DOCUMENT UPLOADED YET</h1>
 				)}
 			</div>
 

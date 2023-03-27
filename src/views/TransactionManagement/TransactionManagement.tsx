@@ -151,7 +151,7 @@ function TransactionManagement() {
 				return tempArr.push({
 					merchant_id: transaction.business.merchantcode,
 					merchant_name: transaction.business.tradingname,
-					transaction_ref: transaction.linkingreference,
+					transaction_ref: transaction.paymentid,
 					amount: `${transaction.currency}${transaction.amount.toFixed(2)}`,
 					payment_type: transaction.merchantcode,
 					status: (

@@ -153,32 +153,6 @@ function Customer({ id }: { id: number | undefined }) {
 
 	return (
 		<div className={styles.containerHeader}>
-			<TableHeader
-				pageName=''
-				data={businesses?.businessCustomers}
-				dataLength={businesses?._metadata.totalcount}
-				value={value}
-				setValue={setValue}
-				dropdown={dropdown}
-				setDropdown={setDropdown}
-				placeHolder='Search'
-				FilterComponent={
-					<FilterModal
-						eventDate={eventDate}
-						setEventDate={setEventDate}
-						dropdown={dropdown}
-						setDropdown={setDropdown}
-						setFromDate={setFromDate}
-						setToDate={setToDate}
-						fromDate={fromDate}
-						toDate={toDate}
-						setBearer={setBearer}
-						clearHandler={clearHandler}
-						filteredArray={filteredArray}
-					/>
-				}
-			/>
-
 			<PaginationTable
 				data={tableRow ? tableRow : []}
 				columns={

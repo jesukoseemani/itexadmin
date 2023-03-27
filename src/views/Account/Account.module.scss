@@ -1,0 +1,95 @@
+.transactionsHeader {
+	font-family: 'Roboto';
+
+	font-style: normal;
+	font-weight: 500;
+	font-size: 16px;
+	line-height: 24px;
+	letter-spacing: -0.011em;
+	color: #0a0a0a;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-top: 10px;
+}
+
+.downloadbutton {
+	padding: 11px 24px;
+	height: 40px;
+	background: #008037;
+	border-radius: 4px;
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 500;
+	font-size: 12px;
+	line-height: 18px;
+	text-align: center;
+	color: #ffffff;
+	outline: none;
+	border: none;
+	cursor: pointer;
+
+	&:disabled {
+		background-color: #969696;
+	}
+}
+.customerInfo {
+	display: flex;
+	align-items: flex-start;
+	flex-direction: column;
+	justify-content: flex-start;
+	padding: 34px 0px;
+}
+
+.detailsValue {
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 700;
+	font-size: 10px;
+	line-height: 16px;
+	letter-spacing: 0.01em;
+	text-transform: uppercase;
+	color: #5c5b57;
+}
+
+.detailsKey {
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 500;
+	font-size: 16px;
+	line-height: 24px;
+	color: #0a0903;
+}
+.detailBox {
+	background: white;
+	margin-bottom: 24px;
+}
+
+.detailh3 {
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 500;
+	font-size: 14px;
+	line-height: 20px;
+	color: #0a0903;
+	font-weight: 700;
+}
+.detailBoxCorner {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	// padding: 0px 24px;
+}
+
+.detailicon {
+	cursor: pointer;
+}
+
+.outerbox {
+	width: 400px;
+	height: auto;
+	border-radius: 8px;
+	padding: 20px;
+	margin: 20px;
+	cursor: pointer;
+}

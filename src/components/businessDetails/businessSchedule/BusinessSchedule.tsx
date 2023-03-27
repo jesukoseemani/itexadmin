@@ -1,5 +1,5 @@
-import React from 'react';
-import styles from './BusinessLimit.module.scss';
+import React, { useEffect } from 'react';
+import styles from './BusinessSchedule.module.scss';
 import { Divider } from '@material-ui/core';
 import { InputLabel, TextField } from '@material-ui/core';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
@@ -12,9 +12,9 @@ import {
 	openLoader,
 	closeLoader,
 } from '../../../redux/actions/loader/loaderActions';
+import { closeModal } from '../../../redux/actions/modal/modalActions';
 
 import { makeStyles } from '@material-ui/core';
-import { closeModal } from '../../../redux/actions/modal/modalActions';
 
 const useStyles = makeStyles({
 	root: {
@@ -51,7 +51,7 @@ const useStyles = makeStyles({
 	},
 });
 
-function BusinessLimit({
+function BusinessSchedule({
 	id,
 	content,
 	identifier,
@@ -64,32 +64,11 @@ function BusinessLimit({
 	const dispatch = useDispatch();
 
 	const validate = Yup.object({
-		transactionType: Yup.string().required('Required'),
-		authOption: Yup.string().required('Required'),
 		paymentMethod: Yup.string().required('Required'),
-		transactionLocale: Yup.string().required('Required'),
-		minLimit: Yup.string().required('Required'),
-		maxLimit: Yup.string().required('Required'),
-		cumulativeTransactionLimit: Yup.string().required('Required'),
+		locale: Yup.string().required('Required'),
+		periodSetting: Yup.string().required('Required'),
 	});
 
-	const authOption = [
-		{
-			name: '3ds',
-		},
-		{
-			name: 'noauth',
-		},
-	];
-
-	const transactionOption = [
-		{
-			name: 'collection',
-		},
-		{
-			name: 'payout',
-		},
-	];
 	const paymentMethodOption = [
 		{
 			name: 'card',
@@ -118,18 +97,14 @@ function BusinessLimit({
 	];
 
 	const INITIAL_VALUES = {
-		transactionType: content ? content?.transactiontype : '',
-		authOption: content ? content?.auth : '',
-		paymentMethod: content ? content?.payment : '',
-		transactionLocale: content ? content?.transactionlocale : '',
-		minLimit: content ? content?.min?.split(' ')[1] : '',
-		maxLimit: content ? content?.max?.split(' ')[1] : '',
-		cumulativeTransactionLimit: content ? content?.limit : '',
+		periodSetting: content ? content?.periodsetting : '',
+		paymentMethod: '',
+		locale: content ? content?.locale : '',
 	};
 
 	return (
 		<div className={styles.generalFourReuse}>
-			<h3 className={styles.generalh3}>Add Limit</h3>
+			<h3 className={styles.generalh3}>{identifier} Schedule</h3>
 			<Divider />
 
 			<div className={styles.selectinput}>
@@ -139,21 +114,18 @@ function BusinessLimit({
 					onSubmit={(values) => {
 						console.log(values);
 						dispatch(openLoader());
-
 						const newObject =
-							identifier === 'edit'
+							identifier === 'Edit'
 								? {
 										...values,
-										currency: 'NG',
-										limitId: content?.id,
+										scheduleId: content?.id,
 								  }
 								: {
 										...values,
-										currency: 'NG',
 								  };
 
 						axios
-							.post(`/business/${id}/limit`, newObject)
+							.post(`/v1/business/${id}/settlement/schedule`, newObject)
 							.then((res: any) => {
 								dispatch(closeLoader());
 								dispatch(closeModal());
@@ -182,50 +154,6 @@ function BusinessLimit({
 					{(props) => (
 						<Form>
 							<InputLabel>
-								<span className={styles.span}>TRANSACTION TYPE</span>
-							</InputLabel>
-							<Field
-								as={Select}
-								helperText={
-									<ErrorMessage name='transactionType'>
-										{(msg) => <span style={{ color: 'red' }}>{msg}</span>}
-									</ErrorMessage>
-								}
-								name='transactionType'
-								size='small'
-								options={transactionOption}
-								defaultValue={transactionOption && transactionOption[0]}
-								className={classes.select}
-								// fullWidth
-								style={{
-									marginTop: '8px',
-									marginBottom: '22px',
-								}}
-							/>
-
-							<InputLabel>
-								<span className={styles.span}>AUTH OPTIONS</span>
-							</InputLabel>
-							<Field
-								as={Select}
-								helperText={
-									<ErrorMessage name='authOption'>
-										{(msg) => <span style={{ color: 'red' }}>{msg}</span>}
-									</ErrorMessage>
-								}
-								name='authOption'
-								size='small'
-								options={authOption}
-								defaultValue={authOption && authOption[0]}
-								className={classes.select}
-								// fullWidth
-								style={{
-									marginTop: '8px',
-									marginBottom: '22px',
-								}}
-							/>
-
-							<InputLabel>
 								<span className={styles.span}>PAYMENT METHOD</span>
 							</InputLabel>
 							<Field
@@ -246,17 +174,18 @@ function BusinessLimit({
 									marginBottom: '22px',
 								}}
 							/>
+
 							<InputLabel>
-								<span className={styles.span}>TRANSACTION LOCALE</span>
+								<span className={styles.span}>LOCALE</span>
 							</InputLabel>
 							<Field
 								as={Select}
 								helperText={
-									<ErrorMessage name='transactionLocale'>
+									<ErrorMessage name='locale'>
 										{(msg) => <span style={{ color: 'red' }}>{msg}</span>}
 									</ErrorMessage>
 								}
-								name='transactionLocale'
+								name='locale'
 								size='small'
 								options={transactionLocaleOption}
 								className={classes.select}
@@ -271,62 +200,16 @@ function BusinessLimit({
 							/>
 
 							<InputLabel>
-								<span className={styles.span}>MIN LIMIT</span>
+								<span className={styles.span}>PERIOD SETTING</span>
 							</InputLabel>
 							<Field
 								as={TextField}
 								helperText={
-									<ErrorMessage name='minLimit'>
+									<ErrorMessage name='periodSetting'>
 										{(msg) => <span style={{ color: 'red' }}>{msg}</span>}
 									</ErrorMessage>
 								}
-								name='minLimit'
-								variant='outlined'
-								margin='normal'
-								type='text'
-								size='small'
-								fullWidth
-								className={classes.select}
-								style={{
-									marginTop: '8px',
-									marginBottom: '22px',
-								}}
-							/>
-
-							<InputLabel>
-								<span className={styles.span}>MAX LIMIT</span>
-							</InputLabel>
-							<Field
-								as={TextField}
-								helperText={
-									<ErrorMessage name='maxLimit'>
-										{(msg) => <span style={{ color: 'red' }}>{msg}</span>}
-									</ErrorMessage>
-								}
-								name='maxLimit'
-								variant='outlined'
-								margin='normal'
-								type='text'
-								size='small'
-								fullWidth
-								className={classes.select}
-								style={{
-									marginTop: '8px',
-									marginBottom: '22px',
-								}}
-							/>
-
-							<InputLabel>
-								<span className={styles.span}>CUM. TRANSACTION LIMIT</span>
-							</InputLabel>
-							<Field
-								as={TextField}
-								helperText={
-									<ErrorMessage name='cumulativeTransactionLimit'>
-										{(msg) => <span style={{ color: 'red' }}>{msg}</span>}
-									</ErrorMessage>
-								}
-								name='cumulativeTransactionLimit'
+								name='periodSetting'
 								variant='outlined'
 								margin='normal'
 								type='text'
@@ -368,4 +251,4 @@ function BusinessLimit({
 	);
 }
 
-export default BusinessLimit;
+export default BusinessSchedule;

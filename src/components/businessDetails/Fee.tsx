@@ -121,7 +121,7 @@ function Fee({ id }: { id: number | undefined }) {
 	}, [bearer, value, pageNumber, rowsPerPage]);
 
 	useEffect(() => {
-		Object.values(contentAction).length > 0 && editConfigHandler('edit');
+		Object.values(contentAction).length > 0 && editConfigHandler('Edit');
 	}, [contentAction]);
 
 useEffect(() => {
@@ -141,7 +141,6 @@ useEffect(() => {
 					fee: business?.feesetting,
 					min: `${business?.feecurrency} ${business?.feemin}`,
 					max: `${business?.feecurrency} ${business?.feecap}`,
-					bear: business?.merchantbearsfee,
 					status: (
 						<StatusView
 							status={business?.status === '0' ? 'InActive' : 'Active'}
@@ -187,7 +186,7 @@ useEffect(() => {
 		<div className={styles.containerHeader}>
 			<div className={styles.buttonmove}>
 				<button
-					onClick={() => editConfigHandler('add')}
+					onClick={() => editConfigHandler('Add')}
 					className={styles.downloadbutton}>
 					Add Fee
 				</button>

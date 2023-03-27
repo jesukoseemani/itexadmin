@@ -15,25 +15,22 @@ import {
 	openLoader,
 } from '../../redux/actions/loader/loaderActions';
 import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { openToastAndSetContent } from '../../redux/actions/toast/toastActions';
 import {
-	ColumnBusinessSettlementScheduleData,
-	BusinessSettlementScheduleData,
+	BusinessRollingReserveData,
+	ColumnRollingReserveData,
 } from '../../types/BusinessModule';
 import PaginationTable from '../paginatedTable/pagination-table';
 import TableHeader from '../TableHeader/TableHeader';
 import StatusView from '../StatusView/StatusView';
 import { useHistory } from 'react-router-dom';
-import { openModalAndSetContent } from '../../redux/actions/modal/modalActions';
-import BusinessSchedule from './businessSchedule/BusinessSchedule';
 
-function SettlementSchedule({ id }: { id: number | undefined }) {
+function RecentRolling({ id }: { id: number | undefined }) {
 	const [tableRow, setTableRow] = useState<any[]>();
 	const [businesses, setBusinesses] = useState<any>();
 	const [contentAction, setContentAction] = useState<any>({});
 	const history = useHistory();
-	const { modalOpened } = useSelector((state) => state.modal);
 
 	const dispatch = useDispatch();
 	//PAGINATION
@@ -96,7 +93,7 @@ function SettlementSchedule({ id }: { id: number | undefined }) {
 		dispatch(openLoader());
 		try {
 			const { data } = await axios.get(
-				`/v1/business/${id}/settlement/schedule`
+				`/v1/business/${id}/recent/rollingreserve`
 			);
 			setBusinesses(data);
 			dispatch(closeLoader());
@@ -121,30 +118,27 @@ function SettlementSchedule({ id }: { id: number | undefined }) {
 		fetchBusinesses();
 	}, [bearer, value, pageNumber, rowsPerPage]);
 
-	// useEffect(() => {
-	// 	setPageNumber(businesses?._metadata?.page || 1);
-	// }, [businesses]);
+	useEffect(() => {
+		setPageNumber(businesses?._metadata?.page || 1);
+	}, [businesses]);
 
 	const dataBusinesses = () => {
-		const tempArr: BusinessSettlementScheduleData[] = [];
-		businesses?.schedule
+		const tempArr: BusinessRollingReserveData[] = [];
+		businesses?.recentReserve
 			?.slice(0)
 			.reverse()
 			.forEach((business: any, index: number) => {
 				return tempArr.push({
-					merchantaccountid: business?.merchantaccountid,
-					periodsetting: business?.periodsetting,
-					periodsettingvalue: business?.periodsettingvalue,
-					locale: business?.locale,
-					status: (
-						<StatusView
-							status={business?.status === true ? 'true' : 'false'}
-							orange='true'
-							green='false'
-						/>
-					),
-					createdat: business?.createdat,
-					id: business?.id,
+					rolling_id: business?.id,
+					settlement_id: business?.settlement_id,
+					amount: business?.amount,
+					currency: business?.currency,
+					status: business?.status,
+					balanceBefore: business?.balanceBefore,
+					balanceAfter: business?.balanceAfter,
+					merchantcode: business?.merchantcode,
+					duedate: business?.duedate,
+					date: business?.createdAt,
 				});
 			});
 		return tempArr;
@@ -152,59 +146,21 @@ function SettlementSchedule({ id }: { id: number | undefined }) {
 
 	useEffect(() => {
 		setTableRow(dataBusinesses());
-	}, [businesses?.schedule]);
-
-	useEffect(() => {
-		Object.values(contentAction).length > 0 && editConfigHandler('Edit');
-	}, [contentAction]);
-
-	useEffect(() => {
-		if (!modalOpened) setContentAction({});
-	}, [modalOpened]);
-
-	const editConfigHandler = (identifier: string) => {
-		dispatch(
-			openModalAndSetContent({
-				modalStyles: {
-					padding: 0,
-				},
-				modalContent: (
-					<div className={styles.modalDiv}>
-						<BusinessSchedule
-							id={id}
-							content={contentAction}
-							identifier={identifier}
-						/>
-					</div>
-				),
-			})
-		);
-	};
+	}, [businesses?.recentReserve]);
 
 	return (
 		<div className={styles.containerHeader}>
-			<div className={styles.buttonmove}>
-				<button
-					onClick={() => editConfigHandler('Add')}
-					className={styles.downloadbutton}>
-					Add Schedule
-				</button>
-			</div>
 			<PaginationTable
 				data={tableRow ? tableRow : []}
-				columns={
-					ColumnBusinessSettlementScheduleData
-						? ColumnBusinessSettlementScheduleData
-						: []
-				}
+				columns={ColumnRollingReserveData ? ColumnRollingReserveData : []}
 				emptyPlaceHolder={
-					businesses?.schedule?.length == 0
+					businesses?._metadata?.totalcount == 0
 						? 'You currently do not have any data'
 						: 'Loading...'
 				}
 				value={value}
-				total={businesses?.schedule?.length}
-				totalPage={businesses?.schedule?.length}
+				total={businesses?._metadata.totalcount}
+				totalPage={businesses?._metadata.pagecount}
 				pageNumber={pageNumber}
 				setPageNumber={setPageNumber}
 				nextPage={nextPage}
@@ -213,12 +169,11 @@ function SettlementSchedule({ id }: { id: number | undefined }) {
 				setPreviousPage={setPreviousPage}
 				rowsPerPage={rowsPerPage}
 				setRowsPerPage={setRowsPerPage}
-				clickAction={true}
+				clickAction={false}
 				setContentAction={setContentAction}
-				recent={false}
 			/>
 		</div>
 	);
 }
 
-export default SettlementSchedule;
+export default RecentRolling;

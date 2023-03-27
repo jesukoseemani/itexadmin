@@ -12,6 +12,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 import Limit from './Limit';
 import Fee from './Fee';
+import Document from './Document';
+import SettlementSchedule from './SettlementSchedule';
+import PaymentMethod from './paymentMethod/PaymentMethod';
 
 interface TabPanelProps {
 	children?: React.ReactNode;
@@ -67,7 +70,7 @@ function BusinessTab() {
 		},
 		flexContainer: {
 			justifyContent: 'space-between',
-			width: '40%',
+			width: '50%',
 		},
 		scrollButtons: {
 			marginBottom: '13px',
@@ -163,6 +166,19 @@ function BusinessTab() {
 								label='Documents'
 								{...a11yProps(4)}
 							/>
+							<Tab
+								style={{
+									fontFamily: 'Roboto',
+									fontStyle: 'normal',
+									fontWeight: 'normal',
+									fontSize: '16px',
+									lineHeight: '19px',
+									color: value === 5 ? '#27AE60' : '#4F4F4F',
+									textTransform: 'capitalize',
+								}}
+								label='Payment Method'
+								{...a11yProps(5)}
+							/>
 						</Tabs>
 					</Box>
 					<TabPanel value={value} index={0}>
@@ -175,10 +191,13 @@ function BusinessTab() {
 						<Fee id={id} />
 					</TabPanel>
 					<TabPanel value={value} index={3}>
-						Item Three
+						<SettlementSchedule id={id} />
 					</TabPanel>
 					<TabPanel value={value} index={4}>
-						Item Three
+						<Document id={id} />
+					</TabPanel>
+					<TabPanel value={value} index={5}>
+						<PaymentMethod id={id} />
 					</TabPanel>
 				</Box>
 			</div>

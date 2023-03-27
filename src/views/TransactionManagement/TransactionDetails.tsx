@@ -16,6 +16,8 @@ import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { TransactionManagementApiTypes } from '../../types/UserTableTypes';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import axios from 'axios';
+import SingleChargeRequest from '../../components/ModalsReuse/businessDetailsModal/SingleChargeRequest';
+import LogSingleChargeRequest from '../../components/ModalsReuse/businessDetailsModal/LogSingleChargeRequest';
 
 const TransactionDetails = () => {
 	const location = useLocation();
@@ -87,6 +89,21 @@ const TransactionDetails = () => {
 					<div className='modalDiv'>
 						<LogChargeback />
 					</div>
+				),
+			})
+		);
+	};
+
+	const singleChargeHandler = (reflink: string) => {
+		dispatch(
+			openModalAndSetContent({
+				modalStyles: {
+					padding: 0,
+				},
+				modalContent: (
+					<>
+						<LogSingleChargeRequest reflink={reflink} />
+					</>
 				),
 			})
 		);
@@ -202,7 +219,13 @@ const TransactionDetails = () => {
 							</Grid> */}
 							<Grid item md={2} xs={6} lg={2}>
 								<span className={styles.blacklist}>
-									Blacklist customer <BlockIcon fontSize='small' />
+									<button
+										className={styles.button_mark_button}
+										onClick={() =>
+											singleChargeHandler(apiRes?.transaction?.linkingreference)
+										}>
+										Log chargeback
+									</button>
 								</span>
 							</Grid>
 						</Grid>

@@ -49,7 +49,7 @@ function UserRoleChangeModal({
 
 	useEffect(() => {
 		axios
-			.get<roleTypes>(`/utility/roles`)
+			.get<roleTypes>(`/v1/utility/roles`)
 			.then((res) => {
 				setAccountTypes(res.data);
 			})

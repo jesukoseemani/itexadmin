@@ -247,36 +247,36 @@ function AllChargebacks() {
 					dropdown={dropdown}
 					setDropdown={setDropdown}
 					placeHolder='Search'
-					newButton={
-						<>
-							<button
-								className={styles.button_mark_button}
-								onClick={handleClick}>
-								Log chargeback
-							</button>
-							<Menu
-								id='basic-menu'
-								anchorEl={anchorEl}
-								open={open}
-								onClose={handleClose}
-								MenuListProps={{
-									'aria-labelledby': 'basic-button',
-								}}
-								style={{ margin: '10px 0px' }}>
-								<MenuItem
-									onClick={singleChargeHandler}
-									style={{ padding: '0px 30px' }}>
-									Single chargeback
-								</MenuItem>
-								<Divider />
-								<MenuItem
-									onClick={bulkChargeHandler}
-									style={{ padding: '0px 30px' }}>
-									Bulk chargeback
-								</MenuItem>
-							</Menu>
-						</>
-					}
+					// newButton={
+					// 	<>
+					// 		<button
+					// 			className={styles.button_mark_button}
+					// 			onClick={handleClick}>
+					// 			Log chargeback
+					// 		</button>
+					// 		<Menu
+					// 			id='basic-menu'
+					// 			anchorEl={anchorEl}
+					// 			open={open}
+					// 			onClose={handleClose}
+					// 			MenuListProps={{
+					// 				'aria-labelledby': 'basic-button',
+					// 			}}
+					// 			style={{ margin: '10px 0px' }}>
+					// 			<MenuItem
+					// 				onClick={singleChargeHandler}
+					// 				style={{ padding: '0px 30px' }}>
+					// 				Single chargeback
+					// 			</MenuItem>
+					// 			<Divider />
+					// 			<MenuItem
+					// 				onClick={bulkChargeHandler}
+					// 				style={{ padding: '0px 30px' }}>
+					// 				Bulk chargeback
+					// 			</MenuItem>
+					// 		</Menu>
+					// 	</>
+					// }
 					FilterComponent={
 						<FilterModal
 							eventDate={eventDate}

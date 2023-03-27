@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import styles from './Users.module.scss';
-import { makeStyles } from '@material-ui/core';
+import { Divider, makeStyles } from '@material-ui/core';
 import NavBar from '../../components/navbar/NavBar';
 import { useDispatch, useSelector } from 'react-redux';
 import OperantTableItexPay from '../../components/tableItexPay/OperantTableItexPay';
 import axios from 'axios';
-import { openModalAndSetContent } from '../../redux/actions/modal/modalActions';
+import {
+	closeModal,
+	openModalAndSetContent,
+} from '../../redux/actions/modal/modalActions';
 import AccountType from '../../components/ModalsReuse/AccountType';
 import { useHistory } from 'react-router';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
@@ -21,6 +24,7 @@ import { ReactComponent as Trash } from '../../assets/images/trash-2.svg';
 import { ReactComponent as Edit } from '../../assets/images/edit-3.svg';
 import { ReactComponent as Change } from '../../assets/images/refresh-outline.svg';
 import { ReactComponent as Key } from '../../assets/images/key-outline.svg';
+import { ReactComponent as Repeat } from '../../assets/images/repeat-outline.svg';
 
 import UserModal from '../../components/ModalsReuse/UserModal';
 import moment from 'moment';
@@ -30,6 +34,7 @@ import {
 } from '../../redux/actions/loader/loaderActions';
 import UserRoleChangeModal from '../../components/ModalsReuse/UserRoleChangeModal';
 import PermissionModal from '../../components/ModalsReuse/PermissionModal';
+import { openToastAndSetContent } from '../../redux/actions/toast/toastActions';
 
 const useStyles = makeStyles({
 	root: {
@@ -226,7 +231,7 @@ const UsersPermission = () => {
 
 		axios
 			.get<userRoleTypes>(
-				`/usermgt/users?perpage=${rowsPerPage}&page=${pageNumber}&fromdate=${fromDate}&todate=${toDate}`
+				`/v1/usermgt/users?perpage=${rowsPerPage}&page=${pageNumber}&fromdate=${fromDate}&todate=${toDate}`
 			)
 			.then((res) => {
 				setApiRes(res.data);
@@ -268,7 +273,7 @@ const UsersPermission = () => {
 				modalContent: (
 					<div className={styles.modalDiv}>
 						<UserModal
-							link='/auth/user/create'
+							link='/v1/auth/user/create'
 							title='Add a new user'
 							setBearer={setBearer}
 						/>
@@ -339,6 +344,7 @@ const UsersPermission = () => {
 
 							<div className={styles.buttonModal}>
 								<button
+									onClick={closeModal}
 									style={{ background: '#E0E0E0', color: '#333333' }}
 									className={styles.removeModal}>
 									Cancel
@@ -350,6 +356,79 @@ const UsersPermission = () => {
 				),
 			})
 		);
+	};
+
+	const resetHandler = (id: number) => {
+		dispatch(
+			openModalAndSetContent({
+				modalStyles: {
+					padding: 0,
+					maxWidth: '400px',
+					height: '240px',
+					width: '100%',
+				},
+				modalContent: (
+					<div className={styles.modalDiv}>
+						<div className={styles.account_wrap}>
+							<h1 className={styles.account_h1}>Reset 2fa</h1>
+						</div>
+						<Divider style={{ margin: 0, padding: 0 }} />
+
+						<div className={styles.buttonModalwrap}>
+							<p className={styles.removeModal_p}>
+								Are you sure want to reset 2fa for this user. Click on ‘Reset’
+								to reset 2fa for this user.
+							</p>
+
+							<div className={styles.buttonModal}>
+								<button
+									onClick={() => dispatch(closeModal())}
+									style={{ background: '#E0E0E0', color: '#333333' }}
+									className={styles.removeModal}>
+									Cancel
+								</button>
+								<button
+									onClick={() => reset2faHandler(id)}
+									className={styles.removeModal}>
+									Reset
+								</button>
+							</div>
+						</div>
+					</div>
+				),
+			})
+		);
+	};
+
+	const reset2faHandler = (id: number) => {
+		dispatch(openLoader());
+
+		axios
+			.get(`/v1/usermgt/2fa/${id}/reset`)
+			.then((res: any) => {
+				dispatch(closeLoader());
+				dispatch(closeModal());
+
+				dispatch(
+					openToastAndSetContent({
+						toastContent: res.data.message,
+						toastStyles: {
+							backgroundColor: 'green',
+						},
+					})
+				);
+			})
+			.catch((err) => {
+				dispatch(closeLoader());
+				dispatch(
+					openToastAndSetContent({
+						toastContent: err.data.message,
+						toastStyles: {
+							backgroundColor: 'red',
+						},
+					})
+				);
+			});
 	};
 
 	const changeHandler = (id: number, firstname: string) => {
@@ -386,8 +465,8 @@ const UsersPermission = () => {
 						id={id}
 						target={email}
 						setBearer={setBearer}
-						link1='/usermgt/user'
-						link2='/usermgt/user/assign/modules'
+						link1='/v1/usermgt/user'
+						link2='/v1/usermgt/user/assign/modules'
 						title='User Permission'
 					/>
 				),
@@ -491,6 +570,9 @@ const UsersPermission = () => {
 						onClick={() => permissionHandler(id, email)}
 						className={styles.icons}>
 						<Key />
+					</div>
+					<div onClick={() => resetHandler(id)} className={styles.icons}>
+						<Repeat />
 					</div>
 				</div>
 			),

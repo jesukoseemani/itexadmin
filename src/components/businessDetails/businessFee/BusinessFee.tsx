@@ -135,16 +135,16 @@ function BusinessFee({
 	];
 
 	const INITIAL_VALUES = {
-		transactionType: content ? content.transactiontype : '',
-		authOption: content ? content.auth : '',
-		paymentMethod: content ? content.payment : '',
-		transactionLocale: content ? content.transactionlocale : '',
-		minLimit: content ? content.min.split(' ')[1] : '',
-		maxLimit: content ? content.max.split(' ')[1] : '',
+		transactionType: content ? content?.transactiontype : '',
+		authOption: content ? content?.auth : '',
+		paymentMethod: content ? content?.payment : '',
+		transactionLocale: content ? content?.transactionlocale : '',
+		minLimit: content ? content?.min?.split(' ')[1] : '',
+		maxLimit: content ? content?.max?.split(' ')[1] : '',
 		cumulativeTransactionLimit: content
-			? content.cumulativeTransactionLimit
+			? content?.cumulativeTransactionLimit
 			: '',
-		merchantBearsFee: content ? content.bear : '',
+		merchantBearsFee: content ? content?.bear : '',
 	};
 
 	useEffect(() => {
@@ -153,7 +153,7 @@ function BusinessFee({
 
 	return (
 		<div className={styles.generalFourReuse}>
-			<h3 className={styles.generalh3}>Add Fee</h3>
+			<h3 className={styles.generalh3}>{identifier} Fee</h3>
 			<Divider />
 
 			<div className={styles.selectinput}>
@@ -164,7 +164,7 @@ function BusinessFee({
 						console.log(values);
 						dispatch(openLoader());
 						const newObject =
-							identifier === 'edit'
+							identifier === 'Edit'
 								? {
 										...values,
 										feeCurrency: 'NG',

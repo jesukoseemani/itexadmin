@@ -139,6 +139,19 @@ function BusinessSubTab({ id }: { id: number }) {
 							label='Recent Customers'
 							{...a11yProps(3)}
 						/>
+						<Tab
+							style={{
+								fontFamily: 'Roboto',
+								fontStyle: 'normal',
+								fontWeight: 'normal',
+								fontSize: '16px',
+								lineHeight: '19px',
+								color: value === 4 ? '#27AE60' : '#4F4F4F',
+								textTransform: 'capitalize',
+							}}
+							label='Recent Rolling Reserve'
+							{...a11yProps(4)}
+						/>
 					</Tabs>
 				</Box>
 				<TabPanel value={value} index={0}>
@@ -151,6 +164,9 @@ function BusinessSubTab({ id }: { id: number }) {
 					<RecentTransactions id={id} />
 				</TabPanel>
 				<TabPanel value={value} index={3}>
+					<Customer id={id} />
+				</TabPanel>
+				<TabPanel value={value} index={4}>
 					<Customer id={id} />
 				</TabPanel>
 			</Box>

@@ -347,6 +347,28 @@
 	flex: 1;
 }
 
+
+.button_mark_button {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: #27ae60;
+	border-radius: 4px;
+	font-family: Roboto;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 14px;
+	line-height: 16px;
+	letter-spacing: 0.0024px;
+	color: #ffffff;
+	border: none;
+	outline: none;
+	min-width: 131px;
+	height: 40px;
+	cursor: pointer;
+	margin-left: 10px;
+}
+
 @media only screen and (max-width: 1025px) {
 	.dividerClass {
 		display: none;

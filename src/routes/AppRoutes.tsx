@@ -65,6 +65,7 @@ import Modules from '../views/UsersAndPermissions/Modules';
 import BusinessTab from '../components/businessDetails/BusinessTab';
 import ChargebackNDetails from '../views/ChargebackManagement/ChargebackDetails';
 import ChargebackDetailsNew from '../views/ChargebackManagement/ChargebackDetails';
+import Account from '../views/Account/Account';
 
 export default function AppRoutes() {
 	const dispatch = useDispatch();
@@ -437,6 +438,12 @@ export default function AppRoutes() {
 								exact
 								path='/merchant'
 								component={MerchantTransaction}
+								AuthUser={loadingState}
+							/>
+							<ProtectedRoute
+								exact
+								path='/account'
+								component={Account}
 								AuthUser={loadingState}
 							/>
 						</>
