@@ -8,6 +8,7 @@ export interface TransactionModuleData {
 	status: React.ReactNode;
 	payment_type: string;
 	date: string;
+	paymentid:string,
 	id: number;
 }
 

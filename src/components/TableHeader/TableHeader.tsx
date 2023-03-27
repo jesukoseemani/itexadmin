@@ -4,7 +4,7 @@ import ExportButton from '../../components/ExportButton/ExportButton';
 import StatusView from '../../components/StatusView/StatusView';
 import { ReactComponent as DropArrow } from '../../assets/images/Icons/drop-arrow.svg';
 import SearchIcon from '@mui/icons-material/Search';
-import { Box, InputAdornment } from '@mui/material';
+import { Box, IconButton, InputAdornment } from '@mui/material';
 import TextField from '@material-ui/core/TextField';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
@@ -21,6 +21,7 @@ type TableHeaderProps = {
 	value?: string | React.ReactNode;
 	setValue?: React.Dispatch<React.SetStateAction<string>>;
 	FilterComponent?: React.ReactNode;
+	handleClick?: () => void;
 	entries?: boolean;
 	filtering?: boolean;
 	exporting?: boolean;
@@ -44,7 +45,7 @@ const CssTextField = withStyles({
 				borderColor: '#008243',
 			},
 			'&.Mui-focused fieldset': {
-				borderColor: '#008243',
+			    borderColor: '#008243',
 			},
 		},
 	},
@@ -65,6 +66,7 @@ const TableHeader = ({
 	filtering = true,
 	exporting = true,
 	searchfn = true,
+	handleClick
 }: TableHeaderProps) => {
 	const [isDesktop, setDesktop] = useState(window.innerWidth > 800);
 
@@ -92,19 +94,19 @@ const TableHeader = ({
 							sx={{
 								'& > :not(style)': isDesktop
 									? {
-											width: '30vw',
-											height: '40px',
-											borderRadius: '8px',
-									  }
+										width: '30vw',
+										height: '40px',
+										borderRadius: '8px',
+									}
 									: { width: '40vw', height: '30px', borderRadius: '8px' },
 							}}>
 							<CssTextField
 								style={
 									isDesktop
 										? {
-												marginTop: '0rem',
-												padding: '0.4rem',
-										  }
+											marginTop: '0rem',
+											padding: '0.4rem',
+										}
 										: { marginTop: '0rem', padding: '0.2rem' }
 								}
 								id='input-with-icon-textfield'
@@ -134,7 +136,17 @@ const TableHeader = ({
 							FilterComponent={FilterComponent}
 						/>
 					)}
-					{exporting && <ExportButton data={data} fileName={pageName} />}
+					{/* {exporting && <ExportButton data={data} fileName={pageName} />} */}				
+						{exporting &&
+						<div><IconButton disableRipple={true} onClick={handleClick}>
+							<button style={{
+								padding: "12px 15px",
+								border:"none",
+								outline: "none",
+								borderRadius:"5px"
+							}}>Download</button>
+
+						</IconButton></div>}
 				</div>
 				<div className={styles.headerButton}>{newButton}</div>
 			</div>

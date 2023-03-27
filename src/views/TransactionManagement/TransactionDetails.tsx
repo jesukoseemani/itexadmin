@@ -42,6 +42,7 @@ const TransactionDetails = () => {
 			setApiRes(res.data);
 		});
 	}, []);
+	console.log(apiRes)
 
 	const dispatch = useDispatch();
 
@@ -291,21 +292,21 @@ const TransactionDetails = () => {
 								<Grid item md={2} xs={6} lg={2}>
 									<p className={styles.header}>Payment ID</p>
 									<p className={styles.detail}>
-										{apiRes?.transaction?.merchantaccount?.paymentid}
+										{apiRes?.transaction?.paymentid}
 									</p>
 								</Grid>
 
 								<Grid item md={2} xs={6} lg={2}>
 									<p className={styles.header}>Payment link reference</p>
 									<p className={styles.detail}>
-										{apiRes?.transaction?.merchantaccount?.paymentlinkreference}
+										{apiRes?.transaction?.paymentlinkreference}
 									</p>
 								</Grid>
 
 								<Grid item md={2} xs={6} lg={2}>
 									<p className={styles.header}>Payment location</p>
 									<p className={styles.detail}>
-										{apiRes?.transaction?.merchantaccount?.paylocationcountry}
+										{apiRes?.transaction?.paylocationcountry}
 									</p>
 								</Grid>
 							</Grid>

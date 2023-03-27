@@ -172,22 +172,23 @@
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: flex-end;
+	gap: 20px;
 }
 
 .buttongreen {
-	width: 140px;
+	width: 130px;
 	height: 32px;
 	background: #27ae60;
 	border-radius: 4px;
 	border: none;
-	margin-left: 1rem;
+	// margin-left: 1rem;
 	font-size: 12px;
 	color: #ffffff;
 	cursor: pointer;
 }
 
 .buttonflag {
-	width: 140px;
+	width: 130px;
 	height: 32px;
 	background: #eb5757;
 	border-radius: 4px;
