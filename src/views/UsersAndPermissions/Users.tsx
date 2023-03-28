@@ -280,7 +280,7 @@ const UsersPermission = () => {
 				modalContent: (
 					<div className={styles.modalDiv}>
 						<UserModal
-							link='/v1/auth/user/create'
+							link='/v1/usermgtn/user/create'
 							title='Add a new user'
 							setBearer={setBearer}
 						/>

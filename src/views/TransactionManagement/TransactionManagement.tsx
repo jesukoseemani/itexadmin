@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import styles from './TransactionManagement.module.scss';
-import NavBar from '../../components/navbar/NavBar';
-import FilterModal from '../../components/filterConfig/FilterModal';
-import dayjs, { Dayjs } from 'dayjs';
+import React, { useEffect, useState } from "react";
+import styles from "./TransactionManagement.module.scss";
+import NavBar from "../../components/navbar/NavBar";
+import FilterModal from "../../components/filterConfig/FilterModal";
+import dayjs, { Dayjs } from "dayjs";
 import {
-	dateNow,
-	sevenDaysAgo,
-	thirtyDaysAgo,
-	startOfYear,
-	endOfYear,
-} from '../../util/datefunction';
+  dateNow,
+  sevenDaysAgo,
+  thirtyDaysAgo,
+  startOfYear,
+  endOfYear,
+} from "../../util/datefunction";
 import {
 	closeLoader,
 	openLoader,

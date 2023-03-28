@@ -1,10 +1,7 @@
-import React from "react";
-import NavBar from "../../components/navbar/NavBar";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Dayjs } from "dayjs";
-import { useEffect } from "react";
 import {
   dateNow,
   sevenDaysAgo,
@@ -18,22 +15,23 @@ import {
 } from "../../redux/actions/loader/loaderActions";
 import axios from "axios";
 import { openToastAndSetContent } from "../../redux/actions/toast/toastActions";
+import StatusView from "../../components/StatusView/StatusView";
 import {
-  ColumnCustomerModule,
-  CustomerModuleData,
-} from "../../types/CustomerTypes";
-import TableHeader from "../../components/TableHeader/TableHeader";
+  ColumnComplianceFeeModule,
+  ColumnComplianceLimitModule,
+  ColumnComplianceModule,
+  ComplianceFeeModuleData,
+  ComplianceLimitModuleData,
+  ComplianceModuleData,
+} from "../../types/ComplianceTypes";
 import { Box } from "@mui/material";
-import PaginationTable from "../../components/paginatedTable/pagination-table";
-import { ColumnBusinessCustomerModule } from "../../types/BusinessModule";
-import styles from "./styles.module.scss";
-import { openModalAndSetContent } from "../../redux/actions/modal/modalActions";
-import BlacklistCustomer from "./BlacklistCustomer";
+import TableHeader from "../../components/TableHeader/TableHeader";
 import FilterModal from "../../components/filterConfig/FilterModal";
+import PaginationTable from "../../components/paginatedTable/pagination-table";
 
-const Customermgt = () => {
+const FeeCompliance = () => {
   const [tableRow, setTableRow] = useState<any[]>();
-  const [customers, setCustomers] = useState<any>();
+  const [fee, setFee] = useState<any>();
   const [contentAction, setContentAction] = useState<any>({});
   const history = useHistory();
 
@@ -53,7 +51,6 @@ const Customermgt = () => {
   const [country, setCountry] = useState("");
   const [status, setStatus] = useState("");
   const [email, setEmail] = useState("");
-  const [merchantId, setMerchantId] = useState("");
 
   const [bearer, setBearer] = useState(false);
 
@@ -88,21 +85,19 @@ const Customermgt = () => {
 
   const filteredArray = [
     {
-      name: "merchantid",
-      value: merchantId,
-      setValue: setMerchantId,
+      name: "Status",
+      value: status,
+      setValue: setStatus,
+      selective: [{ name: "YES" }, { name: "NO" }],
     },
   ];
-
-  // fetching all customer list
-  const fetchCustomers = async () => {
+  const fetchBusinessesLimit = async () => {
     dispatch(openLoader());
     try {
-      const { data } = await axios.get(
-        `/v1/customer?status=${status}&search=${value}&perpage=${rowsPerPage}&page=${pageNumber}`
+      const { data } = await axios.get<any>(
+        `/v1/compliance/business/fee?perpage=${rowsPerPage}&page=${pageNumber}`
       );
-      console.log(data);
-      setCustomers(data);
+      setFee(data);
       dispatch(closeLoader());
       setBearer(false);
       console.log(data, "data");
@@ -119,39 +114,40 @@ const Customermgt = () => {
           })
         )
       );
-    } finally {
-      dispatch(closeLoader());
     }
   };
 
   useEffect(() => {
-    fetchCustomers();
+    fetchBusinessesLimit();
   }, [bearer, value, pageNumber, rowsPerPage]);
 
   useEffect(() => {
-    setPageNumber(customers?._metadata?.page || 1);
-  }, [customers]);
+    setPageNumber(fee?._metadata?.page || 1);
+  }, [fee]);
 
   useEffect(() => {
     Object.values(contentAction).length > 0 &&
-      history.push(`/customer/${contentAction?.id}`);
+      history.push(`/businesses/${contentAction}`);
   }, [contentAction]);
 
   const dataBusinesses = () => {
-    const tempArr: CustomerModuleData[] = [];
-    customers?.customers
+    const tempArr: ComplianceFeeModuleData[] = [];
+    fee?.fees
       ?.slice(0)
       .reverse()
-      .forEach((customer: any, index: number) => {
+      .forEach((fee: any, index: number) => {
         return tempArr.push({
-          id: customer?.id,
-          blacklistreason: customer?.blacklistreason,
-          firstname: customer?.firstname,
-          lastname: customer?.lastname,
-          email: customer?.email,
-          identifier: customer?.identifier,
-          merchantcode: customer?.business?.merchantcode,
-          isblacklisted: customer?.isblacklisted ? "true" : "false",
+          businessemail: fee?.business?.businessemail,
+          activity: fee?.activity,
+          tradingname: fee?.business?.tradingname,
+          transactiontype: fee?.transactiontype,
+          feecap: fee?.feecap,
+          feemin: fee?.feemin,
+          merchantcode: fee?.business?.merchantcode,
+          status: fee?.status,
+          paymentmethod: fee?.paymentmethod,
+          feesetting: fee?.feesetting,
+          createdAt: fee?.createdat,
         });
       });
     return tempArr;
@@ -159,55 +155,20 @@ const Customermgt = () => {
 
   useEffect(() => {
     setTableRow(dataBusinesses());
-  }, [customers?.customers]);
-
-  const handleDownload = async () => {
-    try {
-      const res = await axios.get<any>("/v1/customer/download");
-      console.log(res);
-    } catch (error: any) {
-      console.log(error.message);
-    }
-  };
-
-  // showBlacklistForm
-  const showBlacklistForm = () => {
-    dispatch(
-      openModalAndSetContent({
-        modalStyles: {
-          padding: 0,
-          width: 400,
-          // height: 500,
-          borderRadius: "20px",
-        },
-        modalContent: (
-          <div className={styles.modalDiv}>
-            <BlacklistCustomer />
-          </div>
-        ),
-      })
-    );
-  };
+  }, [fee?.fees]);
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
-      <NavBar name="Customer" />
-      {/* padding: 1rem 2rem; */}
-
-      <Box className={styles.blackist}>
-        <button onClick={showBlacklistForm}>Blacklist</button>
-      </Box>
-      <Box width="100%" py={"1rem"} px={"2rem"}>
+    <div>
+      <Box px={3} overflow="auto" width={"100%"}>
         <TableHeader
-          pageName="Customers"
-          data={customers?.customers}
-          dataLength={customers?._metadata.totalcount}
+          pageName="Compliance"
+          data={fee?.fees}
+          dataLength={fee?._metadata.totalcount}
           value={value}
           setValue={setValue}
           dropdown={dropdown}
           setDropdown={setDropdown}
           placeHolder="Search"
-          handleClick={handleDownload}
           FilterComponent={
             <FilterModal
               eventDate={eventDate}
@@ -227,15 +188,15 @@ const Customermgt = () => {
 
         <PaginationTable
           data={tableRow ? tableRow : []}
-          columns={ColumnBusinessCustomerModule ? ColumnCustomerModule : []}
+          columns={ColumnComplianceFeeModule ? ColumnComplianceFeeModule : []}
           emptyPlaceHolder={
-            customers?._metadata?.totalcount == 0
+            fee?._metadata?.totalcount == 0
               ? "You currently do not have any data"
               : "Loading..."
           }
           value={value}
-          total={customers?._metadata.totalcount}
-          totalPage={customers?._metadata.pagecount}
+          total={fee?._metadata.totalcount}
+          totalPage={fee?._metadata.pagecount}
           pageNumber={pageNumber}
           setPageNumber={setPageNumber}
           nextPage={nextPage}
@@ -244,7 +205,7 @@ const Customermgt = () => {
           setPreviousPage={setPreviousPage}
           rowsPerPage={rowsPerPage}
           setRowsPerPage={setRowsPerPage}
-          clickAction={true}
+          // clickAction={true}
           setContentAction={setContentAction}
         />
       </Box>
@@ -252,4 +213,4 @@ const Customermgt = () => {
   );
 };
 
-export default Customermgt;
+export default FeeCompliance;
