@@ -29,6 +29,7 @@ import { ColumnBusinessCustomerModule } from "../../types/BusinessModule";
 import styles from "./styles.module.scss";
 import { openModalAndSetContent } from "../../redux/actions/modal/modalActions";
 import BlacklistCustomer from "./BlacklistCustomer";
+import FilterModal from "../../components/filterConfig/FilterModal";
 
 const Customermgt = () => {
   const [tableRow, setTableRow] = useState<any[]>();
@@ -52,6 +53,7 @@ const Customermgt = () => {
   const [country, setCountry] = useState("");
   const [status, setStatus] = useState("");
   const [email, setEmail] = useState("");
+  const [merchantId, setMerchantId] = useState<string>("");
 
   const [bearer, setBearer] = useState(false);
 
@@ -86,10 +88,9 @@ const Customermgt = () => {
 
   const filteredArray = [
     {
-      name: "Status",
-      value: status,
-      setValue: setStatus,
-      selective: [{ name: "YES" }, { name: "NO" }],
+      name: "merchantid",
+      value: merchantId,
+      setValue: setMerchantId,
     },
   ];
 
@@ -207,6 +208,21 @@ const Customermgt = () => {
           setDropdown={setDropdown}
           placeHolder="Search"
           handleClick={handleDownload}
+          FilterComponent={
+            <FilterModal
+              eventDate={eventDate}
+              setEventDate={setEventDate}
+              dropdown={dropdown}
+              setDropdown={setDropdown}
+              setFromDate={setFromDate}
+              setToDate={setToDate}
+              fromDate={fromDate}
+              toDate={toDate}
+              setBearer={setBearer}
+              clearHandler={clearHandler}
+              filteredArray={filteredArray}
+            />
+          }
         />
 
         <PaginationTable
