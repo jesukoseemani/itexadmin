@@ -163,10 +163,12 @@ function TransactionManagement() {
 						<StatusView
 							status={
 								transaction?.responsecode === '00'
-									? 'Successful'
+									? 'Approved'
 									: transaction?.responsecode === '09'
 									? 'Pending'
-									: 'Failed'
+									: transaction?.responsecode === 'F9'
+									? 'Abandoned'
+									: 'Declined'
 							}
 							green='Successful'
 							red='Failed'

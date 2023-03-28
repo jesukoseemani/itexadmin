@@ -18,6 +18,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import axios from 'axios';
 import SingleChargeRequest from '../../components/ModalsReuse/businessDetailsModal/SingleChargeRequest';
 import LogSingleChargeRequest from '../../components/ModalsReuse/businessDetailsModal/LogSingleChargeRequest';
+import StatusView from '../../components/StatusView/StatusView';
 
 const TransactionDetails = () => {
 	const location = useLocation();
@@ -42,7 +43,7 @@ const TransactionDetails = () => {
 			setApiRes(res.data);
 		});
 	}, []);
-	console.log(apiRes)
+	console.log(apiRes);
 
 	const dispatch = useDispatch();
 
@@ -130,38 +131,27 @@ const TransactionDetails = () => {
 				<Box sx={{ flexGrow: 1, margin: '1rem' }}>
 					<Grid container spacing={3}>
 						<Grid item md={6} xs={12} lg={6}>
-							<div>
-								<span className={styles.headerAmount}>
+							<div style={{ display: 'flex' }}>
+								<span
+									style={{ marginRight: '10px' }}
+									className={styles.headerAmount}>
 									{apiRes?.transaction?.currency}
 									{apiRes?.transaction?.amount}
 								</span>
-								<button
-									style={{
-										backgroundColor:
-											(apiRes?.transaction.responsecode === '00' &&
-												'#27AE60') ||
-											(apiRes?.transaction.responsecode !== '00' &&
-												apiRes?.transaction.responsecode !== '09' &&
-												'#EB5757') ||
-											(apiRes?.transaction.responsecode === '09' &&
-												'#F2C94C') ||
-											'rgba(169, 170, 171, 0.22)',
-										color:
-											(apiRes?.transaction.responsecode === '00' &&
-												'#FFFFFF') ||
-											(apiRes?.transaction.responsecode === '09' &&
-												'#FFFFFF') ||
-											(apiRes?.transaction.responsecode !== '09' &&
-												'#333333') ||
-											'#002841',
-									}}
-									className={styles.buttonSuccessful}>
-									{' '}
-									{(apiRes?.transaction.responsecode === '00' &&
-										'Successful') ||
-										(apiRes?.transaction.responsecode === '09' && 'Pending') ||
-										'Failedd'}
-								</button>
+								<StatusView
+									status={
+										apiRes?.transaction?.responsecode === '00'
+											? 'Approved'
+											: apiRes?.transaction?.responsecode === '09'
+											? 'Pending'
+											: apiRes?.transaction?.responsecode === 'F9'
+											? 'Abandoned'
+											: 'Declined'
+									}
+									green='Approved'
+									orange='Pending'
+									blue='Abandoned'
+								/>
 							</div>
 						</Grid>
 						{/* <Grid item md={6} xs={12} lg={6}>

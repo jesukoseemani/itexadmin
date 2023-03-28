@@ -140,6 +140,13 @@ const UsersPermission = () => {
 	const [rows, setRows] = useState<any[]>([]);
 	const [apiRes, setApiRes] = useState<userRoleTypes>();
 	const [isFilterModalOpen, setIsFilterModalOpen] = useState<boolean>(false);
+	const permission = useSelector(
+		(state) => state?.permissionPayReducer.permission
+	);
+
+	useEffect(() => {
+		console.log('responding:', permission);
+	}, []);
 
 	// const [singleData, setSingleData] = useState<userRoleTypes>({
 	// 	id: '',
