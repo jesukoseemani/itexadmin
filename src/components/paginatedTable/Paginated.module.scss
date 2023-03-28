@@ -1,11 +1,16 @@
+.tableWrapper {
+	width: 100%;
+}
+
 .table {
-  background: #ffffff;
-  border: 1px solid #f3f4f4;
-  box-sizing: border-box;
-  box-shadow: 0px 0px 1px rgba(177, 182, 183, 0.5);
-  border-radius: 4px;
-  margin-top: 9px;
-  border-radius: 8px 8px 0px 0px;
+	width: 100%;
+	background: #ffffff;
+	border: 1px solid #f3f4f4;
+	box-sizing: border-box;
+	box-shadow: 0px 0px 1px rgba(177, 182, 183, 0.5);
+	border-radius: 4px;
+	margin-top: 9px;
+	border-radius: 8px 8px 0px 0px;
 }
 
 .tableHead {
@@ -24,10 +29,11 @@
 }
 
 .tableBody {
-  padding-top: 28px 20px;
-  cursor: pointer;
-  border-bottom: 1px solid #e5e5e5;
-  text-align: center;
+	padding-top: 28px 20px;
+	cursor: pointer;
+	border-bottom: 1px solid #e5e5e5;
+	text-align: center;
+	width: 100%;
 }
 
 .tableBodyHover {

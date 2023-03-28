@@ -53,7 +53,7 @@ const Customermgt = () => {
   const [country, setCountry] = useState("");
   const [status, setStatus] = useState("");
   const [email, setEmail] = useState("");
-  const [merchantId, setMerchantId] = useState<string>("");
+  const [merchantId, setMerchantId] = useState("");
 
   const [bearer, setBearer] = useState(false);
 

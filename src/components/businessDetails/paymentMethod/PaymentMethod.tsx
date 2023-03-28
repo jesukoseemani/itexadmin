@@ -21,11 +21,11 @@ const GreenSwitch = styled(Switch)(({ theme }) => ({
 	'& .MuiSwitch-switchBase.Mui-checked': {
 		color: '#27ae60',
 		'&:hover': {
-			backgroundColor: alpha('#27ae60', theme.palette.action.hoverOpacity),
+			backgroundColor: alpha('#000000', theme.palette.action.hoverOpacity),
 		},
 	},
 	'& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
-		backgroundColor: '#27ae60',
+		backgroundColor: '#828b86',
 	},
 }));
 
