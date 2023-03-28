@@ -45,7 +45,7 @@ const CssTextField = withStyles({
 				borderColor: '#008243',
 			},
 			'&.Mui-focused fieldset': {
-			    borderColor: '#008243',
+				borderColor: '#008243',
 			},
 		},
 	},
@@ -66,7 +66,7 @@ const TableHeader = ({
 	filtering = true,
 	exporting = true,
 	searchfn = true,
-	handleClick
+	handleClick,
 }: TableHeaderProps) => {
 	const [isDesktop, setDesktop] = useState(window.innerWidth > 800);
 
@@ -94,19 +94,19 @@ const TableHeader = ({
 							sx={{
 								'& > :not(style)': isDesktop
 									? {
-										width: '30vw',
-										height: '40px',
-										borderRadius: '8px',
-									}
+											width: '30vw',
+											height: '40px',
+											borderRadius: '8px',
+									  }
 									: { width: '40vw', height: '30px', borderRadius: '8px' },
 							}}>
 							<CssTextField
 								style={
 									isDesktop
 										? {
-											marginTop: '0rem',
-											padding: '0.4rem',
-										}
+												marginTop: '0rem',
+												padding: '0.4rem',
+										  }
 										: { marginTop: '0rem', padding: '0.2rem' }
 								}
 								id='input-with-icon-textfield'
@@ -136,17 +136,23 @@ const TableHeader = ({
 							FilterComponent={FilterComponent}
 						/>
 					)}
-					{/* {exporting && <ExportButton data={data} fileName={pageName} />} */}				
-						{exporting &&
-						<div><IconButton disableRipple={true} onClick={handleClick}>
-							<button style={{
-								padding: "12px 15px",
-								border:"none",
-								outline: "none",
-								borderRadius:"5px"
-							}}>Download</button>
-
-						</IconButton></div>}
+					{/* {exporting && <ExportButton data={data} fileName={pageName} />} */}
+					{exporting && (
+						<div>
+							<button
+								onClick={handleClick}
+								style={{
+									padding: '12px 15px',
+									outline: 'none',
+									borderRadius: '5px',
+									marginLeft: '20px',
+									border: '1px solid #ededed',
+									cursor: 'pointer',
+								}}>
+								Download
+							</button>
+						</div>
+					)}
 				</div>
 				<div className={styles.headerButton}>{newButton}</div>
 			</div>

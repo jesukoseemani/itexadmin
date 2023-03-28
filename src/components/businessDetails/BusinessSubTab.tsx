@@ -58,7 +58,7 @@ function BusinessSubTab({ id }: { id: number }) {
 		},
 		flexContainer: {
 			justifyContent: 'space-between',
-			width: '50%',
+			width: '60%',
 		},
 		scrollButtons: {
 			marginBottom: '13px',

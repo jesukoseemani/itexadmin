@@ -1,4 +1,9 @@
+.tableWrapper {
+	width: 100%;
+}
+
 .table {
+	width: 100%;
 	background: #ffffff;
 	border: 1px solid #f3f4f4;
 	box-sizing: border-box;
@@ -28,6 +33,7 @@
 	cursor: pointer;
 	border-bottom: 1px solid #e5e5e5;
 	text-align: center;
+	width: 100%;
 }
 
 .tableBodyHover {

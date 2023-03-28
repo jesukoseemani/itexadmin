@@ -15,7 +15,7 @@ import {
 	openLoader,
 } from '../../redux/actions/loader/loaderActions';
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { openToastAndSetContent } from '../../redux/actions/toast/toastActions';
 import {
 	ColumnTransactionModule,
@@ -25,6 +25,8 @@ import PaginationTable from '../../components/paginatedTable/pagination-table';
 import TableHeader from '../../components/TableHeader/TableHeader';
 import StatusView from '../../components/StatusView/StatusView';
 import { useHistory } from 'react-router-dom';
+import useDownload from '../../interfaces/Download';
+import { useAsyncDebounce } from 'react-table';
 
 function TransactionManagement() {
 	const [tableRow, setTableRow] = useState<any[]>();
@@ -140,8 +142,8 @@ function TransactionManagement() {
 
 	useEffect(() => {
 		Object.values(contentAction).length > 0 &&
-		history.push(`/transactionmgt/${contentAction?.paymentid}`);
-		console.log(contentAction)
+			history.push(`/transactionmgt/${contentAction?.paymentid}`);
+		console.log(contentAction);
 	}, [contentAction]);
 
 	const dataBusinesses = () => {
@@ -156,7 +158,7 @@ function TransactionManagement() {
 					transaction_ref: transaction.paymentid,
 					amount: `${transaction.currency}${transaction.amount.toFixed(2)}`,
 					payment_type: transaction.merchantcode,
-					paymentid:transaction.paymentid,
+					paymentid: transaction.paymentid,
 					status: (
 						<StatusView
 							status={
@@ -181,6 +183,19 @@ function TransactionManagement() {
 	useEffect(() => {
 		setTableRow(dataBusinesses());
 	}, [transaction?.transactions]);
+	
+const { calDownload } = useDownload(
+	{ url: 'https://staging.itex-pay.com/ipgadmin/api/v1/transaction/download', filename: 'transactions' }
+);
+	const downloadHandler = async() => {
+		try {
+			dispatch(openLoader());
+			await calDownload();
+			dispatch(closeLoader());
+		} catch (error) {
+			dispatch(closeLoader());
+		}
+	};
 
 	return (
 		<div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
@@ -195,6 +210,7 @@ function TransactionManagement() {
 					dropdown={dropdown}
 					setDropdown={setDropdown}
 					placeHolder='Search'
+					handleClick={downloadHandler}
 					FilterComponent={
 						<FilterModal
 							eventDate={eventDate}
