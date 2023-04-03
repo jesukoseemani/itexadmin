@@ -30,6 +30,9 @@ import { Box } from "@mui/material";
 import TableHeader from "../../components/TableHeader/TableHeader";
 import FilterModal from "../../components/filterConfig/FilterModal";
 import PaginationTable from "../../components/paginatedTable/pagination-table";
+import { openModalAndSetContent } from "../../redux/actions/modal/modalActions";
+import CompleteApproval from "../../components/complianceDetails/CompleteApproval";
+import NavBar from "../../components/navbar/NavBar";
 
 const ScheduleCompliance = () => {
   const [tableRow, setTableRow] = useState<any[]>();
@@ -97,7 +100,7 @@ const ScheduleCompliance = () => {
     dispatch(openLoader());
     try {
       const { data } = await axios.get<any>(
-        `/v1/compliance/business/settlement/schedule?perpage=${rowsPerPage}&page=${pageNumber}`
+        `/v1/compliance/business/settlement/schedule?search=${value}&status=${status}&perpage=${rowsPerPage}&page=${pageNumber}`
       );
       setSchedule(data);
       dispatch(closeLoader());
@@ -146,10 +149,27 @@ const ScheduleCompliance = () => {
           timeapproved: schedule?.timeapproved,
           periodsetting: schedule?.periodsetting,
           merchantcode: schedule?.business?.merchantcode,
-          status: schedule?.status,
+          // status: schedule?.status,
           paymentmethod: schedule?.paymentmethod,
           id: schedule?.id,
           createdAt: schedule?.createdat,
+          action: schedule?.approved ? "" : <button onClick={() => handleApproval(schedule?.id)}
+            style={{
+              outline: "none",
+              border: "none",
+              padding: "10px 20px",
+              cursor: "pointer",
+              background: "#219653",
+              color: "#fff",
+              width: "max-content"
+            }}
+
+
+
+          >Complete Approval</button>,
+
+
+
         });
       });
     return tempArr;
@@ -159,8 +179,27 @@ const ScheduleCompliance = () => {
     setTableRow(dataBusinesses());
   }, [schedule?.schedules]);
 
+  const handleApproval = (schedule: any) => {
+
+    dispatch(
+      openModalAndSetContent({
+        modalStyles: {
+          padding: 0,
+        },
+        modalContent: (
+          <Box>
+            <CompleteApproval id={schedule} />
+          </Box>
+        ),
+      })
+    );
+  }
+
+
+
   return (
     <div>
+      <NavBar name="Schedule" />
       <Box px={3} overflow="auto" width={"100%"}>
         <TableHeader
           pageName="Compliance"
@@ -188,30 +227,38 @@ const ScheduleCompliance = () => {
           }
         />
 
-        <PaginationTable
-          data={tableRow ? tableRow : []}
-          columns={
-            ColumnComplianceScheduleModule ? ColumnComplianceScheduleModule : []
-          }
-          emptyPlaceHolder={
-            schedule?._metadata?.totalcount == 0
-              ? "You currently do not have any data"
-              : "Loading..."
-          }
-          value={value}
-          total={schedule?._metadata.totalcount}
-          totalPage={schedule?._metadata.pagecount}
-          pageNumber={pageNumber}
-          setPageNumber={setPageNumber}
-          nextPage={nextPage}
-          setNextPage={setNextPage}
-          previousPage={previousPage}
-          setPreviousPage={setPreviousPage}
-          rowsPerPage={rowsPerPage}
-          setRowsPerPage={setRowsPerPage}
-          // clickAction={true}
-          setContentAction={setContentAction}
-        />
+
+        <Box sx={{
+          overflowX: "auto"
+        }}>
+
+          <PaginationTable
+            data={tableRow ? tableRow : []}
+            columns={
+              ColumnComplianceScheduleModule ? ColumnComplianceScheduleModule : []
+            }
+            emptyPlaceHolder={
+              schedule?._metadata?.totalcount == 0
+                ? "You currently do not have any data"
+                : "Loading..."
+            }
+            value={value}
+            total={schedule?._metadata.totalcount}
+            totalPage={schedule?._metadata.pagecount}
+            pageNumber={pageNumber}
+            setPageNumber={setPageNumber}
+            nextPage={nextPage}
+            setNextPage={setNextPage}
+            previousPage={previousPage}
+            setPreviousPage={setPreviousPage}
+            rowsPerPage={rowsPerPage}
+            setRowsPerPage={setRowsPerPage}
+            // clickAction={true}
+            setContentAction={setContentAction}
+          />
+        </Box>
+
+
       </Box>
     </div>
   );

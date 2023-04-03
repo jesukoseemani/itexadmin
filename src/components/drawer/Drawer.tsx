@@ -112,18 +112,13 @@ const settlement = [
     route: "/settlements",
     icon: <ListIcon />,
   },
-  // {
-  // 	id: 'DSR',
-  // 	title: 'Reconciliation',
-  // 	route: '/settlements/reconciliation',
-  // 	icon: <FactCheckIcon />,
-  // },
-  // {
-  // 	id: 'DSP',
-  // 	title: 'Pending Approval',
-  // 	route: '/settlements/pending_approval',
-  // 	icon: <PendingIcon />,
-  // },
+
+  {
+    id: 'DSP',
+    title: 'Due',
+    route: '/settlements/due',
+    icon: <PendingIcon />,
+  },
 ];
 
 // const compliance = [
@@ -154,9 +149,33 @@ const RollingReserveManagement = [
 ];
 const ComplianceManagement = [
   {
-    id: "CCM",
-    title: "Compliance",
+    id: "CFM",
+    title: "Business",
     route: "/compliance",
+    icon: <AssuredWorkloadIcon />,
+  },
+  {
+    id: "CFF",
+    title: "Fees",
+    route: "/compliance/fees",
+    icon: <AssuredWorkloadIcon />,
+  },
+  {
+    id: "CLM",
+    title: "Limit",
+    route: "/compliance/limit",
+    icon: <AssuredWorkloadIcon />,
+  },
+  {
+    id: "CSM",
+    title: "Schedule",
+    route: "/compliance/schedule",
+    icon: <AssuredWorkloadIcon />,
+  },
+  {
+    id: "CCM",
+    title: "Config",
+    route: "/compliance/config",
     icon: <AssuredWorkloadIcon />,
   },
 ];

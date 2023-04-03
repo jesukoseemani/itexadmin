@@ -69,6 +69,11 @@ import Account from '../views/Account/Account';
 import Customermgt from '../views/customer/Customermgt';
 import CustomerDetails from '../views/customer/CustomerDetails';
 import RollingReserve from '../views/rollingReserve/RollingReserve';
+import FeeCompliance from '../views/Compliance/FeeCompliance';
+import LimitCompliance from '../views/Compliance/LimitCompliance';
+import ScheduleCompliance from '../views/Compliance/ScheduleCompliance';
+import ConfigCompliance from '../views/Compliance/ConfigCompliance';
+import DueSettlements from '../views/Settlement/DueSettlement';
 
 export default function AppRoutes() {
 	const dispatch = useDispatch();
@@ -145,12 +150,12 @@ export default function AppRoutes() {
 				<Drawer />
 				<div
 					className={Styles.wrap}
-					// style={{
-					// 	flex: '1',
-					// 	width: '100%',
-					// 	overflowX: 'scroll',
-					// 	backgroundColor: '#EFF3F7',
-					// }}
+				// style={{
+				// 	flex: '1',
+				// 	width: '100%',
+				// 	overflowX: 'scroll',
+				// 	backgroundColor: '#EFF3F7',
+				// }}
 				>
 					<Switch>
 						<Route exact path='/signin'>
@@ -246,6 +251,12 @@ export default function AppRoutes() {
 							/>
 							<ProtectedRoute
 								exact
+								path='/settlements/due'
+								component={DueSettlements}
+								AuthUser={loadingState}
+							/>
+							<ProtectedRoute
+								exact
 								path='/settlement/:id'
 								component={SettlementDetails}
 								AuthUser={loadingState}
@@ -300,6 +311,30 @@ export default function AppRoutes() {
 							/>
 							<ProtectedRoute
 								exact
+								path='/compliance/fees'
+								component={FeeCompliance}
+								AuthUser={loadingState}
+							/>
+							<ProtectedRoute
+								exact
+								path='/compliance/limit'
+								component={LimitCompliance}
+								AuthUser={loadingState}
+							/>
+							<ProtectedRoute
+								exact
+								path='/compliance/schedule'
+								component={ScheduleCompliance}
+								AuthUser={loadingState}
+							/>
+							<ProtectedRoute
+								exact
+								path='/compliance/config'
+								component={ConfigCompliance}
+								AuthUser={loadingState}
+							/>
+							<ProtectedRoute
+								exact
 								path='/bank'
 								component={Bank}
 								AuthUser={loadingState}
@@ -312,7 +347,7 @@ export default function AppRoutes() {
 							/>
 							<ProtectedRoute
 								exact
-								path='/compliance/:id'
+								path='/compliance/business/:id'
 								component={ComplianceDetails}
 								AuthUser={loadingState}
 							/>
@@ -341,6 +376,8 @@ export default function AppRoutes() {
 								component={RollingReserve}
 								AuthUser={loadingState}
 							/>
+
+
 							{/* <ProtectedRoute
               exact
               path="/legal/partners_banks"

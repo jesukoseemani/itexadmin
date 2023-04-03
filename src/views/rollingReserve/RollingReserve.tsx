@@ -18,6 +18,7 @@ import { Box } from "@mui/material";
 import styles from "./styles.module.scss";
 import { openModalAndSetContent } from "../../redux/actions/modal/modalActions";
 import RollbackModal from "./RollbackModal";
+import useDownload from '../../interfaces/Download';
 
 const RollingReserve = () => {
   const [contentAction, setContentAction] = useState<any>({});
@@ -81,8 +82,8 @@ const RollingReserve = () => {
   }, [rollingRes]);
 
   // useEffect(() => {
-  // 	Object.values(contentAction).length > 0 &&
-  // 		history.push(`/settlement/${contentAction?.settlement_id}`);
+  //   Object.values(contentAction).length > 0 &&
+  //     history.push(`/rollingreserve/${contentAction?.id}`);
   // }, [contentAction]);
 
   const dataReserve = () => {
@@ -92,16 +93,20 @@ const RollingReserve = () => {
       .reverse()
       .forEach((rolling: any, index: number) => {
         return tempArr.push({
+          id: rolling?.id,
           rolling_id: rolling?.id,
-          settlement_id: rolling?.settlement_id,
+          settlement_id: rolling?.settlementid,
           amount: rolling?.amount,
           currency: rolling?.currency,
           status: rolling?.status,
           balanceBefore: rolling?.balanceBefore,
           balanceAfter: rolling?.balanceAfter,
-          merchantcode: rolling?.merchantcode,
+          merchantcode: rolling?.business?.merchantcode,
           duedate: rolling?.duedate,
-          date: rolling?.createdAt,
+          action: <Box className={styles.rolling}>
+            <button onClick={() => showRollBackForm(rolling?.id)}>Reserve</button>
+          </Box>,
+          date: rolling?.createdat,
         });
       });
     return tempArr;
@@ -111,7 +116,7 @@ const RollingReserve = () => {
     setTableRow(dataReserve());
   }, [rollingRes?.rollingreserves]);
 
-  const showRollBackForm = () => {
+  const showRollBackForm = (id: any) => {
     dispatch(
       openModalAndSetContent({
         modalStyles: {
@@ -122,20 +127,31 @@ const RollingReserve = () => {
         },
         modalContent: (
           <div className={styles.modalDiv}>
-            <RollbackModal />
+            <RollbackModal id={id} />
           </div>
         ),
       })
     );
   };
 
+  const { calDownload } = useDownload(
+    { url: 'https://staging.itex-pay.com/ipgadmin/api/v1/rollingreserve/download', filename: `RollingReserve${Date.now()}.csv` }
+  );
+
+  const handleDownload = async () => {
+    try {
+      dispatch(openLoader());
+      await calDownload();
+      dispatch(closeLoader());
+    } catch (error) {
+      dispatch(closeLoader());
+    }
+  };
   return (
     <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
       <NavBar name="Rolling reserve" />
 
-      <Box className={styles.rolling}>
-        <button onClick={showRollBackForm}>Reserve</button>
-      </Box>
+
       <Box
         sx={{
           marginTop: "2rem",
@@ -151,32 +167,37 @@ const RollingReserve = () => {
           dropdown={dropdown}
           setDropdown={setDropdown}
           placeHolder="Search"
+          handleClick={handleDownload}
         />
 
-        <PaginationTable
-          data={tableRow ? tableRow : []}
-          columns={
-            ColumnSettlementRollingModule ? ColumnSettlementRollingModule : []
-          }
-          emptyPlaceHolder={
-            rollingRes?._metadata?.totalcount == 0
-              ? "You currently do not have any data"
-              : "Loading..."
-          }
-          value={value}
-          total={rollingRes?._metadata.totalcount}
-          totalPage={rollingRes?._metadata.pagecount}
-          pageNumber={pageNumber}
-          setPageNumber={setPageNumber}
-          nextPage={nextPage}
-          setNextPage={setNextPage}
-          previousPage={previousPage}
-          setPreviousPage={setPreviousPage}
-          rowsPerPage={rowsPerPage}
-          setRowsPerPage={setRowsPerPage}
-          clickAction={true}
-          setContentAction={setContentAction}
-        />
+        <Box sx={{ overflowX: "auto" }}>
+
+          <PaginationTable
+            data={tableRow ? tableRow : []}
+            columns={
+              ColumnSettlementRollingModule ? ColumnSettlementRollingModule : []
+            }
+            emptyPlaceHolder={
+              rollingRes?._metadata?.totalcount == 0
+                ? "You currently do not have any data"
+                : "Loading..."
+            }
+            value={value}
+            total={rollingRes?._metadata.totalcount}
+            totalPage={rollingRes?._metadata.pagecount}
+            pageNumber={pageNumber}
+            setPageNumber={setPageNumber}
+            nextPage={nextPage}
+            setNextPage={setNextPage}
+            previousPage={previousPage}
+            setPreviousPage={setPreviousPage}
+            rowsPerPage={rowsPerPage}
+            setRowsPerPage={setRowsPerPage}
+            clickAction={true}
+            setContentAction={setContentAction}
+          />
+        </Box>
+
       </Box>
     </div>
   );

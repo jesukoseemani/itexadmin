@@ -33,6 +33,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import AddSingleSettlement from "../../components/settlement/AddSingleSettlement";
 import BulkSettlement from "../../components/settlement/BulkSettlement";
+import useDownload from '../../interfaces/Download';
 
 const SettlementDetails = () => {
   interface ParamTypes {
@@ -238,49 +239,23 @@ const SettlementDetails = () => {
     setTableRow(settlementTrans());
   }, [settlement?.settlements]);
 
-  // download settlement transaction list
+
+  // download
+
+  const { calDownload } = useDownload(
+    { url: `https://staging.itex-pay.com/ipgadmin/api/v1/settlement/${contentAction?.settlement_id}/transactions/download`, filename: 'transaction.csv' }
+  );
+
   const handleDownload = async () => {
-    // dispatch(openLoader());
-    // try {
-    // 	setDownload(data)
-    // 	console.log(download)
-    // 	// con
-    // } catch (err: any) {
-    // 	dispatch(closeLoader());
-    // 	const { message } = err?.response.data;
-    // 	dispatch(
-    // 		dispatch(
-    // 			openToastAndSetContent({
-    // 				toastContent: message,
-    // 				toastStyles: {
-    // 					backgroundColor: 'red',
-    // 				},
-    // 			})
-    // 		)
-    // 	);
-    // } finally {
-    // 	dispatch(closeLoader());
-    // }
-    // try{
-    // 	const res = await axios.get(`/v1/settlement/${id}/transactions/download`)
-    // 	// setDownload(data)
-    // 	console.log(res, "res")
-    // 	// console.log((JSON.parse(res.data)))
-    // }catch(err:any){
-    // 	dispatch(closeLoader());
-    // 	const { message } = err?.response.data;
-    // 	dispatch(
-    // 		dispatch(
-    // 			openToastAndSetContent({
-    // 				toastContent: message,
-    // 				toastStyles: {
-    // 					backgroundColor: 'red',
-    // 				},
-    // 			})
-    // 		)
-    // 	);
-    // }
+    try {
+      dispatch(openLoader());
+      await calDownload();
+      dispatch(closeLoader());
+    } catch (error) {
+      dispatch(closeLoader());
+    }
   };
+
 
   const showSingleSettlement = () => {
     dispatch(
@@ -293,7 +268,7 @@ const SettlementDetails = () => {
         },
         modalContent: (
           <div className={styles.modalDiv}>
-            <AddSingleSettlement />
+            <AddSingleSettlement id={id} />
           </div>
         ),
       })
@@ -311,7 +286,7 @@ const SettlementDetails = () => {
         },
         modalContent: (
           <div className={styles.modalDiv}>
-            <BulkSettlement />
+            {/* <BulkSettlement /> */}
           </div>
         ),
       })
@@ -330,41 +305,9 @@ const SettlementDetails = () => {
           <ArrowLeftIcon /> Back to due settlements
         </span>
 
-        <Box sx={{ flexGrow: 1, margin: "1rem" }}>
-          <Grid container spacing={3}>
-            <Grid item md={6} xs={12} lg={6}>
-              <div>
-                <span className={styles.headerAmount}>
-                  {/* NGN {apiRes?.settlements[0]?.amount} */}
-                  NGN {settlement?.settlement?.amount}
-                </span>
-                <button className={styles.buttonSuccessful}>Live</button>
-                <button className={styles.buttonPending}>Settlement due</button>
-              </div>
-            </Grid>
-            <Grid item md={6} xs={12} lg={6}>
-              <div className={styles.headerFlexRight}>
-                <button
-                  className={styles.buttongreen}
-                  onClick={markSettlementHandler}
-                >
-                  Mark as Reviewed
-                </button>
-
-                <button
-                  className={styles.buttonflag}
-                  onClick={flagTransactionHandler}
-                >
-                  Flag Settlement
-                </button>
-
-                <button className={styles.buttongreen} onClick={handleClick}>
-                  Add settlement
-                </button>
-              </div>
-            </Grid>
-          </Grid>
-        </Box>
+        <button className={styles.buttongreen} onClick={handleClick}>
+          Add settlement
+        </button>
       </div>
       <Divider />
 

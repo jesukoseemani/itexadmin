@@ -26,6 +26,9 @@ import { Box } from "@mui/material";
 import TableHeader from "../../components/TableHeader/TableHeader";
 import FilterModal from "../../components/filterConfig/FilterModal";
 import PaginationTable from "../../components/paginatedTable/pagination-table";
+import CompleteApproval from "../../components/complianceDetails/CompleteApproval";
+import { openModalAndSetContent } from "../../redux/actions/modal/modalActions";
+import NavBar from '../../components/navbar/NavBar';
 
 const LimitCompliance = () => {
   const [tableRow, setTableRow] = useState<any[]>();
@@ -93,7 +96,7 @@ const LimitCompliance = () => {
     dispatch(openLoader());
     try {
       const { data } = await axios.get<any>(
-        `/v1/compliance/business/limit?perpage=${rowsPerPage}&page=${pageNumber}`
+        `/v1/compliance/business/limit?search=${value}&status=${status}&perpage=${rowsPerPage}&page=${pageNumber}`
       );
       setLimit(data);
       dispatch(closeLoader());
@@ -142,10 +145,27 @@ const LimitCompliance = () => {
           minlimit: limit?.minlimit,
           maxlimit: limit?.maxlimit,
           merchantcode: limit?.business?.merchantcode,
-          status: limit?.status,
+          // status: limit?.status,
           paymentmethod: limit?.paymentmethod,
           limittype: limit?.limittype,
           createdAt: limit?.createdat,
+          id: limit.id,
+          action: limit?.approved ? null : <button onClick={() => handleApproval(limit?.id)}
+            style={{
+              outline: "none",
+              border: "none",
+              padding: "10px 20px",
+              cursor: "pointer",
+              background: "#219653",
+              color: "#fff",
+              width: "max-content"
+            }}
+
+
+
+          >Complete Approval</button>,
+
+
         });
       });
     return tempArr;
@@ -155,8 +175,28 @@ const LimitCompliance = () => {
     setTableRow(dataBusinesses());
   }, [limit?.limits]);
 
+
+
+  const handleApproval = (limit: any) => {
+
+    dispatch(
+      openModalAndSetContent({
+        modalStyles: {
+          padding: 0,
+        },
+        modalContent: (
+          <Box>
+            <CompleteApproval id={limit} />
+          </Box>
+        ),
+      })
+    );
+  }
+
   return (
     <div>
+      <NavBar name="Limit" />
+
       <Box px={3} overflow="auto" width={"100%"}>
         <TableHeader
           pageName="Compliance"
@@ -184,30 +224,37 @@ const LimitCompliance = () => {
           }
         />
 
-        <PaginationTable
-          data={tableRow ? tableRow : []}
-          columns={
-            ColumnComplianceLimitModule ? ColumnComplianceLimitModule : []
-          }
-          emptyPlaceHolder={
-            limit?._metadata?.totalcount == 0
-              ? "You currently do not have any data"
-              : "Loading..."
-          }
-          value={value}
-          total={limit?._metadata.totalcount}
-          totalPage={limit?._metadata.pagecount}
-          pageNumber={pageNumber}
-          setPageNumber={setPageNumber}
-          nextPage={nextPage}
-          setNextPage={setNextPage}
-          previousPage={previousPage}
-          setPreviousPage={setPreviousPage}
-          rowsPerPage={rowsPerPage}
-          setRowsPerPage={setRowsPerPage}
-          // clickAction={true}
-          setContentAction={setContentAction}
-        />
+
+        <Box sx={{
+          overflowX: "auto"
+        }}>
+
+          <PaginationTable
+            data={tableRow ? tableRow : []}
+            columns={
+              ColumnComplianceLimitModule ? ColumnComplianceLimitModule : []
+            }
+            emptyPlaceHolder={
+              limit?._metadata?.totalcount == 0
+                ? "You currently do not have any data"
+                : "Loading..."
+            }
+            value={value}
+            total={limit?._metadata.totalcount}
+            totalPage={limit?._metadata.pagecount}
+            pageNumber={pageNumber}
+            setPageNumber={setPageNumber}
+            nextPage={nextPage}
+            setNextPage={setNextPage}
+            previousPage={previousPage}
+            setPreviousPage={setPreviousPage}
+            rowsPerPage={rowsPerPage}
+            setRowsPerPage={setRowsPerPage}
+            // clickAction={true}
+            setContentAction={setContentAction}
+          />
+
+        </Box>
       </Box>
     </div>
   );

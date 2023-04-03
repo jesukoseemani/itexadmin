@@ -5,11 +5,11 @@ export interface CustomerModuleData {
 	blacklistreason: string;
 	email: string;
 	firstname: number;
-	lastname:string;
+	lastname: string;
 	identifier: string;
-	merchantcode:string;
+	merchantcode: string;
 	isblacklisted: string;
-	// date: string;
+	action: any;
 }
 
 
@@ -23,14 +23,14 @@ export const ColumnCustomerModule = [
 		Header: 'Blacklist reason',
 		accessor: 'blacklistreason',
 	},
-    {
-        Header: 'Email',
-        accessor: 'email',
-    },
-    {
-        Header: 'Firstname',
-        accessor: 'firstname',
-    },
+	{
+		Header: 'Email',
+		accessor: 'email',
+	},
+	{
+		Header: 'Firstname',
+		accessor: 'firstname',
+	},
 	{
 		Header: 'Lastname',
 		accessor: 'lastname',
@@ -46,5 +46,9 @@ export const ColumnCustomerModule = [
 	{
 		Header: 'Isblacklisted',
 		accessor: 'isblacklisted',
+	},
+	{
+		Header: 'Action',
+		accessor: 'action',
 	},
 ];

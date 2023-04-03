@@ -42,11 +42,11 @@ const useStyles = makeStyles({
 			border: 'none',
 		},
 		'& .MuiOutlinedInput-input.MuiInputBase-input.MuiInputBase-input.MuiOutlinedInput-input':
-			{
-				textAlign: 'center',
-				padding: '8.1px 70px',
-				fontSize: '4px',
-			},
+		{
+			textAlign: 'center',
+			padding: '8.1px 70px',
+			fontSize: '4px',
+		},
 		// '& .MuiSelect-select.MuiInputBase-input.MuiOutlinedInput-input.MuiSelect-select.MuiInputBase-input.MuiOutlinedInput-input.MuiSelect-select.MuiInputBase-input.MuiOutlinedInput-input':
 		// 	{
 		// 		paddingRight: '50px',
@@ -54,11 +54,11 @@ const useStyles = makeStyles({
 	},
 	select: {
 		'& .MuiOutlinedInput-input.MuiInputBase-input.MuiInputBase-input.MuiOutlinedInput-input':
-			{
-				textAlign: 'center',
-				padding: '5px 40px',
-				fontSize: '15px',
-			},
+		{
+			textAlign: 'center',
+			padding: '5px 40px',
+			fontSize: '15px',
+		},
 		'&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
 			outline: 'none',
 		},
@@ -280,7 +280,7 @@ const UsersPermission = () => {
 				modalContent: (
 					<div className={styles.modalDiv}>
 						<UserModal
-							link='/v1/usermgtn/user/create'
+							link='/v1/usermgt/user/create'
 							title='Add a new user'
 							setBearer={setBearer}
 						/>
@@ -485,13 +485,13 @@ const UsersPermission = () => {
 
 	interface Column {
 		id:
-			| 'first_name'
-			| 'last_name'
-			| 'username'
-			| 'role'
-			| 'status'
-			| 'added_on'
-			| 'actions';
+		| 'first_name'
+		| 'last_name'
+		| 'username'
+		| 'role'
+		| 'status'
+		| 'added_on'
+		| 'actions';
 
 		label: any;
 		minWidth?: number;

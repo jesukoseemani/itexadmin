@@ -17,9 +17,13 @@ import { openToastAndSetContent } from '../../redux/actions/toast/toastActions';
 import QRCode from 'react-qr-code';
 import { saveMe } from '../../redux/actions/me/meActions';
 
+
+export interface Props {
+	qrcodeUrl: string
+}
 function Account() {
 	const { me } = useSelector((state) => state.mePayReducer);
-	const [qr, setQr] = useState<any>();
+	const [qr, setQr] = useState<string | null>(null);
 	const dispatch = useDispatch();
 
 	const fetchme = async () => {
@@ -31,53 +35,53 @@ function Account() {
 			.catch((err) => console.log(err));
 	};
 
-	const BoxComponent = () => {
-		return (
-			<div className={styles.outerbox}>
-				<div
-					style={{
-						width: '100%',
-						height: '400px',
-						border: '1px solid black',
-					}}>
-					{qr?.qrcodeUrl ? (
-						<QRCode
-							style={{ height: 'auto', width: '100%' }}
-							value={qr?.qrcodeUrl}
-						/>
-					) : (
-						'Something went wrong'
-					)}
-				</div>
-				<button
-					onClick={enabledHandler}
-					style={{
-						backgroundColor: '#27AE60',
-						fontFamily: 'Roboto',
-						fontStyle: 'normal',
-						fontWeight: 'bold',
-						fontSize: '16px',
-						lineHeight: '19px',
-						textAlign: 'center',
-						border: 'none',
-						outline: 'none',
-						width: '100%',
-						color: '#FFFFFF',
-						padding: '13.39px 0',
-						borderRadius: '4px',
-						marginTop: '30px',
-						cursor: 'pointer',
-					}}>
-					Enable
-				</button>
-			</div>
-		);
-	};
+	// const BoxComponent = (data: any) => {
+	// 	return (
+	// 		<div className={styles.outerbox}>
+	// 			<div
+	// 				style={{
+	// 					width: '100%',
+	// 					height: '400px',
+	// 					border: '1px solid black',
+	// 				}}>
+	// 				{data ? (
+	// 					<QRCode
+	// 						style={{ height: 'auto', width: '100%' }}
+	// 						value={data.toString()}
+	// 					/>
+	// 				) : (
+	// 					'Something went wrong'
+	// 				)}
+	// 			</div>
+	// 			<button
+	// 				onClick={enabledHandler}
+	// 				style={{
+	// 					backgroundColor: '#27AE60',
+	// 					fontFamily: 'Roboto',
+	// 					fontStyle: 'normal',
+	// 					fontWeight: 'bold',
+	// 					fontSize: '16px',
+	// 					lineHeight: '19px',
+	// 					textAlign: 'center',
+	// 					border: 'none',
+	// 					outline: 'none',
+	// 					width: '100%',
+	// 					color: '#FFFFFF',
+	// 					padding: '13.39px 0',
+	// 					borderRadius: '4px',
+	// 					marginTop: '30px',
+	// 					cursor: 'pointer',
+	// 				}}>
+	// 				Enable
+	// 			</button>
+	// 		</div>
+	// 	);
+	// };
 
 	const enabledHandler = async () => {
 		dispatch(openLoader());
 		try {
-			const { data }: any = await axios.get(`/v1/profile/2fa/enable`);
+			const { data } = await axios.get<any>(`/v1/profile/2fa/enable`);
 			dispatch(closeLoader());
 			dispatch(
 				openToastAndSetContent({
@@ -105,14 +109,71 @@ function Account() {
 		}
 	};
 
+
 	const generateQR = async () => {
 		dispatch(openLoader());
 		try {
-			const { data } = await axios.get(`/v1/profile/2fa/qrcode`);
+			const { data } = await axios.get<any>(`/v1/profile/2fa/qrcode`);
 
-			setQr(data);
+
+			if (data?.qrcodeUrl) {
+				dispatch(
+					openModalAndSetContent({
+						modalStyles: {
+							padding: 0,
+						},
+						modalContent: (
+							<div className={styles.modalDiv}>
+								{/* <BoxComponent data={data?.qrcodeUrl} /> */}
+
+								<div className={styles.outerbox}>
+									<div
+										style={{
+											width: '100%',
+											height: '400px',
+											border: '1px solid black',
+										}}>
+										{data ? (
+											<QRCode
+												style={{ height: 'auto', width: '100%' }}
+												value={data?.qrcodeUrl}
+											/>
+										) : (
+											'Something went wrong'
+										)}
+									</div>
+									<button
+										onClick={enabledHandler}
+										style={{
+											backgroundColor: '#27AE60',
+											fontFamily: 'Roboto',
+											fontStyle: 'normal',
+											fontWeight: 'bold',
+											fontSize: '16px',
+											lineHeight: '19px',
+											textAlign: 'center',
+											border: 'none',
+											outline: 'none',
+											width: '100%',
+											color: '#FFFFFF',
+											padding: '13.39px 0',
+											borderRadius: '4px',
+											marginTop: '30px',
+											cursor: 'pointer',
+										}}>
+										Enable
+									</button>
+								</div>
+							</div>
+						),
+					})
+				);
+			}
+
+			// setQr(data.qrcodeUrl);
+			// console.log(data.qrcodeUrl, "PropsPropsPropsProps")
+			// editConfigHandler();
 			dispatch(closeLoader());
-			editConfigHandler();
 		} catch (error: any) {
 			dispatch(closeLoader());
 			const { message } = error.response.data;
@@ -129,18 +190,7 @@ function Account() {
 		}
 	};
 	const editConfigHandler = () => {
-		dispatch(
-			openModalAndSetContent({
-				modalStyles: {
-					padding: 0,
-				},
-				modalContent: (
-					<div className={styles.modalDiv}>
-						<BoxComponent />
-					</div>
-				),
-			})
-		);
+
 	};
 	return (
 		<div style={{ padding: '20px' }}>
@@ -155,9 +205,9 @@ function Account() {
 					}}></div>
 				{!me?.user?.twofaSetup && (
 					<button
-						onClick={() => generateQR()}
+						onClick={generateQR}
 						className={styles.downloadbutton}>
-						Generate QR
+						Enable 2FA
 					</button>
 				)}
 			</div>

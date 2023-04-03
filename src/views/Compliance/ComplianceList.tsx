@@ -122,8 +122,9 @@ const ComplianceList = () => {
   }, [businesses]);
 
   useEffect(() => {
+    console.log(contentAction)
     Object.values(contentAction).length > 0 &&
-      history.push(`/businesses/${contentAction}`);
+      history.push(`/compliance/business/${contentAction.merchantid}`);
   }, [contentAction]);
 
   const dataBusinesses = () => {
@@ -137,11 +138,12 @@ const ComplianceList = () => {
           businessemail: business?.businessemail,
           businessphone: business?.businessphone,
           tradingname: business?.tradingname,
-          country: business?.country,
-          merchantaccounttype: business?.merchantaccounttype,
+          // country: business?.country,
+          // merchantaccounttype: business?.merchantaccounttype,
           merchantcode: business?.merchantcode,
-          status: business?.status,
-          isapproved: business?.isapproved,
+          merchantid: business?.merchantaccountid,
+          // status: business?.status,
+          // isapproved: business?.isapproved,
           docuploaded: business?.docuploaded,
           createdAt: business?.createdat,
         });
@@ -182,28 +184,33 @@ const ComplianceList = () => {
           }
         />
 
-        <PaginationTable
-          data={tableRow ? tableRow : []}
-          columns={ColumnComplianceModule ? ColumnComplianceModule : []}
-          emptyPlaceHolder={
-            businesses?._metadata?.totalcount == 0
-              ? "You currently do not have any data"
-              : "Loading..."
-          }
-          value={value}
-          total={businesses?._metadata.totalcount}
-          totalPage={businesses?._metadata.pagecount}
-          pageNumber={pageNumber}
-          setPageNumber={setPageNumber}
-          nextPage={nextPage}
-          setNextPage={setNextPage}
-          previousPage={previousPage}
-          setPreviousPage={setPreviousPage}
-          rowsPerPage={rowsPerPage}
-          setRowsPerPage={setRowsPerPage}
-          // clickAction={true}
-          setContentAction={setContentAction}
-        />
+
+        <Box sx={{
+          overflowX: "auto"
+        }}>
+          <PaginationTable
+            data={tableRow ? tableRow : []}
+            columns={ColumnComplianceModule ? ColumnComplianceModule : []}
+            emptyPlaceHolder={
+              businesses?._metadata?.totalcount == 0
+                ? "You currently do not have any data"
+                : "Loading..."
+            }
+            value={value}
+            total={businesses?._metadata.totalcount}
+            totalPage={businesses?._metadata.pagecount}
+            pageNumber={pageNumber}
+            setPageNumber={setPageNumber}
+            nextPage={nextPage}
+            setNextPage={setNextPage}
+            previousPage={previousPage}
+            setPreviousPage={setPreviousPage}
+            rowsPerPage={rowsPerPage}
+            setRowsPerPage={setRowsPerPage}
+            clickAction={true}
+            setContentAction={setContentAction}
+          />
+        </Box>
       </Box>
     </div>
   );

@@ -30,6 +30,7 @@ import styles from "./styles.module.scss";
 import { openModalAndSetContent } from "../../redux/actions/modal/modalActions";
 import BlacklistCustomer from "./BlacklistCustomer";
 import FilterModal from "../../components/filterConfig/FilterModal";
+import useDownload from "../../interfaces/Download";
 
 const Customermgt = () => {
   const [tableRow, setTableRow] = useState<any[]>();
@@ -152,7 +153,11 @@ const Customermgt = () => {
           identifier: customer?.identifier,
           merchantcode: customer?.business?.merchantcode,
           isblacklisted: customer?.isblacklisted ? "true" : "false",
+          action: customer?.isblacklisted ? null : (<Box className={styles.blackist}>
+            <button onClick={() => showBlacklistForm(customer?.id)}>Blacklist</button>
+          </Box >)
         });
+
       });
     return tempArr;
   };
@@ -161,17 +166,23 @@ const Customermgt = () => {
     setTableRow(dataBusinesses());
   }, [customers?.customers]);
 
+
+  const { calDownload } = useDownload(
+    { url: 'https://staging.itex-pay.com/ipgadmin/api/v1/customer/download', filename: 'customer.csv' }
+  );
+
   const handleDownload = async () => {
     try {
-      const res = await axios.get<any>("/v1/customer/download");
-      console.log(res);
-    } catch (error: any) {
-      console.log(error.message);
+      dispatch(openLoader());
+      await calDownload();
+      dispatch(closeLoader());
+    } catch (error) {
+      dispatch(closeLoader());
     }
   };
 
   // showBlacklistForm
-  const showBlacklistForm = () => {
+  const showBlacklistForm = (cust: any) => {
     dispatch(
       openModalAndSetContent({
         modalStyles: {
@@ -182,7 +193,7 @@ const Customermgt = () => {
         },
         modalContent: (
           <div className={styles.modalDiv}>
-            <BlacklistCustomer />
+            <BlacklistCustomer custId={cust} />
           </div>
         ),
       })
@@ -194,10 +205,8 @@ const Customermgt = () => {
       <NavBar name="Customer" />
       {/* padding: 1rem 2rem; */}
 
-      <Box className={styles.blackist}>
-        <button onClick={showBlacklistForm}>Blacklist</button>
-      </Box>
-      <Box width="100%" py={"1rem"} px={"2rem"}>
+
+      <Box width="100%" py={"1rem"} px={"2rem"} >
         <TableHeader
           pageName="Customers"
           data={customers?.customers}
@@ -225,28 +234,34 @@ const Customermgt = () => {
           }
         />
 
-        <PaginationTable
-          data={tableRow ? tableRow : []}
-          columns={ColumnBusinessCustomerModule ? ColumnCustomerModule : []}
-          emptyPlaceHolder={
-            customers?._metadata?.totalcount == 0
-              ? "You currently do not have any data"
-              : "Loading..."
-          }
-          value={value}
-          total={customers?._metadata.totalcount}
-          totalPage={customers?._metadata.pagecount}
-          pageNumber={pageNumber}
-          setPageNumber={setPageNumber}
-          nextPage={nextPage}
-          setNextPage={setNextPage}
-          previousPage={previousPage}
-          setPreviousPage={setPreviousPage}
-          rowsPerPage={rowsPerPage}
-          setRowsPerPage={setRowsPerPage}
-          clickAction={true}
-          setContentAction={setContentAction}
-        />
+        <Box sx={{
+          overflowX: "auto"
+        }}>
+
+          <PaginationTable
+            data={tableRow ? tableRow : []}
+            columns={ColumnBusinessCustomerModule ? ColumnCustomerModule : []}
+            emptyPlaceHolder={
+              customers?._metadata?.totalcount == 0
+                ? "You currently do not have any data"
+                : "Loading..."
+            }
+            value={value}
+            total={customers?._metadata.totalcount}
+            totalPage={customers?._metadata.pagecount}
+            pageNumber={pageNumber}
+            setPageNumber={setPageNumber}
+            nextPage={nextPage}
+            setNextPage={setNextPage}
+            previousPage={previousPage}
+            setPreviousPage={setPreviousPage}
+            rowsPerPage={rowsPerPage}
+            setRowsPerPage={setRowsPerPage}
+            clickAction={true}
+            setContentAction={setContentAction}
+          />
+        </Box>
+
       </Box>
     </div>
   );

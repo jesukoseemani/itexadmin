@@ -20,7 +20,7 @@ import { useHistory } from 'react-router-dom';
 import { openModalAndSetContent } from '../../redux/actions/modal/modalActions';
 import SingleSettlementModal from './SingleSettlementModal';
 import { Checkbox } from '@material-ui/core';
-import BulkSettlement from './BulkSettlement';
+import BulkSettlement from "../../components/settlement/BulkSettlement";
 import FilterModal from '../../components/filterConfig/FilterModal';
 import moment from 'moment';
 import { openLoader, closeLoader } from '../../redux/actions/loader/loaderActions';
@@ -29,6 +29,8 @@ import { ColumnSettlementModule, SettlementModuleData } from '../../types/Settle
 import TableHeader from '../../components/TableHeader/TableHeader';
 import PaginationTable from '../../components/paginatedTable/pagination-table';
 import DueSettlement from './DueSettlement';
+import AddSingleSettlement from '../../components/settlement/AddSingleSettlement';
+// import BulkSettlement from '../../components/settlement/BulkSettlement';
 
 interface data {
 	open: boolean;
@@ -145,25 +147,9 @@ const DueSettlements = () => {
 		}
 	}, [selectedId]);
 
-	const openSingleModal = () => {
-		setIsSingleModalOpen(true);
-		handleMenuClose();
 
-		dispatch(
-			openModalAndSetContent({
-				modalStyles: {
-					padding: 0,
-				},
-				modalContent: (
-					<div className='modalDiv'>
-						<SingleSettlementModal />
-					</div>
-				),
-			})
-		);
-	};
-
-	const openBulkModal = () => {
+	const openBulkModal = (checkValue: any) => {
+		console.log(checkValue)
 		setIsBulkModalOpen(true);
 		handleMenuClose();
 
@@ -173,8 +159,8 @@ const DueSettlements = () => {
 					padding: 0,
 				},
 				modalContent: (
-					<div className='modalDiv'>
-						<BulkSettlement title='Bulk Settlement' setGotopage={setGotopage} />
+					<div className="modalDiv">
+						<BulkSettlement checkValue={checkValue} />
 					</div>
 				),
 			})
@@ -202,6 +188,8 @@ const DueSettlements = () => {
 	const [event, setEvent] = useState('');
 	const [bearer, setBearer] = useState<boolean>(false);
 	const [reset, setReset] = useState<boolean>(false);
+	const [checkValue, setCheckValue] = useState<string[]>([])
+
 
 	//PAGINATION
 
@@ -253,9 +241,9 @@ const DueSettlements = () => {
 			const { data } = await axios.get(
 				`/v1/settlement/due/?fromdate=${fromDate}&search=${value}&todate=${toDate}&perpage=${rowsPerPage}&page=${pageNumber}`
 			);
-            console.log(data, "due settlement")
+			console.log(data, "due settlement")
 			setSettlement(data)
-            
+
 			dispatch(closeLoader());
 			setBearer(false);
 		} catch (error: any) {
@@ -283,9 +271,11 @@ const DueSettlements = () => {
 		setPageNumber(settlement?._metadata?.page || 1);
 	}, [settlement]);
 
+
+	const [push, setPush] = useState("")
 	useEffect(() => {
 		Object.values(contentAction).length > 0 &&
-			history.push(`/settlement/${contentAction?.settlement_id}`);
+			setPush(`/settlement/${contentAction?.settlement_id}`);
 	}, [contentAction]);
 
 	console.log(contentAction)
@@ -297,6 +287,7 @@ const DueSettlements = () => {
 			.reverse()
 			.forEach((settlement: any, index: number) => {
 				return tempArr.push({
+					selectIds: settlement?.responsemessage !== "approved" && <Checkbox onChange={HandleChecked} value={settlement?.settlementid} />,
 					account_name: settlement?.settlementaccountname,
 					country: settlement?.settlementcountry,
 					account_no: settlement?.settlementaccountnumber,
@@ -304,13 +295,24 @@ const DueSettlements = () => {
 					businessemail: settlement?.business.businessemail,
 					settlement_id: settlement?.settlementid,
 					amount: settlement?.amount,
-					// // status: (
-					// // 	<StatusView
-					// // 		status={business?.status === 0 ? 'InActive' : 'Active'}
-					// // 		green='Active'
-					// // 		red='InActive'
-					// // 	/>
-					// ),
+					action: settlement?.responsemessage === "approved" ? null : (<Box
+						sx={{
+							display: "flex",
+							gap: "10px",
+
+							'& button': {
+								border: "none",
+								outline: "none",
+								width: "max-content",
+								padding: "10px 20px",
+								background: "#27ae60",
+								color: "#fff",
+							}
+						}}
+					>
+						<button onClick={() => openSingleModal(settlement?.settlementid)}>Add Single </button>
+						{/* <button onClick={openBulkModal}>Add Bulk</button> */}
+					</Box>),
 					date: settlement?.settlementdate,
 					id: settlement?.settlement?.merchantaccountid,
 				});
@@ -322,16 +324,53 @@ const DueSettlements = () => {
 		setTableRow(dataBusinesses());
 	}, [settlement?.settlements]);
 
-	
+
+	// bulk setlement
+
+	const openSingleModal = (data: string) => {
+		console.log(data, "datatata")
+		setIsSingleModalOpen(true);
+		handleMenuClose();
+
+		dispatch(
+			openModalAndSetContent({
+				modalStyles: {
+					padding: 0,
+				},
+				modalContent: (
+					<div className="modalDiv">
+						<AddSingleSettlement id={data} />
+					</div>
+				),
+			})
+		);
+	};
+
+
+
+	//handle bulk
+
+	const HandleChecked = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const { checked, value } = e.target
+		if (checked) {
+			setCheckValue((prev) => [...prev, value])
+		} else {
+			setCheckValue((prev) => prev.filter(x => x !== value))
+		}
+	}
+	console.log(checkValue)
+
+
+
+
 	return (
 		<div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
 
 			<Box sx={{ width: '100%', marginTop: '1rem' }}>
-			
-				
-				<TabPanel value={tabValue} index={0}>
-					<div className={styles.m1}>
-						{/* <OperantTable
+
+
+				<div className={styles.m1}>
+					{/* <OperantTable
 							columns={columns}
 							rows={rows}
 							totalRows={totalRows}
@@ -342,18 +381,36 @@ const DueSettlements = () => {
 						/> */}
 
 
-						<TableHeader
-							pageName='Settlements'
-							data={settlement?.settlements}
-							dataLength={settlement?._metadata.totalcount}
-							value={value}
-							setValue={setValue}
-							dropdown={dropdown}
-							setDropdown={setDropdown}
-							placeHolder='Search'
+					<TableHeader
+						pageName='Settlements'
+						data={settlement?.settlements}
+						dataLength={settlement?._metadata.totalcount}
+						value={value}
+						setValue={setValue}
+						dropdown={dropdown}
+						setDropdown={setDropdown}
+						placeHolder='Search'
 
-						/>
-
+					/>
+					{checkValue.length > 0 && <Box
+						sx={{
+							width: "100%",
+							pb: "1rem",
+							'& button': {
+								float: "right",
+								border: "none",
+								outline: "none",
+								width: "max-content",
+								padding: "10px 20px",
+								background: "#27ae60",
+								color: "#fff",
+								cursor: "pointer"
+							}
+						}}
+					>
+						<button onClick={() => openBulkModal(checkValue)}>Add Bulk settlement</button>
+					</Box>}
+					<Box sx={{ overflow: "auto", marginTop: "2rem" }}>
 						<PaginationTable
 							data={tableRow ? tableRow : []}
 							columns={ColumnSettlementModule ? ColumnSettlementModule : []}
@@ -376,10 +433,10 @@ const DueSettlements = () => {
 							clickAction={true}
 							setContentAction={setContentAction}
 						/>
-					</div>
-				</TabPanel>
+					</Box>
+				</div>
 
-				
+
 			</Box>
 		</div>
 	);

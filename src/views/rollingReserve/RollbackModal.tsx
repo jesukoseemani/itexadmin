@@ -7,7 +7,7 @@ import * as Yup from "yup";
 import { Grid, InputLabel, TextField } from "@material-ui/core";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 
-const RollbackModal = () => {
+const RollbackModal = ({ id }: any) => {
   const [otp, setOtp] = useState("");
 
   const validate = Yup.object({
@@ -26,7 +26,7 @@ const RollbackModal = () => {
           initialValues={{
             note: "",
             otp: "",
-            reserveid: "",
+            reserveid: id,
           }}
           validationSchema={validate}
           onSubmit={(values) => {
@@ -37,7 +37,7 @@ const RollbackModal = () => {
             <div className={styles.rollingmodalBody}>
               <Form>
                 <Grid container spacing={2}>
-                  <Grid item xs={12}>
+                  <Grid item xs={12} style={{ display: "none" }}>
                     <InputLabel>
                       <span className={styles.header}>Reserve ID</span>
                     </InputLabel>
@@ -55,6 +55,7 @@ const RollbackModal = () => {
                       type="number"
                       size="small"
                       fullWidth
+                      value={id}
                     />
                   </Grid>
 

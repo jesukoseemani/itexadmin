@@ -2,19 +2,25 @@ import React, { ReactNode } from 'react';
 
 export interface SettlementModuleData {
 	id: string;
+	selectIds?: ReactNode;
 	amount: string;
 	bank_code: string;
 	account_name: number;
 	country: string;
-	account_no:string;
-	businessemail:string;
+	account_no: string;
+	businessemail: string;
 	settlement_id: string;
 	date: string;
+	action?: ReactNode
 }
 
 
 
 export const ColumnSettlementModule = [
+	{
+		Header: '',
+		accessor: 'selectIds',
+	},
 	{
 		Header: 'Settlement ID',
 		accessor: 'settlement_id',
@@ -23,14 +29,14 @@ export const ColumnSettlementModule = [
 		Header: 'Account Name',
 		accessor: 'account_name',
 	},
-    {
-        Header: 'Account number',
-        accessor: 'account_no',
-    },
-    {
-        Header: 'Amount',
-        accessor: 'amount',
-    },
+	{
+		Header: 'Account number',
+		accessor: 'account_no',
+	},
+	{
+		Header: 'Amount',
+		accessor: 'amount',
+	},
 	{
 		Header: 'Bank code',
 		accessor: 'bank_code',
@@ -44,6 +50,10 @@ export const ColumnSettlementModule = [
 		accessor: 'country',
 	},
 	{
+		Header: 'Add Settlements',
+		accessor: 'action',
+	},
+	{
 		Header: 'Date',
 		accessor: 'date',
 	},
@@ -53,8 +63,8 @@ export interface SettlementTransactionModuleData {
 	amount: string;
 	currency: string;
 	status: number;
-	linkingreference:string;
-	chargetype:string;
+	linkingreference: string;
+	chargetype: string;
 	// settlement_id: string;
 	date: string;
 
@@ -75,10 +85,10 @@ export const ColumnSettlementTransactionModule = [
 		Header: 'Charge type',
 		accessor: 'chargetype',
 	},
-    {
-        Header: 'Amount',
-        accessor: 'amount',
-    },
+	{
+		Header: 'Amount',
+		accessor: 'amount',
+	},
 	{
 		Header: 'Status',
 		accessor: 'status',

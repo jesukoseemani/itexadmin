@@ -28,6 +28,9 @@ import { Box } from "@mui/material";
 import TableHeader from "../../components/TableHeader/TableHeader";
 import FilterModal from "../../components/filterConfig/FilterModal";
 import PaginationTable from "../../components/paginatedTable/pagination-table";
+import { openModalAndSetContent } from "../../redux/actions/modal/modalActions";
+import CompleteApproval from "../../components/complianceDetails/CompleteApproval";
+import NavBar from '../../components/navbar/NavBar';
 
 const FeeCompliance = () => {
   const [tableRow, setTableRow] = useState<any[]>();
@@ -41,6 +44,7 @@ const FeeCompliance = () => {
   const [rowsPerPage, setRowsPerPage] = React.useState<number>(10);
   const [nextPage, setNextPage] = useState<number | null>(null);
   const [previousPage, setPreviousPage] = useState<number | null>(null);
+  const [merchantid, setMerchantId] = useState("");
 
   //FILTERING
   const [value, setValue] = useState("");
@@ -90,12 +94,17 @@ const FeeCompliance = () => {
       setValue: setStatus,
       selective: [{ name: "YES" }, { name: "NO" }],
     },
+    {
+      name: "merchantid",
+      value: merchantid,
+      setValue: setMerchantId,
+    },
   ];
   const fetchBusinessesLimit = async () => {
     dispatch(openLoader());
     try {
       const { data } = await axios.get<any>(
-        `/v1/compliance/business/fee?perpage=${rowsPerPage}&page=${pageNumber}`
+        `/v1/compliance/business/fee?search=${value}&status=${status}&perpage=${rowsPerPage}&page=${pageNumber}`
       );
       setFee(data);
       dispatch(closeLoader());
@@ -140,13 +149,28 @@ const FeeCompliance = () => {
           businessemail: fee?.business?.businessemail,
           activity: fee?.activity,
           tradingname: fee?.business?.tradingname,
-          transactiontype: fee?.transactiontype,
+          // transactiontype: fee?.transactiontype,
           feecap: fee?.feecap,
           feemin: fee?.feemin,
           merchantcode: fee?.business?.merchantcode,
           status: fee?.status,
           paymentmethod: fee?.paymentmethod,
           feesetting: fee?.feesetting,
+          id: fee.id,
+          action: fee?.approved ? "" : <button onClick={() => handleApproval(fee.id)}
+            style={{
+              outline: "none",
+              border: "none",
+              padding: "10px 20px",
+              cursor: "pointer",
+              background: "#219653",
+              color: "#fff",
+              width: "max-content"
+            }}
+
+
+
+          >Complete Approval</button>,
           createdAt: fee?.createdat,
         });
       });
@@ -157,8 +181,29 @@ const FeeCompliance = () => {
     setTableRow(dataBusinesses());
   }, [fee?.fees]);
 
+
+
+
+
+  const handleApproval = (fee: any) => {
+
+    dispatch(
+      openModalAndSetContent({
+        modalStyles: {
+          padding: 0,
+        },
+        modalContent: (
+          <Box>
+            <CompleteApproval id={fee} />
+          </Box>
+        ),
+      })
+    );
+  }
   return (
     <div>
+      <NavBar name="Fee" />
+
       <Box px={3} overflow="auto" width={"100%"}>
         <TableHeader
           pageName="Compliance"
@@ -186,28 +231,34 @@ const FeeCompliance = () => {
           }
         />
 
-        <PaginationTable
-          data={tableRow ? tableRow : []}
-          columns={ColumnComplianceFeeModule ? ColumnComplianceFeeModule : []}
-          emptyPlaceHolder={
-            fee?._metadata?.totalcount == 0
-              ? "You currently do not have any data"
-              : "Loading..."
-          }
-          value={value}
-          total={fee?._metadata.totalcount}
-          totalPage={fee?._metadata.pagecount}
-          pageNumber={pageNumber}
-          setPageNumber={setPageNumber}
-          nextPage={nextPage}
-          setNextPage={setNextPage}
-          previousPage={previousPage}
-          setPreviousPage={setPreviousPage}
-          rowsPerPage={rowsPerPage}
-          setRowsPerPage={setRowsPerPage}
-          // clickAction={true}
-          setContentAction={setContentAction}
-        />
+        <Box sx={{
+          overflowX: "auto"
+        }}>
+
+          <PaginationTable
+            data={tableRow ? tableRow : []}
+            columns={ColumnComplianceFeeModule ? ColumnComplianceFeeModule : []}
+            emptyPlaceHolder={
+              fee?._metadata?.totalcount == 0
+                ? "You currently do not have any data"
+                : "Loading..."
+            }
+            value={value}
+            total={fee?._metadata.totalcount}
+            totalPage={fee?._metadata.pagecount}
+            pageNumber={pageNumber}
+            setPageNumber={setPageNumber}
+            nextPage={nextPage}
+            setNextPage={setNextPage}
+            previousPage={previousPage}
+            setPreviousPage={setPreviousPage}
+            rowsPerPage={rowsPerPage}
+            setRowsPerPage={setRowsPerPage}
+            // clickAction={true}
+            setContentAction={setContentAction}
+          />
+        </Box>
+
       </Box>
     </div>
   );

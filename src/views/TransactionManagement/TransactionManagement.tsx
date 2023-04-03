@@ -4,11 +4,11 @@ import NavBar from "../../components/navbar/NavBar";
 import FilterModal from "../../components/filterConfig/FilterModal";
 import dayjs, { Dayjs } from "dayjs";
 import {
-  dateNow,
-  sevenDaysAgo,
-  thirtyDaysAgo,
-  startOfYear,
-  endOfYear,
+	dateNow,
+	sevenDaysAgo,
+	thirtyDaysAgo,
+	startOfYear,
+	endOfYear,
 } from "../../util/datefunction";
 import {
 	closeLoader,
@@ -165,10 +165,10 @@ function TransactionManagement() {
 								transaction?.responsecode === '00'
 									? 'Approved'
 									: transaction?.responsecode === '09'
-									? 'Pending'
-									: transaction?.responsecode === 'F9'
-									? 'Abandoned'
-									: 'Declined'
+										? 'Pending'
+										: transaction?.responsecode === 'F9'
+											? 'Abandoned'
+											: 'Declined'
 							}
 							green='Successful'
 							red='Failed'
@@ -185,11 +185,11 @@ function TransactionManagement() {
 	useEffect(() => {
 		setTableRow(dataBusinesses());
 	}, [transaction?.transactions]);
-	
-const { calDownload } = useDownload(
-	{ url: 'https://staging.itex-pay.com/ipgadmin/api/v1/transaction/download', filename: 'transactions' }
-);
-	const downloadHandler = async() => {
+
+	const { calDownload } = useDownload(
+		{ url: 'https://staging.itex-pay.com/ipgadmin/api/v1/transaction/download', filename: 'transactions.csv' }
+	);
+	const downloadHandler = async () => {
 		try {
 			dispatch(openLoader());
 			await calDownload();
