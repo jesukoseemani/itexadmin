@@ -7,20 +7,15 @@ import axios from "axios";
 import NavBar from "../../components/navbar/NavBar";
 import { TabPanel } from "../../components/Tabs/Tabs";
 import * as React from "react";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
+
 import Box from "@mui/material/Box";
-import { Divider, Menu, MenuItem } from "@mui/material";
-import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import FailedSettlements from "./FailedSettlements";
-import ReviewedSettlements from "./ReviewedSettlements";
+import { Checkbox } from "@mui/material";
+
 import Report from "./Report";
 import { useHistory } from "react-router-dom";
 import { openModalAndSetContent } from "../../redux/actions/modal/modalActions";
 import SingleSettlementModal from "./SingleSettlementModal";
-import { Checkbox } from "@material-ui/core";
-import BulkSettlement from "./BulkSettlement";
+
 import FilterModal from "../../components/filterConfig/FilterModal";
 import moment from "moment";
 import {
@@ -34,7 +29,7 @@ import {
 } from "../../types/SettlementTypes";
 import TableHeader from "../../components/TableHeader/TableHeader";
 import PaginationTable from "../../components/paginatedTable/pagination-table";
-import DueSettlement from "./DueSettlement";
+
 import { Dayjs } from "dayjs";
 
 import {
@@ -44,6 +39,9 @@ import {
   startOfYear,
   endOfYear,
 } from "../../util/datefunction";
+import useDownload from "../../interfaces/Download";
+import AddSingleSettlement from '../../components/settlement/AddSingleSettlement';
+import BulkSettlement from "../../components/settlement/BulkSettlement";
 interface data {
   open: boolean;
 }
@@ -109,6 +107,8 @@ const Settlements = () => {
   const [openDownload, setOpenDownload] = useState<boolean>(false);
 
   const [gotopage, setGotopage] = useState<boolean>(false);
+  const [checkValue, setCheckValue] = useState<string[]>([])
+
 
   const show = Boolean(anchorEl);
   const showDownload = Boolean(anchorElDownload);
@@ -163,7 +163,8 @@ const Settlements = () => {
     }
   }, [selectedId]);
 
-  const openSingleModal = () => {
+  const openSingleModal = (data: string) => {
+    console.log(data, "datatata")
     setIsSingleModalOpen(true);
     handleMenuClose();
 
@@ -174,14 +175,15 @@ const Settlements = () => {
         },
         modalContent: (
           <div className="modalDiv">
-            <SingleSettlementModal />
+            <AddSingleSettlement id={data} />
           </div>
         ),
       })
     );
   };
 
-  const openBulkModal = () => {
+  const openBulkModal = (checkValue: any) => {
+    console.log(checkValue)
     setIsBulkModalOpen(true);
     handleMenuClose();
 
@@ -192,7 +194,7 @@ const Settlements = () => {
         },
         modalContent: (
           <div className="modalDiv">
-            <BulkSettlement title="Bulk Settlement" setGotopage={setGotopage} />
+            <BulkSettlement checkValue={checkValue} />
           </div>
         ),
       })
@@ -316,12 +318,12 @@ const Settlements = () => {
     setPageNumber(settlement?._metadata?.page || 1);
   }, [settlement]);
 
-  useEffect(() => {
-    Object.values(contentAction).length > 0 &&
-      history.push(`/settlement/${contentAction?.settlement_id}`);
-  }, [contentAction]);
+  // useEffect(() => {
+  //   Object.values(contentAction).length > 0 &&
+  //     // history.push(`/settlement/${contentAction?.settlement_id}`);
+  // }, [contentAction]);
 
-  console.log(contentAction);
+  // console.log(contentAction);
 
   const dataBusinesses = () => {
     const tempArr: SettlementModuleData[] = [];
@@ -330,6 +332,7 @@ const Settlements = () => {
       .reverse()
       .forEach((settlement: any, index: number) => {
         return tempArr.push({
+          selectIds: settlement?.responsemessage !== "approved" && <Checkbox onChange={HandleChecked} value={settlement?.settlementid} />,
           account_name: settlement?.settlementaccountname,
           country: settlement?.settlementcountry,
           account_no: settlement?.settlementaccountnumber,
@@ -337,13 +340,24 @@ const Settlements = () => {
           businessemail: settlement?.business.businessemail,
           settlement_id: settlement?.settlementid,
           amount: settlement?.amount,
-          // // status: (
-          // // 	<StatusView
-          // // 		status={business?.status === 0 ? 'InActive' : 'Active'}
-          // // 		green='Active'
-          // // 		red='InActive'
-          // // 	/>
-          // ),
+          action: settlement?.responsemessage === "approved" ? null : (<Box
+            sx={{
+              display: "flex",
+              gap: "10px",
+
+              '& button': {
+                border: "none",
+                outline: "none",
+                width: "max-content",
+                padding: "10px 20px",
+                background: "#27ae60",
+                color: "#fff",
+              }
+            }}
+          >
+            <button onClick={() => openSingleModal(settlement?.settlementid)}>Add Single </button>
+            {/* <button onClick={openBulkModal}>Add Bulk</button> */}
+          </Box>),
           date: settlement?.settlementdate,
           id: settlement?.settlement?.merchantaccountid,
         });
@@ -355,29 +369,36 @@ const Settlements = () => {
     setTableRow(dataBusinesses());
   }, [settlement?.settlements]);
 
-  // download settlement list
-  const handleDownloadSettlement = async () => {
-    dispatch(openLoader());
 
+
+
+
+
+  // bulk setlement
+
+  const HandleChecked = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { checked, value } = e.target
+    if (checked) {
+      setCheckValue((prev) => [...prev, value])
+    } else {
+      setCheckValue((prev) => prev.filter(x => x !== value))
+    }
+  }
+  console.log(checkValue)
+
+
+  // download
+
+  const { calDownload } = useDownload(
+    { url: 'https://staging.itex-pay.com/ipgadmin/api/v1/settlement/download', filename: 'settlement.csv' }
+  );
+
+  const handleDownload = async () => {
     try {
-      const { data } = await axios.get(
-        `/v1/settlement/download?fromdate=${fromDate}&todate=${toDate}&perpage=${rowsPerPage}&page=${pageNumber}`
-      );
-      console.log(data);
-    } catch (error: any) {
+      dispatch(openLoader());
+      await calDownload();
       dispatch(closeLoader());
-      const { message } = error.response.data;
-      dispatch(
-        dispatch(
-          openToastAndSetContent({
-            toastContent: message,
-            toastStyles: {
-              backgroundColor: "red",
-            },
-          })
-        )
-      );
-    } finally {
+    } catch (error) {
       dispatch(closeLoader());
     }
   };
@@ -387,194 +408,58 @@ const Settlements = () => {
       <NavBar name="" />
 
       <Box sx={{ width: "100%", marginTop: "1rem" }}>
-        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-          <Tabs
-            style={{ padding: "0 1rem", margin: "0" }}
-            value={tabValue}
-            onChange={handleChange}
-            aria-label="basic tabs example"
-            TabIndicatorProps={{
-              style: {
-                background: "#27AE60",
-                borderRadius: "8px",
-                height: "4px",
-              },
+
+
+        {/* </ > */}
+        <div className={styles.m1}>
+          <TableHeader
+            pageName="Settlements"
+            data={settlement?.settlements}
+            dataLength={settlement?._metadata.totalcount}
+            value={value}
+            setValue={setValue}
+            dropdown={dropdown}
+            setDropdown={setDropdown}
+            handleClick={handleDownload}
+            placeHolder="Search"
+            FilterComponent={
+              <FilterModal
+                eventDate={eventDate}
+                setEventDate={setEventDate}
+                dropdown={dropdown}
+                setDropdown={setDropdown}
+                setFromDate={setFromDate}
+                setToDate={setToDate}
+                fromDate={fromDate}
+                toDate={toDate}
+                setBearer={setBearer}
+                clearHandler={clearHandler}
+                filteredArray={filteredArray}
+              />
+            }
+          />
+
+          {checkValue.length > 0 && <Box
+            sx={{
+              width: "100%",
+              pb: "1rem",
+              '& button': {
+                float: "right",
+                border: "none",
+                outline: "none",
+                width: "max-content",
+                padding: "10px 20px",
+                background: "#27ae60",
+                color: "#fff",
+                cursor: "pointer"
+              }
             }}
           >
-            <Tab
-              label="All Settlements"
-              style={{
-                margin: "0 1rem",
-                textTransform: "capitalize",
-                color: tabValue === 0 ? "#27AE60" : "#333333",
-              }}
-            />
-            <Tab
-              label="settlements Due"
-              style={{
-                textTransform: "capitalize",
-                margin: "0 1rem",
-                color: tabValue === 1 ? "#27AE60" : "#333333",
-              }}
-            />
-            {/* <Tab
-							label='Failed settlements'
-							style={{
-								textTransform: 'capitalize',
-								margin: '0 1rem',
-								color: value === 2 ? '#27AE60' : '#333333',
-							}}
-						/>
-						<Tab
-							label='Reports'
-							style={{
-								textTransform: 'capitalize',
-								margin: '0 1rem',
-								color: value === 3 ? '#27AE60' : '#333333',
-							}}
-						/> */}
-          </Tabs>
-        </Box>
-        <div className={styles.tableHeader}>
-          <div className={styles.tableHeaderLeft}>
-            {/* <p className={styles.tableTitle}>
-							{
-								apiRes?.filter((item: dataTypes) => item.status === 'Due')
-									.length
-							}{' '}
-							{value === 0
-								? 'settlement due fees'
-								: value === 1
-								? 'Reviewed settlements'
-								: value === 2
-								? 'Failed settlements'
-								: 'Reports'}
-						</p> */}
-          </div>
-          <div className={styles.tableHeaderRight}>
-            <div>
-              <button
-                onClick={() => setIsFilterModalOpen(true)}
-                className={styles.button1}
-              >
-                <span className={styles.buttonSpan}>
-                  All Settlements
-                  <ArrowDropDownIcon />
-                </span>
-              </button>
+            <button onClick={() => openBulkModal(checkValue)}>Add Bulk settlement</button>
+          </Box>}
 
-              <button
-                className={styles.button1}
-                id="download-menu"
-                aria-controls={openDownload ? "download-menu" : undefined}
-                aria-haspopup="true"
-                aria-expanded={openDownload ? "true" : undefined}
-                onClick={handleMenuDownloadClick}
-              >
-                <p className={styles.buttonSpan}>
-                  Download
-                  <span className={styles.mlhalf}>
-                    <CloudDownloadIcon style={{ fontSize: 15 }} />
-                  </span>
-                </p>
-              </button>
 
-              <Menu
-                id="download-menu"
-                anchorEl={anchorElDownload}
-                open={showDownload}
-                onClose={handleMenuDownloadClose}
-                MenuListProps={{
-                  "aria-labelledby": "log-refund-button",
-                }}
-                PaperProps={{
-                  style: {
-                    width: "150px",
-                    padding: ".25rem",
-                    textAlign: "center",
-                  },
-                }}
-              >
-                <MenuItem onClick={handleDownloadSettlement}>
-                  <p style={{ padding: ".4rem", fontSize: "0.7rem" }}>CSV</p>
-                </MenuItem>
-                <Divider />
-                <MenuItem>
-                  <p style={{ padding: ".4rem", fontSize: "0.7rem" }}>Excel</p>
-                </MenuItem>
-                <Divider />
-                <MenuItem>
-                  <p style={{ padding: ".4rem", fontSize: "0.7rem" }}>Pdf</p>
-                </MenuItem>
-              </Menu>
-
-              <button
-                className={styles.buttonAdd}
-                id="log-refund-button"
-                aria-controls={open ? "refund-menu" : undefined}
-                aria-haspopup="true"
-                aria-expanded={open ? "true" : undefined}
-                onClick={handleMenuClick}
-              >
-                Log settlement
-              </button>
-              <Menu
-                id="refund-menu"
-                anchorEl={anchorEl}
-                open={show}
-                onClose={handleMenuClose}
-                MenuListProps={{
-                  "aria-labelledby": "log-refund-button",
-                }}
-                PaperProps={{
-                  style: {
-                    maxWidth: "150px",
-                    padding: ".25rem",
-                  },
-                }}
-              >
-                <MenuItem onClick={openSingleModal}>
-                  <p style={{ padding: ".4rem", fontSize: "0.7rem" }}>
-                    Single settlement
-                  </p>
-                </MenuItem>
-                <Divider />
-                <MenuItem onClick={openBulkModal}>
-                  <p style={{ padding: ".4rem", fontSize: "0.7rem" }}>
-                    Bulk settlement
-                  </p>
-                </MenuItem>
-              </Menu>
-            </div>
-          </div>
-        </div>
-        <TabPanel value={tabValue} index={0}>
-          <div className={styles.m1}>
-            <TableHeader
-              pageName="Settlements"
-              data={settlement?.settlements}
-              dataLength={settlement?._metadata.totalcount}
-              value={value}
-              setValue={setValue}
-              dropdown={dropdown}
-              setDropdown={setDropdown}
-              placeHolder="Search"
-              FilterComponent={
-                <FilterModal
-                  eventDate={eventDate}
-                  setEventDate={setEventDate}
-                  dropdown={dropdown}
-                  setDropdown={setDropdown}
-                  setFromDate={setFromDate}
-                  setToDate={setToDate}
-                  fromDate={fromDate}
-                  toDate={toDate}
-                  setBearer={setBearer}
-                  clearHandler={clearHandler}
-                  filteredArray={filteredArray}
-                />
-              }
-            />
+          <Box sx={{ overflow: "auto", marginTop: "2rem" }}>
 
             <PaginationTable
               data={tableRow ? tableRow : []}
@@ -598,22 +483,11 @@ const Settlements = () => {
               clickAction={true}
               setContentAction={setContentAction}
             />
-          </div>
-        </TabPanel>
+          </Box>
+        </div>
 
-        <TabPanel value={tabValue} index={1}>
-          <DueSettlement />
-        </TabPanel>
-
-        {/* <TabPanel value={tabValue} index={2}>
-					<DueSettlement />
-				</TabPanel> */}
-
-        {/* <TabPanel value={tabValue} index={3}>
-					<Report />
-				</TabPanel> */}
-      </Box>
-    </div>
+      </Box >
+    </div >
   );
 };
 

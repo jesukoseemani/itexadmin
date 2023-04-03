@@ -24,8 +24,8 @@ interface FilterModalProps {
   toDate?: dayjs.Dayjs | null | string;
   filteredArray?: {
     name: string;
-    value: string;
-    setValue: React.Dispatch<React.SetStateAction<string>>;
+    value: any;
+    setValue: React.Dispatch<React.SetStateAction<any>>;
     selective?: any;
     selectHelper?: boolean;
   }[];

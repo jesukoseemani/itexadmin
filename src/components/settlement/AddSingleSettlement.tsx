@@ -6,14 +6,31 @@ import * as Yup from "yup";
 
 import { Grid, InputLabel, TextField } from "@material-ui/core";
 import { ErrorMessage, Field, Form, Formik } from "formik";
+import axios from "axios";
+import { openToastAndSetContent } from "../../redux/actions/toast/toastActions";
+import { closeModal } from "../../redux/actions/modal/modalActions";
+import { useDispatch } from 'react-redux';
 
-const AddSingleSettlement = () => {
+
+interface Prop {
+  id: string
+}
+
+
+
+interface MsgProps {
+  code?: string;
+  message: string;
+}
+const AddSingleSettlement = ({ id }: Prop) => {
   const [otp, setOtp] = useState("");
-
+  const dispatch = useDispatch()
   const validate = Yup.object({
     note: Yup.string().required("Required"),
     otp: Yup.number().required("Required"),
   });
+
+
 
   return (
     <div>
@@ -27,8 +44,31 @@ const AddSingleSettlement = () => {
             otp: "",
           }}
           validationSchema={validate}
-          onSubmit={(values) => {
-            console.log(values);
+          onSubmit={async (values) => {
+            const { data } = await axios.post<MsgProps>(`/v1/settlement/${id}/settle`, values)
+            console.log(data.message)
+            if (data?.code === "success") {
+              dispatch(
+                openToastAndSetContent({
+                  toastContent: data?.message,
+                  toastStyles: {
+                    backgroundColor: 'green',
+                  },
+                })
+              );
+              dispatch(closeModal());
+
+            } else {
+              dispatch(
+                openToastAndSetContent({
+                  toastContent: data?.message,
+                  toastStyles: {
+                    backgroundColor: 'red',
+                  },
+                })
+              );
+            }
+            console.log(values, "values")
           }}
         >
           {(props) => (
@@ -44,12 +84,12 @@ const AddSingleSettlement = () => {
                       multiline
                       rows={4}
                       helperText={
-                        <ErrorMessage name="account">
+                        <ErrorMessage name="note">
                           {(msg) => <span style={{ color: "red" }}>{msg}</span>}
                         </ErrorMessage>
                       }
                       name="note"
-                      placeholder="Account"
+                      placeholder="Enter notes"
                       variant="outlined"
                       margin="normal"
                       type="text/number"
@@ -63,15 +103,21 @@ const AddSingleSettlement = () => {
                       <span className={styles.header}>OTP</span>
                     </InputLabel>
 
-                    <OtpInput
-                      value={otp}
-                      onChange={setOtp}
-                      //   name="otp"
-                      containerStyle={styles.otpBox}
-                      numInputs={5}
-                      renderSeparator={<span>-</span>}
-                      renderInput={(props) => <input {...props} />}
-                      inputStyle={styles.otpInput}
+                    <Field
+                      as={TextField}
+
+                      helperText={
+                        <ErrorMessage name="otp">
+                          {(msg) => <span style={{ color: "red" }}>{msg}</span>}
+                        </ErrorMessage>
+                      }
+                      name="otp"
+                      placeholder="Enter otp"
+                      variant="outlined"
+                      margin="normal"
+                      type="text/number"
+                      size="small"
+                      fullWidth
                     />
                   </Grid>
                   <Grid item xs={12}>

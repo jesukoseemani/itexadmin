@@ -33,193 +33,83 @@ import MessageComplianceModal from '../messageComplianceModal/MessageComplianceM
 import DeclineDocsModal from '../declineDocsModal/DeclineDocsModal';
 import StatusModal from '../statusModal/StatusModal';
 import aYAxios from '../axiosInstance';
+import { useParams } from 'react-router-dom';
+import { ComplianceModuleData } from '../../types/ComplianceTypes';
+import { Box } from '@mui/material';
+import { openToastAndSetContent } from '../../redux/actions/toast/toastActions';
+import VerifyCompliance from './VerifyCompliance';
+import ValidateDoc from './ValidateDoc';
 
 function ComplianceDetails() {
 	const [details, setDetails] = useState<any>();
-	const [docsDetails, setDocsDetails] = useState<any>();
-	const [edit, setEdit] = useState<Boolean>(false);
+	// const [docsDetails, setDocsDetails] = useState<any>();
+	// const [edit, setEdit] = useState<Boolean>(false);
 
 	const location = useLocation();
 	const history = useHistory();
 	const dispatch = useDispatch();
-	const [modalIsOpen, setIsOpen] = React.useState(false);
-	function closeModal() {
-		setIsOpen(false);
-	}
-	function openModal() {
-		setIsOpen(true);
-	}
-	const [modalAptIsOpen, setAptIsOpen] = React.useState(false);
-	function closeAptModal() {
-		setAptIsOpen(false);
-	}
-	function openAptModal() {
-		setAptIsOpen(true);
-	}
-	const urlId = location.pathname.split('/')[2];
-	interface addressTypes {
-		line1: string;
-		line2: string;
-		city: string;
-		state: string;
+
+
+
+
+
+	const { id }: any = useParams();
+	const [business, setBusiness] = useState<any>()
+	const [document, setDocument] = useState<any>()
+
+	const fetchDoc = async () => {
+		try {
+			const { data } = await axios.get<any>(`/v1/compliance/business/${id}/docs`)
+			console.log(data)
+			setBusiness(data)
+			// setDocument(business?.documents)
+		} catch (error: any) {
+			dispatch(
+				openToastAndSetContent({
+					toastContent: error.message,
+					toastStyles: {
+						backgroundColor: "red",
+					},
+				})
+			)
+		}
 	}
 
 	useEffect(() => {
-		aYAxios
-			.get<BusinessTableApiTypes>(`/admin/business?merchantcode=${urlId}`)
-			.then((res) => {
-				setDetails(res.data);
-				console.log('getbusiness:', res.data);
-			});
-	}, [urlId]);
+		fetchDoc()
+	}, [id])
 
-	const popUpHandler = (desc: string) => {
-		if (desc === 'editbusiness') {
-			dispatch(
-				openModalAndSetContent({
-					modalStyles: {
-						padding: 0,
-					},
-					modalContent: (
-						<>
-							<EditBusiness />
-						</>
-					),
-				})
-			);
-		} else {
-			return null;
-		}
-	};
+	const handleValidate = async (doc: any) => {
 
-	const sendMessageHandler = () => {
 		dispatch(
 			openModalAndSetContent({
 				modalStyles: {
 					padding: 0,
 				},
 				modalContent: (
-					<>
-						<MessageComplianceModal />
-					</>
+					<Box>
+						<ValidateDoc doc={doc} />
+					</Box>
 				),
 			})
 		);
-	};
+	}
 
-	const declineHandler = () => {
+
+	const handleVerify = (doc: any) => {
 		dispatch(
 			openModalAndSetContent({
 				modalStyles: {
 					padding: 0,
 				},
 				modalContent: (
-					<>
-						<DeclineComplianceModal urlId={urlId} />
-					</>
+					<Box>
+						<VerifyCompliance doc={doc} />
+					</Box>
 				),
 			})
 		);
-	};
-
-	const approveHandler = () => {
-		dispatch(
-			openModalAndSetContent({
-				modalStyles: {
-					padding: 0,
-				},
-				modalContent: (
-					<>
-						<AcceptComplianceModal urlId={urlId} />
-					</>
-				),
-			})
-		);
-	};
-
-	const docApproveHandler = (ident: string) => {
-		closeAptModal();
-		dispatch(
-			openModalAndSetContent({
-				modalStyles: {
-					padding: 0,
-				},
-				modalContent: (
-					<>
-						<DeclineDocsModal ident={ident} />
-					</>
-				),
-			})
-		);
-	};
-
-	const docs = [
-		{
-			id: 1,
-			image: 'https://picsum.photos/200',
-			name: 'CAC Certificate',
-			status: 'Pending',
-			comment:
-				'Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore, accusantium placeat quas corporis error quibusdam odit ex nihil nam est accusamus ipsam ipsa inventore? Repudiandae, tenetur. Ab maxime a quibusdam. Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum, facilis soluta vel facere minima nihil accusantium dolor quas excepturi nam perferendis, ad sit magni sapiente et ipsum tempore. Adipisci, natus.',
-		},
-		{
-			id: 2,
-			image: 'https://picsum.photos/200',
-			name: 'First Director ID',
-			status: 'Approved',
-			comment:
-				'Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore, accusantium placeat quas corporis error quibusdam odit ex nihil nam est accusamus ipsam ipsa inventore? Repudiandae, tenetur. Ab maxime a quibusdam. Lorem ipsum dolor sit amet consectetur adipisicing elit. ',
-		},
-		{
-			id: 3,
-			image: 'https://picsum.photos/200',
-			name: 'MEMAT Document',
-			status: 'Declined',
-			comment:
-				'Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore, accusantium placeat quas corporis error quibusdam odit ex nihil nam est accusamus ipsam ipsa inventore? Repudiandae, tenetur. Ab maxime a quibusdam. Lorem ipsum dolor sit amet consectetur ',
-		},
-		{
-			id: 4,
-			image: 'https://picsum.photos/200',
-			name: 'Lincense',
-			status: 'Approved',
-			comment: 'Document is a useful piece',
-		},
-	];
-
-	const back = '<< Back';
-	const next = 'Next >>';
-	const imageViewerHandler = (
-		image: string,
-		name: string,
-		status: string,
-		comment: string,
-		id: number
-	) => {
-		setDocsDetails({ image, name, status, comment, id });
-		{
-			status === 'Pending' ? setAptIsOpen(true) : setIsOpen(true);
-		}
-	};
-
-	const moveHandler = (identify: string) => {
-		setIsOpen(false);
-
-		if (identify === 'back') {
-			const filterdata = docs.filter((item) => item.id === docsDetails.id - 1);
-			setDocsDetails(filterdata[0]);
-		}
-
-		if (identify === 'next') {
-			const filterdata = docs.filter((item) => item.id === docsDetails.id + 1);
-			setDocsDetails(filterdata[0]);
-		}
-
-		setTimeout(() => {
-			setIsOpen(true);
-		}, 100);
-	};
-
+	}
 	return (
 		<div className={styles.container}>
 			<NavBar name='business' />
@@ -231,7 +121,7 @@ function ComplianceDetails() {
 				<p className={styles.back_paragraph}> Back to Compliance</p>
 			</div>
 
-			<div className={styles.detailsHeader}>
+			{/* <div className={styles.detailsHeader}>
 				<div className={styles.detailsHeaderLeft}>
 					<h1 className={styles.detailsHeaderLeftH1}>
 						{details?.businesses[0].tradingname}
@@ -271,12 +161,89 @@ function ComplianceDetails() {
 						Approve Merchant
 					</button>
 				</div>
-			</div>
+			</div> */}
 
 			<div className={styles.divider_wrapper}>
 				<Divider />
 			</div>
 
+			<div className={styles.gridFeatures}>
+				<Grid container spacing={2}>
+					<Grid item xs={6} md={4}>
+						<div className={styles.gridFeatureBusiness}>
+							<h1 className={styles.gridFeatureBusinessH1}>Business email
+							</h1>
+							<p className={styles.gridFeatureBusinessP}>{business?.business?.businessemail}</p>
+						</div>
+					</Grid>
+					<Grid item xs={6} md={4}>
+						<div className={styles.gridFeatureBusiness}>
+							<h1 className={styles.gridFeatureBusinessH1}>Merchantcode
+							</h1>
+							<p className={styles.gridFeatureBusinessP}>{business?.business?.merchantcode}</p>
+						</div>
+					</Grid>
+					<Grid item xs={6} md={4}>
+						<div className={styles.gridFeatureBusiness}>
+							<h1 className={styles.gridFeatureBusinessH1}>Business phone
+
+							</h1>
+							<p className={styles.gridFeatureBusinessP}>{business?.business?.businessphone
+							}</p>
+						</div>
+					</Grid>
+					<Grid item xs={6} md={4}>
+						<div className={styles.gridFeatureBusiness}>
+							<h1 className={styles.gridFeatureBusinessH1}>Trading name
+
+							</h1>
+							<p className={styles.gridFeatureBusinessP}>{business?.business?.tradingname
+
+							}</p>
+						</div>
+					</Grid>
+					<Grid item xs={6} md={4}>
+						<div className={styles.gridFeatureBusiness}>
+							<h1 className={styles.gridFeatureBusinessH1}>country</h1>
+							<p className={styles.gridFeatureBusinessP}>{business?.business?.country}</p>
+						</div>
+					</Grid>
+					<Grid item xs={6} md={4}>
+						<div className={styles.gridFeatureBusiness}>
+							<h1 className={styles.gridFeatureBusinessH1}>islive</h1>
+							<p className={styles.gridFeatureBusinessP}>{business?.business?.lively ? "True" : "False"}</p>
+						</div>
+					</Grid>
+				</Grid>
+			</div>
+
+
+			<Box >
+				<Grid container spacing={3} px={4}>
+
+					{business?.documents?.map((x: any) => (
+						<Grid item xs={12} sm={6} md={4} key={x?.id}>
+							<Box className={styles.imgBox}>
+								<Box className={styles.imgList}>
+									<img src={x?.idurl} alt="hhhhh" />
+
+								</Box>
+								<Box className={styles.btn}>
+									{x?.status !== "APPROVE" && <button onClick={() => handleValidate(x)}>Validate</button>}
+									{x?.verifiedstatus !== "VERIFIED" && <button onClick={() => handleVerify(x)}>Verify</button>}
+								</Box>
+
+							</Box>
+						</Grid>
+					))}
+				</Grid>
+			</Box>
+
+
+
+
+
+			{/* 
 			<div
 				style={{
 					display: 'flex',
@@ -508,7 +475,7 @@ function ComplianceDetails() {
 						</button>
 					</div>
 				</div>
-			</Modal>
+			</Modal>*/}
 		</div>
 	);
 }

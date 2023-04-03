@@ -1,14 +1,18 @@
+import { ReactNode } from 'react';
+
 export interface RollingReserveModuleData {
 	rolling_id: number;
 	settlement_id: string;
 	amount: string;
 	currency: string;
 	status: number;
-	merchantcode:string;
-	balanceBefore:string;
-	balanceAfter:string;
+	merchantcode: string;
+	balanceBefore: string;
+	balanceAfter: string;
 	duedate: string;
 	date: string;
+	action?: ReactNode;
+	id?: number;
 
 }
 
@@ -31,7 +35,7 @@ export const ColumnSettlementRollingModule = [
 		Header: 'Amount',
 		accessor: 'amount',
 	},
-   
+
 	{
 		Header: 'Status',
 		accessor: 'status',
@@ -52,6 +56,11 @@ export const ColumnSettlementRollingModule = [
 		Header: 'Due date',
 		accessor: 'duedate',
 	},
+	{
+		Header: 'Action',
+		accessor: 'action',
+	},
+
 	{
 		Header: 'Created Date',
 		accessor: 'date',

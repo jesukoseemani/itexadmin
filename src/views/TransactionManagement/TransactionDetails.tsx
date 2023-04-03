@@ -143,10 +143,10 @@ const TransactionDetails = () => {
 										apiRes?.transaction?.responsecode === '00'
 											? 'Approved'
 											: apiRes?.transaction?.responsecode === '09'
-											? 'Pending'
-											: apiRes?.transaction?.responsecode === 'F9'
-											? 'Abandoned'
-											: 'Declined'
+												? 'Pending'
+												: apiRes?.transaction?.responsecode === 'F9'
+													? 'Abandoned'
+													: 'Declined'
 									}
 									green='Approved'
 									orange='Pending'
@@ -208,7 +208,7 @@ const TransactionDetails = () => {
 									{apiRes?.transaction?.source?.customer?.card?.number}
 								</p>
 							</Grid> */}
-							<Grid item md={2} xs={6} lg={2}>
+							{/* <Grid item md={2} xs={6} lg={2}>
 								<span className={styles.blacklist}>
 									<button
 										className={styles.button_mark_button}
@@ -218,7 +218,7 @@ const TransactionDetails = () => {
 										Log chargeback
 									</button>
 								</span>
-							</Grid>
+							</Grid> */}
 						</Grid>
 					</Box>
 				</div>

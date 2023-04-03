@@ -1,16 +1,19 @@
 
+import { ReactNode } from 'react';
 export interface ComplianceModuleData {
 	bizindustrycategory: string;
 	businessemail: string;
 	businessphone: string;
 	tradingname: string;
-    country: string;
-    docuploaded: number;
-    isapproved: boolean;
-	merchantaccounttype: string;
+	country?: string;
+	docuploaded: number;
+	isapproved?: boolean;
+	merchantaccounttype?: string;
 	merchantcode: string;
-	status: string;
+	status?: string;
 	createdAt: string;
+	action?: ReactNode;
+	merchantid?: number
 }
 
 export const ColumnComplianceModule = [
@@ -30,30 +33,31 @@ export const ColumnComplianceModule = [
 		Header: 'Trading name',
 		accessor: 'tradingname',
 	},
-	{
-		Header: 'Business Type',
-		accessor: 'merchantaccounttype',
-	},
-	{
-		Header: 'Country',
-		accessor: 'country',
-	},
+	// {
+	// 	Header: 'Business Type',
+	// 	accessor: 'merchantaccounttype',
+	// },
+	// {
+	// 	Header: 'Country',
+	// 	accessor: 'country',
+	// },
 	{
 		Header: 'Merchant code',
 		accessor: 'merchantcode',
 	},
-	{
-		Header: 'Approved',
-		accessor: 'isapproved',
-	},
+	// {
+	// 	Header: 'Approved',
+	// 	accessor: 'isapproved',
+	// },
 	{
 		Header: 'Doc uploaded',
 		accessor: 'docuploaded',
 	},
-	{
-		Header: 'Status',
-		accessor: 'status',
-	},
+	// {
+	// 	Header: 'Status',
+	// 	accessor: 'status',
+	// },
+
 	{
 		Header: 'Date',
 		accessor: 'createdAt',
@@ -66,18 +70,20 @@ export interface ComplianceLimitModuleData {
 	businessemail: string;
 	activity: string;
 	tradingname: string;
-    transactiontype: string;
-    limittype: string;
-    paymentmethod: string;
+	transactiontype: string;
+	limittype: string;
+	paymentmethod: string;
 	minlimit: number;
 	maxlimit: number;
 	merchantcode: string;
-	status: string;
+	status?: string;
 	createdAt: string;
+	action?: ReactNode;
+	id?: number;
 }
 
 export const ColumnComplianceLimitModule = [
-	
+
 	{
 		Header: 'Email',
 		accessor: 'businessemail',
@@ -86,10 +92,10 @@ export const ColumnComplianceLimitModule = [
 		Header: 'Activity',
 		accessor: 'activity',
 	},
-    {
-        Header: 'Transaction type',
-        accessor: 'transactiontype',
-    },
+	{
+		Header: 'Transaction type',
+		accessor: 'transactiontype',
+	},
 	{
 		Header: 'Trading name',
 		accessor: 'tradingname',
@@ -115,8 +121,10 @@ export const ColumnComplianceLimitModule = [
 		accessor: 'limittype',
 	},
 	{
-		Header: 'Status',
-		accessor: 'status',
+
+		Header: 'Action',
+		accessor: 'action',
+
 	},
 	{
 		Header: 'Date',
@@ -129,18 +137,20 @@ export interface ComplianceFeeModuleData {
 	businessemail: string;
 	activity: string;
 	tradingname: string;
-    transactiontype: string;
-    feesetting: string;
-    paymentmethod: string;
+	transactiontype?: string;
+	feesetting: string;
+	paymentmethod: string;
 	feecap: number;
 	feemin: number;
 	merchantcode: string;
 	status: string;
 	createdAt: string;
+	action?: ReactNode;
+	id?: number;
 }
 
 export const ColumnComplianceFeeModule = [
-	
+
 	{
 		Header: 'Email',
 		accessor: 'businessemail',
@@ -149,10 +159,7 @@ export const ColumnComplianceFeeModule = [
 		Header: 'Activity',
 		accessor: 'activity',
 	},
-    {
-        Header: 'Transaction type',
-        accessor: 'transactiontype',
-    },
+
 	{
 		Header: 'Trading name',
 		accessor: 'tradingname',
@@ -182,6 +189,10 @@ export const ColumnComplianceFeeModule = [
 		accessor: 'status',
 	},
 	{
+		Header: 'Action',
+		accessor: 'action',
+	},
+	{
 		Header: 'Date',
 		accessor: 'createdAt',
 	},
@@ -192,22 +203,24 @@ export interface ComplianceScheduleModuleData {
 	businessemail: string;
 	activity: string;
 	tradingname: string;
-    transactiontype: string;
-    paymentmethod: string;
+	transactiontype: string;
+	paymentmethod: string;
 	timeapproved: string;
 	periodsetting: string;
 	merchantcode: string;
-	status: string;
+	status?: string;
 	createdAt: string;
+	action?: ReactNode;
+
 }
 
 export const ColumnComplianceScheduleModule = [
-	
+
 	{
 		Header: 'ID',
 		accessor: 'id',
 	},
-	
+
 	{
 		Header: 'Email',
 		accessor: 'businessemail',
@@ -216,7 +229,7 @@ export const ColumnComplianceScheduleModule = [
 		Header: 'Activity',
 		accessor: 'activity',
 	},
-   
+
 	{
 		Header: 'Trading name',
 		accessor: 'tradingname',
@@ -235,8 +248,8 @@ export const ColumnComplianceScheduleModule = [
 	},
 
 	{
-		Header: 'Status',
-		accessor: 'status',
+		Header: 'Action',
+		accessor: 'action',
 	},
 	{
 		Header: 'Date',
@@ -249,23 +262,24 @@ export interface ComplianceConfigModuleData {
 	businessemail: string;
 	activity: string;
 	tradingname: string;
-    transactiontype: string;
-    paymentmethod: string;
+	transactiontype: string;
+	paymentmethod: string;
 	timeapproved: string;
 	enablerollingreserve: string;
 	rollingreserveperiod: number;
 	merchantcode: string;
-	status: string;
+	status?: string;
 	createdAt: string;
+	action?: ReactNode
 }
 
 export const ColumnComplianceConfigModule = [
-	
+
 	{
 		Header: 'ID',
 		accessor: 'id',
 	},
-	
+
 	{
 		Header: 'Email',
 		accessor: 'businessemail',
@@ -274,7 +288,7 @@ export const ColumnComplianceConfigModule = [
 		Header: 'Activity',
 		accessor: 'activity',
 	},
-   
+
 	{
 		Header: 'Trading name',
 		accessor: 'tradingname',
@@ -297,8 +311,8 @@ export const ColumnComplianceConfigModule = [
 	},
 
 	{
-		Header: 'Status',
-		accessor: 'status',
+		Header: 'Action',
+		accessor: 'action',
 	},
 	{
 		Header: 'Date',

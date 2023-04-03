@@ -27,42 +27,7 @@ function AllCompliance() {
         <NavBar name="Compliance" />
 
         <Box width={"100%S"} px={3}>
-          <TabContext value={value}>
-            <Box>
-              <TabList
-                onChange={handleChange}
-                variant="scrollable"
-                scrollButtons="auto"
-                aria-label="scrollable auto tabs example"
-                sx={{
-                  "& .MuiButtonBase-root": {
-                    textTransform: "capitalize",
-                  },
-                }}
-              >
-                <Tab label="All Business" value="1" />
-                <Tab label="Business Limit" value="2" />
-                <Tab label="Business Fee" value="3" />
-                <Tab label="Business Schedule" value="4" />
-                <Tab label="Business config" value="5" />
-              </TabList>
-            </Box>
-            <TabPanel value="1">
-              <ComplianceList />
-            </TabPanel>
-            <TabPanel value="2">
-              <LimitCompliance />
-            </TabPanel>
-            <TabPanel value="3">
-              <FeeCompliance />
-            </TabPanel>
-            <TabPanel value="4">
-              <ScheduleCompliance />
-            </TabPanel>
-            <TabPanel value="5">
-              <ConfigCompliance />
-            </TabPanel>
-          </TabContext>
+          <ComplianceList />
         </Box>
       </div>
     </div>

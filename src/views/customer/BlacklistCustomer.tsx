@@ -6,15 +6,34 @@ import * as Yup from "yup";
 
 import { Grid, InputLabel, TextField } from "@material-ui/core";
 import { ErrorMessage, Field, Form, Formik } from "formik";
+import axios from "axios";
+import { useSelector, useDispatch } from 'react-redux';
+import { openToastAndSetContent } from "../../redux/actions/toast/toastActions";
+import { closeModal } from "../../redux/actions/modal/modalActions";
 
-const BlacklistCustomer = () => {
+
+
+
+
+
+interface Props {
+  code?: string;
+  message: string;
+}
+
+const BlacklistCustomer = ({ custId }: any) => {
+  const dispatch = useDispatch()
   const [otp, setOtp] = useState("");
+  const auth = useSelector((state) => state?.authPayReducer?.auth);
+  const access_token = auth?.access_token;
 
   const validate = Yup.object({
     reason: Yup.string().required("Required"),
     otp: Yup.number().required("Required"),
     customerid: Yup.number().required("Required"),
   });
+  const url = "/v1/customer/blacklist"
+
 
   return (
     <div className={styles.blacklist__box}>
@@ -26,13 +45,39 @@ const BlacklistCustomer = () => {
           initialValues={{
             reason: "",
             otp: "",
-            customerid: "",
+            customerid: custId
           }}
           validationSchema={validate}
-          onSubmit={(values) => {
-            console.log(values);
+          onSubmit={async (values) => {
+            const { data } = await axios.post<Props>(url, values)
+            // console.log(blacklistCustomer);
+            if (data?.code === "success") {
+              dispatch(
+                openToastAndSetContent({
+                  toastContent: data?.message,
+                  toastStyles: {
+                    backgroundColor: 'green',
+                  },
+                })
+              );
+              dispatch(closeModal());
+
+            } else {
+              dispatch(
+                openToastAndSetContent({
+                  toastContent: data?.message,
+                  toastStyles: {
+                    backgroundColor: 'red',
+                  },
+                })
+              );
+            }
+            console.log(values, "values")
           }}
         >
+
+
+
           {(props) => (
             <div className={styles.blacklistmodalBody}>
               <Form>
@@ -65,7 +110,7 @@ const BlacklistCustomer = () => {
                       <span className={styles.header}>OTP</span>
                     </InputLabel>
 
-                    <OtpInput
+                    {/* <OtpInput
                       value={otp}
                       onChange={setOtp}
                       //   name="otp"
@@ -74,6 +119,23 @@ const BlacklistCustomer = () => {
                       renderSeparator={<span>-</span>}
                       renderInput={(props) => <input {...props} />}
                       inputStyle={styles.otpInput}
+                    /> */}
+
+                    <Field
+                      as={TextField}
+                      helperText={
+                        <ErrorMessage name="otp">
+                          {(msg) => <span style={{ color: "red" }}>{msg}</span>}
+                        </ErrorMessage>
+                      }
+                      name="otp"
+                      placeholder="otp"
+                      variant="outlined"
+                      margin="normal"
+                      type="number"
+                      size="small"
+                      fullWidth
+                    // value={custId}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -94,6 +156,8 @@ const BlacklistCustomer = () => {
                       type="number"
                       size="small"
                       fullWidth
+                      value={custId}
+                      style={{ display: "none" }}
                     />
                   </Grid>
                   <Grid item xs={12}>
