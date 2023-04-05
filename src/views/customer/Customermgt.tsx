@@ -240,7 +240,7 @@ const Customermgt = () => {
 
           <PaginationTable
             data={tableRow ? tableRow : []}
-            columns={ColumnBusinessCustomerModule ? ColumnCustomerModule : []}
+            columns={ColumnCustomerModule ? ColumnCustomerModule : []}
             emptyPlaceHolder={
               customers?._metadata?.totalcount == 0
                 ? "You currently do not have any data"

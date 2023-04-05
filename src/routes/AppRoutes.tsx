@@ -24,13 +24,6 @@ import Reconciliations from '../views/Settlement/Reconciliations';
 import AllCompliance from '../views/Compliance/AllCompliance';
 import Legal from '../views/Legal/Legal';
 import POS from '../views/PointOfSale/POS';
-import AssessmentFee from '../views/FraudRiskManagement/AssessmentFee';
-import CBFraudRatio from '../views/FraudRiskManagement/CBFraudRatio';
-import CBFraudSummary from '../views/FraudRiskManagement/CBFraudSummary';
-import ChargeBack from '../views/FraudRiskManagement/Chargeback';
-import ChargebackDetails from '../views/FraudRiskManagement/ChargebackDetails';
-import Sales from '../views/FraudRiskManagement/Sales';
-import FraudMgtAuditTrail from '../views/FraudRiskManagement/AuditTrail';
 import AllChargebacks from '../views/ChargebackManagement/AllChargebacks';
 import Refunds from '../views/ChargebackManagement/Refunds';
 import Roles from '../views/UsersAndPermissions/Roles';
@@ -59,7 +52,6 @@ import { logOut } from '../redux/actions/auth/authActions';
 import { saveLoading } from '../redux/actions/loadingState/loadingStateActions';
 import Bank from '../views/Bank/Bank';
 import BankDetails from '../components/bankDetails/BankDetails';
-import SalesTab from '../views/FraudRiskManagement/SalesTab/SalesTab';
 import ResetCompletePassword from '../components/accountSetUp/ResetCompletePassword';
 import Modules from '../views/UsersAndPermissions/Modules';
 import BusinessTab from '../components/businessDetails/BusinessTab';
@@ -74,6 +66,11 @@ import LimitCompliance from '../views/Compliance/LimitCompliance';
 import ScheduleCompliance from '../views/Compliance/ScheduleCompliance';
 import ConfigCompliance from '../views/Compliance/ConfigCompliance';
 import DueSettlements from '../views/Settlement/DueSettlement';
+import Fraudmgt from '../views/FraudRiskManagement/Fraudmgt';
+import Hotlist from '../views/FraudRiskManagement/Hotlist';
+import FraudDetails from '../views/FraudRiskManagement/FraudDetails';
+import Marketingmgt from '../views/marketing/Marketingmgt';
+import LogDetails from '../views/marketing/LogDetails';
 
 export default function AppRoutes() {
 	const dispatch = useDispatch();
@@ -389,44 +386,21 @@ export default function AppRoutes() {
 
 							<ProtectedRoute
 								exact
-								path='/fraudmgt_sales'
-								component={SalesTab}
+								path='/fraudmgt'
+								component={Fraudmgt}
 								AuthUser={loadingState}
 							/>
 							<ProtectedRoute
 								exact
-								path='/fraudmgt/chargeback'
-								component={ChargeBack}
+								path='/fraudmgt/:id'
+								component={FraudDetails}
 								AuthUser={loadingState}
 							/>
+
 							<ProtectedRoute
 								exact
-								path='/fraudmgt/chargeback/:id'
-								component={ChargebackDetails}
-								AuthUser={loadingState}
-							/>
-							<ProtectedRoute
-								exact
-								path='/fraudmgt/fraud_summary'
-								component={CBFraudSummary}
-								AuthUser={loadingState}
-							/>
-							<ProtectedRoute
-								exact
-								path='/fraudmgt/fraud_ratio'
-								component={CBFraudRatio}
-								AuthUser={loadingState}
-							/>
-							<ProtectedRoute
-								exact
-								path='/fraudmgt/fraud_assessment_fee'
-								component={AssessmentFee}
-								AuthUser={loadingState}
-							/>
-							<ProtectedRoute
-								exact
-								path='/fraudmgt/audittrail'
-								component={FraudMgtAuditTrail}
+								path='/hotlist'
+								component={Hotlist}
 								AuthUser={loadingState}
 							/>
 							<ProtectedRoute
@@ -451,6 +425,18 @@ export default function AppRoutes() {
 								exact
 								path='/chargebackmgt/upload'
 								component={UploadChargeback}
+								AuthUser={loadingState}
+							/>
+							<ProtectedRoute
+								exact
+								path='/marketingmgt'
+								component={Marketingmgt}
+								AuthUser={loadingState}
+							/>
+							<ProtectedRoute
+								exact
+								path='/logs/:id'
+								component={LogDetails}
 								AuthUser={loadingState}
 							/>
 							<ProtectedRoute
