@@ -71,6 +71,8 @@ import Hotlist from '../views/FraudRiskManagement/Hotlist';
 import FraudDetails from '../views/FraudRiskManagement/FraudDetails';
 import Marketingmgt from '../views/marketing/Marketingmgt';
 import LogDetails from '../views/marketing/LogDetails';
+import Payoutmgt from '../views/payout/Payoutmgt';
+import PayoutDetails from '../views/payout/PayoutDetails';
 
 export default function AppRoutes() {
 	const dispatch = useDispatch();
@@ -437,6 +439,18 @@ export default function AppRoutes() {
 								exact
 								path='/logs/:id'
 								component={LogDetails}
+								AuthUser={loadingState}
+							/>
+							<ProtectedRoute
+								exact
+								path='/payout'
+								component={Payoutmgt}
+								AuthUser={loadingState}
+							/>
+							<ProtectedRoute
+								exact
+								path='/payout/:id'
+								component={PayoutDetails}
 								AuthUser={loadingState}
 							/>
 							<ProtectedRoute

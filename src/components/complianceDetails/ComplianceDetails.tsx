@@ -14,25 +14,8 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { format, parseISO } from 'date-fns';
 import { openModalAndSetContent } from '../../redux/actions/modal/modalActions';
-import FirstReuse from '../ModalsReuse/businessDetailsModal/FirstReuse';
-import SecondReuse from '../ModalsReuse/businessDetailsModal/SecondReuse';
-import ThirdReuse from '../ModalsReuse/businessDetailsModal/ThirdReuse';
-import FourthReuse from '../ModalsReuse/businessDetailsModal/FourthReuse';
-import FifthReuse from '../ModalsReuse/businessDetailsModal/fifthReuse';
-import SixthReuse from '../ModalsReuse/businessDetailsModal/SixthReuse';
-import EditBusiness from '../ModalsReuse/businessDetailsModal/EditBusiness';
-import { ReactComponent as PendingIcon } from '../../assets/images/alert-circle.svg';
-import { ReactComponent as DangerIcon } from '../../assets/images/close-circle.svg';
-import { ReactComponent as ApprovedIcon } from '../../assets/images/checkmark-circle.svg';
-import Modal from 'react-modal';
-import { customStyles } from '../../helpers/modalStyles';
-import { ReactComponent as CloseIcon } from '../../assets/images/modalclose.svg';
-import AcceptComplianceModal from '../acceptComplianceModal/AcceptComplianceModal';
-import DeclineComplianceModal from '../declineComplianceModal/DeclineComplianceModal';
-import MessageComplianceModal from '../messageComplianceModal/MessageComplianceModal';
-import DeclineDocsModal from '../declineDocsModal/DeclineDocsModal';
-import StatusModal from '../statusModal/StatusModal';
-import aYAxios from '../axiosInstance';
+
+
 import { useParams } from 'react-router-dom';
 import { ComplianceModuleData } from '../../types/ComplianceTypes';
 import { Box } from '@mui/material';

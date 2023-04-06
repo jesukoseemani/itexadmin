@@ -231,6 +231,14 @@ const refundManagement = [
     icon: <ChangeCircleIcon />,
   },
 ];
+const PayoutManagement = [
+  {
+    id: "PRM",
+    title: "Payout",
+    route: "/payout",
+    icon: <AccountBalanceWalletIcon />,
+  },
+];
 
 const usersAndPermissions = [
   {
@@ -607,6 +615,19 @@ export default function MiniDrawer() {
                 Marketing Management
               </h2>
               {MarketingManagement.map(({ route, title, id, icon }) => (
+                <ComponentListItem
+                  key={id}
+                  route={route}
+                  title={title}
+                  id={id}
+                  icon={icon}
+                  open={open}
+                />
+              ))}
+              <h2 style={styledH2} className={styles.sectionTitle}>
+                Payout Management
+              </h2>
+              {PayoutManagement.map(({ route, title, id, icon }) => (
                 <ComponentListItem
                   key={id}
                   route={route}

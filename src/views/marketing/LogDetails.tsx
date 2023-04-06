@@ -10,7 +10,6 @@ import { Box, Grid } from '@mui/material';
 import styles from './styles.module.scss';
 import { useHistory } from 'react-router-dom';
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
-import { MarketingModuleData } from '../../types/MarketingTypes';
 
 const LogDetails = () => {
     interface ParamTypes {
@@ -23,7 +22,7 @@ const LogDetails = () => {
     const history = useHistory()
     const [log, setLog] = useState<any>()
 
-    const handleBackToMarketting = () => {
+    const goBack = () => {
         history.push('/marketingmgt');
     };
 
@@ -67,7 +66,7 @@ const LogDetails = () => {
 
             <Box>
                 <div className={styles.m1}>
-                    <span className={styles.back} onClick={handleBackToMarketting}>
+                    <span className={styles.back} onClick={goBack} style={{ cursor: "pointer" }}>
                         <ArrowLeftIcon /> Back Marketing management
                     </span>
                 </div>

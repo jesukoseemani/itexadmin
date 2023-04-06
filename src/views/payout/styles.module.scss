@@ -7,6 +7,16 @@
 }
 
 
+.back {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    flex-wrap: wrap;
+    font-size: 12px;
+    line-height: 14px;
+    color: #4f4f4f;
+    cursor: pointer;
+}
 
 .headerAmount {
     font-size: 21px;
@@ -125,77 +135,4 @@
         font-size: 16px;
         cursor: pointer;
     }
-}
-
-.blacklist__box {
-    width: 100%;
-    padding: 0 !important;
-    max-height: 99vh !important;
-    overflow-y: auto;
-
-    .headerTitle {
-        border-bottom: 1px solid #ddd;
-        padding: 10px 25px;
-
-        h2 {
-            font-size: 16px;
-            color: #333;
-            font-family: roboto;
-            font-weight: 500;
-        }
-    }
-
-    .blacklistmodalBody {
-        padding: 10px 25px;
-        margin-top: 1.5rem;
-
-        .otpBox {
-            padding: 10px 0px;
-            display: flex;
-            gap: 5px;
-        }
-
-        .otpInput {
-            width: 58px !important;
-            height: 40px !important;
-            font-size: 16px !important;
-            border-radius: 5px !important;
-            outline: none !important;
-            border: 1px solid #ddd;
-        }
-
-        button {
-            border: none;
-            outline: none;
-            height: 44px;
-            border-radius: 20px;
-            width: 100%;
-            background: #27ae60;
-            margin: 20px 0;
-            color: #fff;
-            font-size: 20px;
-            cursor: pointer;
-
-            &:hover {
-                background-color: lighten(#27ae60, 5%);
-            }
-        }
-    }
-
-}
-
-.editor {
-    color: #333;
-}
-
-.back {
-    display: flex;
-    justify-content: left;
-    align-items: center;
-    flex-wrap: wrap;
-    font-size: 12px;
-    line-height: 14px;
-    color: #4f4f4f;
-    cursor: pointer !important;
-    padding: 10px 0;
 }

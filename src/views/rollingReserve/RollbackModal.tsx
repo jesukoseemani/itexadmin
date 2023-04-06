@@ -6,14 +6,26 @@ import * as Yup from "yup";
 
 import { Grid, InputLabel, TextField } from "@material-ui/core";
 import { ErrorMessage, Field, Form, Formik } from "formik";
+import { useDispatch } from 'react-redux';
+import axios from "axios";
+import { openToastAndSetContent } from "../../redux/actions/toast/toastActions";
+import { closeModal } from "../../redux/actions/modal/modalActions";
+
+
+
+interface Props {
+  code?: string;
+  message: string;
+}
+
 
 const RollbackModal = ({ id }: any) => {
-  const [otp, setOtp] = useState("");
+  const dispatch = useDispatch()
 
   const validate = Yup.object({
     note: Yup.string().required("Required"),
     otp: Yup.number().required("Required"),
-    reserveid: Yup.number().required("Required"),
+    reserveid: Yup.number(),
   });
 
   return (
@@ -29,9 +41,34 @@ const RollbackModal = ({ id }: any) => {
             reserveid: id,
           }}
           validationSchema={validate}
-          onSubmit={(values) => {
+          onSubmit={async (values) => {
             console.log(values);
+            const { data } = await axios.post<Props>("/v1/rollingreserve/reverse", values)
+            // console.log(blacklistCustomer);
+            if (data?.code === "success") {
+              dispatch(
+                openToastAndSetContent({
+                  toastContent: data?.message,
+                  toastStyles: {
+                    backgroundColor: 'green',
+                  },
+                })
+              );
+              dispatch(closeModal());
+
+            } else {
+              dispatch(
+                openToastAndSetContent({
+                  toastContent: data?.message,
+                  toastStyles: {
+                    backgroundColor: 'red',
+                  },
+                })
+              );
+            }
+            console.log(values, "values")
           }}
+
         >
           {(props) => (
             <div className={styles.rollingmodalBody}>
@@ -49,7 +86,7 @@ const RollbackModal = ({ id }: any) => {
                         </ErrorMessage>
                       }
                       name="reserveid"
-                      placeholder="reserve gotfid"
+                      placeholder="reserve id"
                       variant="outlined"
                       margin="normal"
                       type="number"
@@ -76,7 +113,7 @@ const RollbackModal = ({ id }: any) => {
                       placeholder="note"
                       variant="outlined"
                       margin="normal"
-                      type="text/number"
+                      type="text"
                       size="small"
                       fullWidth
                     />
@@ -87,7 +124,7 @@ const RollbackModal = ({ id }: any) => {
                       <span className={styles.header}>OTP</span>
                     </InputLabel>
 
-                    <OtpInput
+                    {/* <OtpInput
                       value={otp}
                       onChange={setOtp}
                       //   name="otp"
@@ -96,6 +133,21 @@ const RollbackModal = ({ id }: any) => {
                       renderSeparator={<span>-</span>}
                       renderInput={(props) => <input {...props} />}
                       inputStyle={styles.otpInput}
+                    /> */}
+                    <Field
+                      as={TextField}
+                      helperText={
+                        <ErrorMessage name="otp">
+                          {(msg) => <span style={{ color: "red" }}>{msg}</span>}
+                        </ErrorMessage>
+                      }
+                      name="otp"
+                      placeholder="Enter otp"
+                      variant="outlined"
+                      margin="normal"
+                      type="text"
+                      size="small"
+                      fullWidth
                     />
                   </Grid>
 
@@ -108,7 +160,7 @@ const RollbackModal = ({ id }: any) => {
           )}
         </Formik>
       </Box>
-    </div>
+    </div >
   );
 };
 
