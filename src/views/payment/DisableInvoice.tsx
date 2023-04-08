@@ -1,5 +1,6 @@
 import { Box } from "@mui/material";
 import React, { useState } from "react";
+import OtpInput from "react-otp-input";
 import styles from "./styles.module.scss";
 import * as Yup from "yup";
 
@@ -10,8 +11,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { openToastAndSetContent } from "../../redux/actions/toast/toastActions";
 import { closeModal } from "../../redux/actions/modal/modalActions";
 import { makeStyles } from '@material-ui/core';
-import Select from "../../components/formUI/Select";
-
+import Select from '../../components/formUI/Select';
 
 
 
@@ -21,7 +21,6 @@ interface Props {
     code?: string;
     message: string;
 }
-
 
 
 
@@ -58,50 +57,44 @@ const useStyles = makeStyles({
         '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
             border: '1px solid #E0E0E0',
         },
-    }
-
+    },
 });
 
-const FlaggedModal = ({ id, setNavigate }: any) => {
+
+const DisableInvoice = ({ id, setNavigate }: any) => {
     const dispatch = useDispatch()
     const [otp, setOtp] = useState("");
     const auth = useSelector((state) => state?.authPayReducer?.auth);
     const access_token = auth?.access_token;
 
-
     const validate = Yup.object({
-        status: Yup.string().required("Required"),
-        analysis: Yup.string().required("Required"),
+        action: Yup.string().required("Required"),
         otp: Yup.number().required("Required"),
+        id: Yup.number().required("Required"),
     });
-
-
-
-
-    const url = `/v1/fraudmgt/flagged/${id}/analyze`
-
+    const url = "/v1/payment/disable"
 
     const actionOption = [
         {
-            name: 'fraud',
+            name: 'paymentlink',
         },
         {
-            name: 'compliant',
+            name: 'invoice',
         },
     ];
-    const classes = useStyles();
+
+    const classes = useStyles()
     return (
         <div className={styles.blacklist__box}>
             <Box className={styles.headerTitle}>
-                <h2>Flag</h2>
+                <h2>Disable Paymentlink/invoice</h2>
             </Box>
             <Box>
                 <Formik
                     initialValues={{
-                        analysis: "",
-                        status: "",
+                        action: "",
                         otp: "",
-
+                        id
                     }}
                     validationSchema={validate}
                     onSubmit={async (values) => {
@@ -129,8 +122,8 @@ const FlaggedModal = ({ id, setNavigate }: any) => {
                                 })
                             );
                         }
-                        setNavigate(false)
                         console.log(values, "values")
+                        setNavigate(false)
                     }}
                 >
 
@@ -142,40 +135,17 @@ const FlaggedModal = ({ id, setNavigate }: any) => {
                                 <Grid container spacing={2}>
                                     <Grid item xs={12}>
                                         <InputLabel>
-                                            <span className={styles.header}>analysis</span>
-                                        </InputLabel>
-                                        <Field
-                                            as={TextField}
-                                            multiline
-                                            rows={4}
-                                            helperText={
-                                                <ErrorMessage name="analysis">
-                                                    {(msg) => <span style={{ color: "red" }}>{msg}</span>}
-                                                </ErrorMessage>
-                                            }
-                                            name="analysis"
-                                            placeholder="analysis"
-                                            variant="outlined"
-                                            margin="normal"
-                                            type="text/number"
-                                            size="small"
-                                            fullWidth
-                                        />
-                                    </Grid>
-
-                                    <Grid item xs={12}>
-                                        <InputLabel>
-                                            <span className={styles.header}>Status</span>
+                                            <span className={styles.header}>action</span>
                                         </InputLabel>
                                         <Field
                                             as={Select}
 
                                             helperText={
-                                                <ErrorMessage name='status'>
+                                                <ErrorMessage name='action'>
                                                     {(msg) => <span style={{ color: 'red' }}>{msg}</span>}
                                                 </ErrorMessage>
                                             }
-                                            name='status'
+                                            name='action'
                                             size='small'
                                             options={actionOption}
                                             defaultValue={actionOption && actionOption[0]}
@@ -195,16 +165,6 @@ const FlaggedModal = ({ id, setNavigate }: any) => {
                                             <span className={styles.header}>OTP</span>
                                         </InputLabel>
 
-                                        {/* <OtpInput
-                      value={otp}
-                      onChange={setOtp}
-                      //   name="otp"
-                      containerStyle={styles.otpBox}
-                      numInputs={5}
-                      renderSeparator={<span>-</span>}
-                      renderInput={(props) => <input {...props} />}
-                      inputStyle={styles.otpInput}
-                    /> */}
 
                                         <Field
                                             as={TextField}
@@ -223,7 +183,26 @@ const FlaggedModal = ({ id, setNavigate }: any) => {
                                         // value={custId}
                                         />
                                     </Grid>
+                                    <Grid item xs={12}>
 
+                                        <Field
+                                            as={TextField}
+                                            helperText={
+                                                <ErrorMessage name="id">
+                                                    {(msg) => <span style={{ color: "red" }}>{msg}</span>}
+                                                </ErrorMessage>
+                                            }
+                                            name="id"
+                                            placeholder="id"
+                                            variant="outlined"
+                                            margin="normal"
+                                            type="number"
+                                            size="small"
+                                            fullWidth
+                                            value={id}
+                                            style={{ display: "none" }}
+                                        />
+                                    </Grid>
                                     <Grid item xs={12}>
                                         <button type="submit">Submit</button>
                                     </Grid>
@@ -234,7 +213,8 @@ const FlaggedModal = ({ id, setNavigate }: any) => {
                 </Formik>
             </Box>
         </div>
-    )
-}
+    );
+};
 
-export default FlaggedModal
+
+export default DisableInvoice

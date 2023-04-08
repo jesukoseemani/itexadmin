@@ -73,6 +73,10 @@ import Marketingmgt from '../views/marketing/Marketingmgt';
 import LogDetails from '../views/marketing/LogDetails';
 import Payoutmgt from '../views/payout/Payoutmgt';
 import PayoutDetails from '../views/payout/PayoutDetails';
+import PaymentLink from '../views/payment/PaymentLink';
+import PaymentDetails from '../views/payment/PaymentDetails';
+import MerchantInvoice from '../views/payment/MerchantInvoice';
+import InvoiceDetails from '../views/payment/InvoiceDetails';
 
 export default function AppRoutes() {
 	const dispatch = useDispatch();
@@ -451,6 +455,30 @@ export default function AppRoutes() {
 								exact
 								path='/payout/:id'
 								component={PayoutDetails}
+								AuthUser={loadingState}
+							/>
+							<ProtectedRoute
+								exact
+								path='/paymentlinks'
+								component={PaymentLink}
+								AuthUser={loadingState}
+							/>
+							<ProtectedRoute
+								exact
+								path='/paymentlinks/:id'
+								component={PaymentDetails}
+								AuthUser={loadingState}
+							/>
+							<ProtectedRoute
+								exact
+								path='/merchantinvoice'
+								component={MerchantInvoice}
+								AuthUser={loadingState}
+							/>
+							<ProtectedRoute
+								exact
+								path='/merchantinvoice/:id'
+								component={InvoiceDetails}
 								AuthUser={loadingState}
 							/>
 							<ProtectedRoute

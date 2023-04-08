@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import NavBar from '../../components/navbar/NavBar'
-import { useHistory } from "react-router-dom";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { Dayjs } from "dayjs";
-import { useEffect } from "react";
+import { closeLoader, openLoader } from '../../redux/actions/loader/loaderActions';
+import { openToastAndSetContent } from '../../redux/actions/toast/toastActions';
+import { ColumnPaymentInvoiceModule, PaymentInvoceModuleData } from '../../types/PaymentTypes';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { Dayjs } from 'dayjs';
 import {
     dateNow,
     sevenDaysAgo,
@@ -12,32 +13,25 @@ import {
     startOfYear,
     endOfYear,
 } from "../../util/datefunction";
-import {
-    closeLoader,
-    openLoader,
-} from "../../redux/actions/loader/loaderActions";
-import axios from "axios";
-import { openToastAndSetContent } from "../../redux/actions/toast/toastActions";
-import {
-    ColumnCustomerModule,
-    CustomerModuleData,
-} from "../../types/CustomerTypes";
-import TableHeader from "../../components/TableHeader/TableHeader";
-import { Box } from "@mui/material";
-import PaginationTable from "../../components/paginatedTable/pagination-table";
-import { ColumnBusinessCustomerModule } from "../../types/BusinessModule";
-import styles from "./styles.module.scss";
-import { openModalAndSetContent } from "../../redux/actions/modal/modalActions";
+import axios from 'axios';
+import { Box } from '@mui/material';
+import TableHeader from '../../components/TableHeader/TableHeader';
+import FilterModal from '../../components/filterConfig/FilterModal';
+import PaginationTable from '../../components/paginatedTable/pagination-table';
+import { openModalAndSetContent } from '../../redux/actions/modal/modalActions';
+import DisableInvoice from './DisableInvoice';
+import styles from "./styles.module.scss"
 
-import FilterModal from "../../components/filterConfig/FilterModal";
-import useDownload from "../../interfaces/Download";
-import { ColumnFraudModule, FraudModuleData } from '../../types/FraudTypes';
-import FlaggedModal from './FlaggedModal';
 
-const Fraudmgt = () => {
+
+
+
+const MerchantInvoice = () => {
     const [tableRow, setTableRow] = useState<any[]>();
-    const [fraud, setFraud] = useState<any>();
+    const [paymentInvoice, setPaymentInvoice] = useState<any>();
     const [contentAction, setContentAction] = useState<any>({});
+    const [navigate, setNavigate] = useState(false)
+
     const history = useHistory();
 
     const dispatch = useDispatch();
@@ -57,7 +51,6 @@ const Fraudmgt = () => {
     const [status, setStatus] = useState("");
     const [email, setEmail] = useState("");
     const [merchantId, setMerchantId] = useState("");
-    const [navigate, setNavigate] = useState(false)
 
     const [bearer, setBearer] = useState(false);
 
@@ -100,15 +93,14 @@ const Fraudmgt = () => {
     ];
 
     // fetching all customer list
-    const fetchCustomers = async () => {
+    const fetchPayment = async () => {
         dispatch(openLoader());
         try {
 
-            const { data } = await axios.get<FraudModuleData>(
-                `/v1/fraudmgt/flagged?status=${status}&search=${value}&perpage=${rowsPerPage}&page=${pageNumber}`
+            const { data } = await axios.get<PaymentInvoceModuleData>(`/v1/payment/merchantinvoices?perpage=${rowsPerPage}&page=${pageNumber}`
             );
             console.log(data);
-            setFraud(data);
+            setPaymentInvoice(data);
             dispatch(closeLoader());
             setBearer(false);
             console.log(data, "data");
@@ -131,103 +123,107 @@ const Fraudmgt = () => {
     };
 
     useEffect(() => {
-        fetchCustomers();
+        fetchPayment();
     }, [bearer, value, pageNumber, rowsPerPage]);
 
     useEffect(() => {
-        setPageNumber(fraud?._metadata?.page || 1);
-    }, [fraud]);
+        setPageNumber(paymentInvoice?._metadata?.page || 1);
+    }, [paymentInvoice]);
 
     useEffect(() => {
         Object.values(contentAction).length > 0 && !navigate &&
-            history.push(`/fraudmgt/${contentAction?.id}`);
+            history.push(`/merchantinvoice/${contentAction?.id}`);
     }, [contentAction]);
 
     const dataBusinesses = () => {
-        const tempArr: FraudModuleData[] = [];
-        fraud?.flagged
+        const tempArr: PaymentInvoceModuleData[] = [];
+        paymentInvoice?.invoices
             ?.slice(0)
             .reverse()
-            .forEach((flag: any, index: number) => {
+            .forEach((invoice: any, index: number) => {
                 return tempArr.push({
-                    id: flag?.id,
-                    paymentid: flag?.paymentid,
-                    activity: flag?.activity,
-                    email: flag?.business?.businessemail,
-                    flag: flag?.flag,
-                    identifier: flag?.customer?.identifier,
-                    masked: flag?.masked,
-                    bin: flag?.bin,
-                    last4: flag?.last4,
-                    merchantaccountid: flag?.business?.merchantaccountid,
-                    merchantcode: flag?.business?.merchantcode,
-                    priority: flag?.priority,
-                    tradingname: flag?.business?.tradingname,
-                    date: flag?.createdat,
-                    action: <Box><button style={{
-                        outline: "none",
-                        border: "none",
-                        padding: "10px 20px",
-                        cursor: "pointer",
-                        background: "#219653",
-                        color: "#fff",
-                        width: "max-content"
-                    }}
+                    id: invoice?.id,
+                    amount: `${invoice?.currency} ${invoice?.totalAmount}`,
+                    fullname: `${invoice?.user?.firstname} ${invoice?.user?.lastname}`,
+                    paymentreference: invoice?.paymentreference,
+                    comment: invoice?.comment,
+                    businesslogo: <img src={invoice?.businesslogo} alt={invoice?.businesslogo} width="40px" height={"40px"} />,
+                    email: invoice?.business?.businessemail,
+                    status: invoice?.status,
+                    merchantaccountid: invoice?.business?.merchantaccountid,
+                    tax: invoice?.tax,
+                    discount: invoice?.discount,
+                    tradingname: invoice?.business?.tradingname,
+                    identifier: invoice?.customer?.identifier,
+                    date: invoice?.createdAt,
+                    dueDate: invoice?.dueDate,
+                    invoiceName: invoice?.invoiceName,
+                    action: invoice?.status === "inactive" ? null : <button onClick={() => handleDisable(invoice?.id)}
 
-                        onClick={() => handleFlag(flag?.id)}
-                    >Flag</button></Box>
+                        style={{
+                            outline: "none",
+                            border: "none",
+                            padding: "10px 20px",
+                            cursor: "pointer",
+                            background: "red",
+                            color: "#fff",
+                            width: "max-content"
+                        }}
+
+                    >Disable</button>
+
+
+
+
 
                 });
-
             });
         return tempArr;
     };
 
     useEffect(() => {
         setTableRow(dataBusinesses());
-    }, [fraud?.flagged]);
-
-
-
-
-
-    const handleFlag = (id: any) => {
+    }, [paymentInvoice?.invoices]);
+    const handleDisable = (id: number) => {
         setNavigate(true)
-        setTimeout(() => {
-            setNavigate(false)
 
-        }, 3000);
         dispatch(
             openModalAndSetContent({
                 modalStyles: {
                     padding: 0,
+                    width: 400,
+                    // height: 500,
+                    borderRadius: "20px",
                 },
                 modalContent: (
-                    <Box>
-                        <FlaggedModal id={id} setNavigate={setNavigate} />
-                    </Box>
+                    <div className={styles.modalDiv}>
+                        <DisableInvoice id={id} setNavigate={setNavigate} />
+                    </div>
                 ),
             })
         );
 
+        setInterval(() => {
+            setNavigate(false)
+
+        }, 3000);
     }
 
-
     return (
-        <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
-            <NavBar name="Fraud" />
+        <div>
+            <NavBar name='Merchant Invoice' />
+
 
             <Box width="100%" py={"1rem"} px={"2rem"} >
                 <TableHeader
-                    pageName="Fraud"
-                    data={fraud?.flagged}
-                    dataLength={fraud?._metadata.totalcount}
+                    pageName="Merchant Invoice"
+                    data={paymentInvoice?.invoices}
+                    dataLength={paymentInvoice?._metadata.totalcount}
                     value={value}
                     setValue={setValue}
                     dropdown={dropdown}
                     setDropdown={setDropdown}
                     placeHolder="Search"
-
                     FilterComponent={
                         <FilterModal
                             eventDate={eventDate}
@@ -251,15 +247,15 @@ const Fraudmgt = () => {
 
                     <PaginationTable
                         data={tableRow ? tableRow : []}
-                        columns={ColumnFraudModule ? ColumnFraudModule : []}
+                        columns={ColumnPaymentInvoiceModule ? ColumnPaymentInvoiceModule : []}
                         emptyPlaceHolder={
-                            fraud?._metadata?.totalcount == 0
+                            paymentInvoice?._metadata?.totalcount == 0
                                 ? "You currently do not have any data"
                                 : "Loading..."
                         }
                         value={value}
-                        total={fraud?._metadata.totalcount}
-                        totalPage={fraud?._metadata.pagecount}
+                        total={paymentInvoice?._metadata.totalcount}
+                        totalPage={paymentInvoice?._metadata.pagecount}
                         pageNumber={pageNumber}
                         setPageNumber={setPageNumber}
                         nextPage={nextPage}
@@ -274,9 +270,8 @@ const Fraudmgt = () => {
                 </Box>
 
             </Box>
-
         </div>
     )
 }
 
-export default Fraudmgt
+export default MerchantInvoice

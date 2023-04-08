@@ -1,10 +1,7 @@
-import React from 'react'
-import NavBar from '../../components/navbar/NavBar'
-import { useHistory } from "react-router-dom";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { Dayjs } from "dayjs";
-import { useEffect } from "react";
+import { Dayjs } from 'dayjs';
+import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import {
     dateNow,
     sevenDaysAgo,
@@ -12,31 +9,23 @@ import {
     startOfYear,
     endOfYear,
 } from "../../util/datefunction";
-import {
-    closeLoader,
-    openLoader,
-} from "../../redux/actions/loader/loaderActions";
-import axios from "axios";
-import { openToastAndSetContent } from "../../redux/actions/toast/toastActions";
-import {
-    ColumnCustomerModule,
-    CustomerModuleData,
-} from "../../types/CustomerTypes";
-import TableHeader from "../../components/TableHeader/TableHeader";
-import { Box } from "@mui/material";
-import PaginationTable from "../../components/paginatedTable/pagination-table";
-import { ColumnBusinessCustomerModule } from "../../types/BusinessModule";
-import styles from "./styles.module.scss";
-import { openModalAndSetContent } from "../../redux/actions/modal/modalActions";
+import NavBar from '../../components/navbar/NavBar'
+import { ColumnPayoutModule, PayoutModuleData } from '../../types/PayoutTypes';
+import { closeLoader, openLoader } from '../../redux/actions/loader/loaderActions';
+import axios from 'axios';
+import { openToastAndSetContent } from '../../redux/actions/toast/toastActions';
+import { Box } from '@mui/material';
+import TableHeader from '../../components/TableHeader/TableHeader';
+import FilterModal from '../../components/filterConfig/FilterModal';
+import PaginationTable from '../../components/paginatedTable/pagination-table';
+import { ColumnPaymentModule, PaymentModuleData } from '../../types/PaymentTypes';
+import { openModalAndSetContent } from '../../redux/actions/modal/modalActions';
+import DisableInvoice from './DisableInvoice';
+import styles from "./styles.module.scss"
 
-import FilterModal from "../../components/filterConfig/FilterModal";
-import useDownload from "../../interfaces/Download";
-import { ColumnFraudModule, FraudModuleData } from '../../types/FraudTypes';
-import FlaggedModal from './FlaggedModal';
-
-const Fraudmgt = () => {
+const PaymentLink = () => {
     const [tableRow, setTableRow] = useState<any[]>();
-    const [fraud, setFraud] = useState<any>();
+    const [payment, setPayment] = useState<any>();
     const [contentAction, setContentAction] = useState<any>({});
     const history = useHistory();
 
@@ -58,7 +47,6 @@ const Fraudmgt = () => {
     const [email, setEmail] = useState("");
     const [merchantId, setMerchantId] = useState("");
     const [navigate, setNavigate] = useState(false)
-
     const [bearer, setBearer] = useState(false);
 
     const clearHandler = () => {
@@ -100,15 +88,15 @@ const Fraudmgt = () => {
     ];
 
     // fetching all customer list
-    const fetchCustomers = async () => {
+    const fetchPayment = async () => {
         dispatch(openLoader());
         try {
 
-            const { data } = await axios.get<FraudModuleData>(
-                `/v1/fraudmgt/flagged?status=${status}&search=${value}&perpage=${rowsPerPage}&page=${pageNumber}`
+            const { data } = await axios.get<PaymentModuleData>(
+                `/v1/payment/paymentlinks?status=${status}&search=${value}&perpage=${rowsPerPage}&page=${pageNumber}`
             );
             console.log(data);
-            setFraud(data);
+            setPayment(data);
             dispatch(closeLoader());
             setBearer(false);
             console.log(data, "data");
@@ -131,67 +119,69 @@ const Fraudmgt = () => {
     };
 
     useEffect(() => {
-        fetchCustomers();
+        fetchPayment();
     }, [bearer, value, pageNumber, rowsPerPage]);
 
     useEffect(() => {
-        setPageNumber(fraud?._metadata?.page || 1);
-    }, [fraud]);
+        setPageNumber(payment?._metadata?.page || 1);
+    }, [payment]);
 
     useEffect(() => {
         Object.values(contentAction).length > 0 && !navigate &&
-            history.push(`/fraudmgt/${contentAction?.id}`);
+            history.push(`/paymentlinks/${contentAction?.id}`);
     }, [contentAction]);
 
     const dataBusinesses = () => {
-        const tempArr: FraudModuleData[] = [];
-        fraud?.flagged
+        const tempArr: PaymentModuleData[] = [];
+        payment?.paymentlinks
             ?.slice(0)
             .reverse()
-            .forEach((flag: any, index: number) => {
+            .forEach((pay: any, index: number) => {
                 return tempArr.push({
-                    id: flag?.id,
-                    paymentid: flag?.paymentid,
-                    activity: flag?.activity,
-                    email: flag?.business?.businessemail,
-                    flag: flag?.flag,
-                    identifier: flag?.customer?.identifier,
-                    masked: flag?.masked,
-                    bin: flag?.bin,
-                    last4: flag?.last4,
-                    merchantaccountid: flag?.business?.merchantaccountid,
-                    merchantcode: flag?.business?.merchantcode,
-                    priority: flag?.priority,
-                    tradingname: flag?.business?.tradingname,
-                    date: flag?.createdat,
-                    action: <Box><button style={{
-                        outline: "none",
-                        border: "none",
-                        padding: "10px 20px",
-                        cursor: "pointer",
-                        background: "#219653",
-                        color: "#fff",
-                        width: "max-content"
-                    }}
+                    id: pay?.id,
+                    amount: `${pay?.currency} ${pay?.amount}`,
+                    fullname: `${pay?.user?.firstname} ${pay?.user?.lastname}`,
+                    merchantreference: pay?.merchantreference,
+                    paymentreference: pay?.paymentreference,
+                    linkName: pay?.linkName,
+                    linkType: pay?.linkType,
+                    description: pay?.description,
+                    pageImage: <img src={pay?.pageImage} alt={pay?.pageImage} width="40px" height={"40px"} />,
+                    email: pay?.business?.businessemail,
+                    firstname: pay?.user?.firstname,
+                    status: pay?.status,
+                    merchantaccountid: pay?.business?.merchantaccountid,
+                    donationWebsite: pay?.donationWebsite,
+                    donationContact: pay?.donationContact,
+                    tradingname: pay?.business?.tradingname,
+                    deletedAt: pay?.deletedAt,
+                    isDeleted: pay?.isDeleted ? "True" : "False",
+                    date: pay?.createdAt,
+                    action: pay?.status === "inactive" ? null : <button onClick={() => handleDisable(pay?.id)}
 
-                        onClick={() => handleFlag(flag?.id)}
-                    >Flag</button></Box>
+                        style={{
+                            outline: "none",
+                            border: "none",
+                            padding: "10px 20px",
+                            cursor: "pointer",
+                            background: "red",
+                            color: "#fff",
+                            width: "max-content"
+                        }}
+                    >Disable</button>
+
+
 
                 });
-
             });
         return tempArr;
     };
 
     useEffect(() => {
         setTableRow(dataBusinesses());
-    }, [fraud?.flagged]);
+    }, [payment?.paymentlinks]);
 
-
-
-
-
-    const handleFlag = (id: any) => {
+    const handleDisable = (id: number) => {
         setNavigate(true)
         setTimeout(() => {
             setNavigate(false)
@@ -201,33 +191,31 @@ const Fraudmgt = () => {
             openModalAndSetContent({
                 modalStyles: {
                     padding: 0,
+                    width: 400,
+                    // height: 500,
+                    borderRadius: "20px",
                 },
                 modalContent: (
-                    <Box>
-                        <FlaggedModal id={id} setNavigate={setNavigate} />
-                    </Box>
+                    <div className={styles.modalDiv}>
+                        <DisableInvoice id={id} setNavigate={setNavigate} />
+                    </div>
                 ),
             })
         );
-
     }
-
-
     return (
-        <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
-            <NavBar name="Fraud" />
-
+        <div>
+            <NavBar name='Payment Link' />
             <Box width="100%" py={"1rem"} px={"2rem"} >
                 <TableHeader
-                    pageName="Fraud"
-                    data={fraud?.flagged}
-                    dataLength={fraud?._metadata.totalcount}
+                    pageName="payout"
+                    data={payment?.paymentlinks}
+                    dataLength={payment?._metadata.totalcount}
                     value={value}
                     setValue={setValue}
                     dropdown={dropdown}
                     setDropdown={setDropdown}
                     placeHolder="Search"
-
                     FilterComponent={
                         <FilterModal
                             eventDate={eventDate}
@@ -251,15 +239,15 @@ const Fraudmgt = () => {
 
                     <PaginationTable
                         data={tableRow ? tableRow : []}
-                        columns={ColumnFraudModule ? ColumnFraudModule : []}
+                        columns={ColumnPaymentModule ? ColumnPaymentModule : []}
                         emptyPlaceHolder={
-                            fraud?._metadata?.totalcount == 0
+                            payment?._metadata?.totalcount == 0
                                 ? "You currently do not have any data"
                                 : "Loading..."
                         }
                         value={value}
-                        total={fraud?._metadata.totalcount}
-                        totalPage={fraud?._metadata.pagecount}
+                        total={payment?._metadata.totalcount}
+                        totalPage={payment?._metadata.pagecount}
                         pageNumber={pageNumber}
                         setPageNumber={setPageNumber}
                         nextPage={nextPage}
@@ -274,9 +262,8 @@ const Fraudmgt = () => {
                 </Box>
 
             </Box>
-
         </div>
     )
 }
 
-export default Fraudmgt
+export default PaymentLink

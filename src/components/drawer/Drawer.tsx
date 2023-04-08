@@ -121,23 +121,22 @@ const settlement = [
   },
 ];
 
-// const compliance = [
-// 	{
-// 		id: 'DAC',
-// 		title: 'Compliance',
-// 		route: '/compliance',
-// 		icon: <AssuredWorkloadIcon />,
-// 	},
-// ];
+const PaymentManagement = [
+  {
+    id: 'DBC',
+    title: 'Payment Links',
+    route: '/paymentlinks',
+    icon: <AssuredWorkloadIcon />,
+  },
+  {
+    id: 'MIOS',
+    title: 'Merchant Invoice',
+    route: '/merchantinvoice',
+    icon: <PointOfSaleIcon />,
+  },
+];
 
-// const pointOfSale = [
-// 	{
-// 		id: 'DPOS',
-// 		title: 'POS',
-// 		route: '/pos',
-// 		icon: <PointOfSaleIcon />,
-// 	},
-// ];
+
 
 const RollingReserveManagement = [
   {
@@ -628,6 +627,19 @@ export default function MiniDrawer() {
                 Payout Management
               </h2>
               {PayoutManagement.map(({ route, title, id, icon }) => (
+                <ComponentListItem
+                  key={id}
+                  route={route}
+                  title={title}
+                  id={id}
+                  icon={icon}
+                  open={open}
+                />
+              ))}
+              <h2 style={styledH2} className={styles.sectionTitle}>
+                Payment Management
+              </h2>
+              {PaymentManagement.map(({ route, title, id, icon }) => (
                 <ComponentListItem
                   key={id}
                   route={route}
