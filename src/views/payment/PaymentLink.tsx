@@ -233,9 +233,7 @@ const PaymentLink = () => {
                     }
                 />
 
-                <Box sx={{
-                    overflowX: "auto"
-                }}>
+                <Box>
 
                     <PaginationTable
                         data={tableRow ? tableRow : []}

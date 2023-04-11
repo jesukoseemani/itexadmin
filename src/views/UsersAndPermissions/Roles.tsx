@@ -39,11 +39,11 @@ const useStyles = makeStyles({
 			border: 'none',
 		},
 		'& .MuiOutlinedInput-input.MuiInputBase-input.MuiInputBase-input.MuiOutlinedInput-input':
-			{
-				textAlign: 'center',
-				padding: '8.1px 70px',
-				fontSize: '4px',
-			},
+		{
+			textAlign: 'center',
+			padding: '8.1px 70px',
+			fontSize: '4px',
+		},
 		// '& .MuiSelect-select.MuiInputBase-input.MuiOutlinedInput-input.MuiSelect-select.MuiInputBase-input.MuiOutlinedInput-input.MuiSelect-select.MuiInputBase-input.MuiOutlinedInput-input':
 		// 	{
 		// 		paddingRight: '50px',
@@ -51,11 +51,11 @@ const useStyles = makeStyles({
 	},
 	select: {
 		'& .MuiOutlinedInput-input.MuiInputBase-input.MuiInputBase-input.MuiOutlinedInput-input':
-			{
-				textAlign: 'center',
-				padding: '5px 40px',
-				fontSize: '15px',
-			},
+		{
+			textAlign: 'center',
+			padding: '5px 40px',
+			fontSize: '15px',
+		},
 		'&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
 			outline: 'none',
 		},

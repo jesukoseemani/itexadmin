@@ -327,43 +327,43 @@ const UsersPermission = () => {
 			})
 		);
 	};
-	const deleteHandler = () => {
-		dispatch(
-			openModalAndSetContent({
-				modalStyles: {
-					padding: 0,
-					maxWidth: '653px',
-					height: '254px',
-					width: '100%',
-				},
-				modalContent: (
-					<div className={styles.modalDiv}>
-						<div className={styles.account_wrap}>
-							<h1 className={styles.account_h1}>Remove user</h1>
-						</div>
+	// const deleteHandler = () => {
+	// 	dispatch(
+	// 		openModalAndSetContent({
+	// 			modalStyles: {
+	// 				padding: 0,
+	// 				maxWidth: '653px',
+	// 				height: '254px',
+	// 				width: '100%',
+	// 			},
+	// 			modalContent: (
+	// 				<div className={styles.modalDiv}>
+	// 					<div className={styles.account_wrap}>
+	// 						<h1 className={styles.account_h1}>Remove user</h1>
+	// 					</div>
 
-						<div className={styles.buttonModalwrap}>
-							<p className={styles.removeModal_p}>
-								Are you sure want to remover this user. This user will no longer
-								have access to the platform permissions. Click on ‘Remove’ to
-								remove this user.
-							</p>
+	// 					<div className={styles.buttonModalwrap}>
+	// 						<p className={styles.removeModal_p}>
+	// 							Are you sure want to remover this user. This user will no longer
+	// 							have access to the platform permissions. Click on ‘Remove’ to
+	// 							remove this user.
+	// 						</p>
 
-							<div className={styles.buttonModal}>
-								<button
-									onClick={closeModal}
-									style={{ background: '#E0E0E0', color: '#333333' }}
-									className={styles.removeModal}>
-									Cancel
-								</button>
-								<button className={styles.removeModal}>Remove</button>
-							</div>
-						</div>
-					</div>
-				),
-			})
-		);
-	};
+	// 						<div className={styles.buttonModal}>
+	// 							<button
+	// 								onClick={closeModal}
+	// 								style={{ background: '#E0E0E0', color: '#333333' }}
+	// 								className={styles.removeModal}>
+	// 								Cancel
+	// 							</button>
+	// 							<button className={styles.removeModal}>Remove</button>
+	// 						</div>
+	// 					</div>
+	// 				</div>
+	// 			),
+	// 		})
+	// 	);
+	// };
 
 	const resetHandler = (id: number) => {
 		dispatch(
@@ -565,9 +565,9 @@ const UsersPermission = () => {
 						className={styles.icons}>
 						<Edit />
 					</div>
-					<div onClick={() => deleteHandler()} className={styles.icons}>
+					{/* <div onClick={() => deleteHandler()} className={styles.icons}>
 						<Trash />
-					</div>
+					</div> */}
 					<div
 						onClick={() => changeHandler(id, firstname)}
 						className={styles.icons}>

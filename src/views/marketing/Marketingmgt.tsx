@@ -250,9 +250,7 @@ const Marketingmgt = () => {
                     <button onClick={sendMessage}>Send Message</button>
                 </Box>
 
-                <Box sx={{
-                    overflowX: "auto"
-                }}>
+                <Box>
 
                     <PaginationTable
                         data={tableRow ? tableRow : []}
