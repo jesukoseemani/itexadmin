@@ -278,6 +278,25 @@ const UtilityManagement = [
   },
 ];
 
+const wealthManagement = [
+  {
+    id: 'DFMW',
+    title: 'Summary',
+    route: '/summary',
+    icon: <PriceCheckIcon />,
+  },
+
+  {
+    id: 'WEBA',
+    title: 'Balances',
+    route: '/wealth/balance',
+    icon: <AssessmentIcon />,
+  },
+
+
+];
+
+
 
 
 
@@ -673,6 +692,19 @@ export default function MiniDrawer() {
                 Users &amp; Permissions
               </h2>
               {usersAndPermissions.map(({ route, title, id, icon }) => (
+                <ComponentListItem
+                  key={id}
+                  route={route}
+                  title={title}
+                  id={id}
+                  icon={icon}
+                  open={open}
+                />
+              ))}
+              <h2 style={styledH2} className={styles.sectionTitle}>
+                Wealth Management
+              </h2>
+              {wealthManagement.map(({ route, title, id, icon }) => (
                 <ComponentListItem
                   key={id}
                   route={route}

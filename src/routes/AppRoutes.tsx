@@ -79,6 +79,8 @@ import MerchantInvoice from '../views/payment/MerchantInvoice';
 import InvoiceDetails from '../views/payment/InvoiceDetails';
 import CountryList from '../views/utility/CountryList';
 import CategoryList from '../views/utility/CategoryList';
+import WealthTab from '../views/wealth/WealthTab';
+import WealthBalance from '../views/wealth/WealthBalance';
 
 export default function AppRoutes() {
 	const dispatch = useDispatch();
@@ -547,6 +549,18 @@ export default function AppRoutes() {
 								exact
 								path='/categorylist'
 								component={CategoryList}
+								AuthUser={loadingState}
+							/>
+							<ProtectedRoute
+								exact
+								path='/summary'
+								component={WealthTab}
+								AuthUser={loadingState}
+							/>
+							<ProtectedRoute
+								exact
+								path='/wealth/balance'
+								component={WealthBalance}
 								AuthUser={loadingState}
 							/>
 						</>
