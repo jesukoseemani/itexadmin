@@ -77,6 +77,8 @@ import PaymentLink from '../views/payment/PaymentLink';
 import PaymentDetails from '../views/payment/PaymentDetails';
 import MerchantInvoice from '../views/payment/MerchantInvoice';
 import InvoiceDetails from '../views/payment/InvoiceDetails';
+import CountryList from '../views/utility/CountryList';
+import CategoryList from '../views/utility/CategoryList';
 
 export default function AppRoutes() {
 	const dispatch = useDispatch();
@@ -533,6 +535,18 @@ export default function AppRoutes() {
 								exact
 								path='/account'
 								component={Account}
+								AuthUser={loadingState}
+							/>
+							<ProtectedRoute
+								exact
+								path='/countrylist'
+								component={CountryList}
+								AuthUser={loadingState}
+							/>
+							<ProtectedRoute
+								exact
+								path='/categorylist'
+								component={CategoryList}
 								AuthUser={loadingState}
 							/>
 						</>

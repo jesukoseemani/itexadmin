@@ -19,7 +19,7 @@ const PaymentTransactions = ({ paymentDetails }: any) => {
     const [rows, setRows] = useState<any[]>([]);
     const [totalRows, setTotalRows] = useState<number>(0);
     const [pageNumber, setPageNumber] = useState<number>(1);
-    const [rowsPerPage, setRowsPerPage] = useState<string | number | undefined>(10);
+    const [rowsPerPage, setRowsPerPage] = useState<string | number | undefined>(10)
     const [dataValue, setDataValue] = useState<number | string>(0);
 
     const [open, setOpen] = useState<boolean>(false);
@@ -171,17 +171,7 @@ const PaymentTransactions = ({ paymentDetails }: any) => {
             <Box mt={5} width="100%" py={"1rem"} px={"2rem"} sx={{
                 overflowX: "auto"
             }} >
-                {/* <TableHeader
-                    pageName=""
-                    data={paymentDetails?.transactions}
-                    dataLength={paymentDetails?._metadata.totalcount}
-                    value={value}
-                    setValue={setValue}
-                    dropdown={dropdown}
-                    setDropdown={setDropdown}
-                    placeHolder="Search"
 
-                /> */}
 
 
                 <h2>Transactions</h2>

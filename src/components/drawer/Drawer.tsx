@@ -262,6 +262,25 @@ const usersAndPermissions = [
   },
 ];
 
+const UtilityManagement = [
+  {
+    id: "CCTM",
+    title: "Countries",
+    route: "/countrylist",
+    icon: <AssuredWorkloadIcon />,
+  },
+
+  {
+    id: "CCCL",
+    title: "Categories",
+    route: "/categorylist",
+    icon: <AccountBalanceWalletIcon />,
+  },
+];
+
+
+
+
 const drawerWidth = 269;
 
 const openedMixin = (theme: Theme): CSSObject => ({
@@ -654,6 +673,19 @@ export default function MiniDrawer() {
                 Users &amp; Permissions
               </h2>
               {usersAndPermissions.map(({ route, title, id, icon }) => (
+                <ComponentListItem
+                  key={id}
+                  route={route}
+                  title={title}
+                  id={id}
+                  icon={icon}
+                  open={open}
+                />
+              ))}
+              <h2 style={styledH2} className={styles.sectionTitle}>
+                Utilities
+              </h2>
+              {UtilityManagement.map(({ route, title, id, icon }) => (
                 <ComponentListItem
                   key={id}
                   route={route}
