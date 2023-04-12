@@ -21,10 +21,10 @@ const useStyles = makeStyles({
 			border: 'none',
 		},
 		'& .MuiOutlinedInput-input.MuiInputBase-input.MuiInputBase-input.MuiOutlinedInput-input':
-			{
-				textAlign: 'center',
-				padding: '8.1px 14px',
-			},
+		{
+			textAlign: 'center',
+			padding: '8.1px 14px',
+		},
 	},
 	select: {
 		'& .MuiOutlinedInput-root': {
@@ -63,11 +63,13 @@ function Resolve({
 	const validate = Yup.object({
 		response: Yup.string().required('Required'),
 		status: Yup.string().required('Required'),
+		otp: Yup.string().required('Required'),
 	});
 
 	const INITIAL_VALUES = {
 		response: '',
 		status: '',
+		otp: ''
 	};
 
 	const contentStatus = [
@@ -93,7 +95,7 @@ function Resolve({
 						dispatch(openLoader());
 
 						axios
-							.post(`/chargeback/${id}/resolve`, values)
+							.post(`/v1/chargeback/${id}/resolve`, values)
 							.then((res: any) => {
 								dispatch(closeLoader());
 								dispatch(closeModal());
@@ -160,6 +162,29 @@ function Resolve({
 								className={classes.select}
 								defaultValue={contentStatus && contentStatus[0]}
 								// fullWidth
+								style={{
+									marginTop: '8px',
+									marginBottom: '22px',
+								}}
+							/>
+
+							<InputLabel>
+								<span className={styles.span}>OTP</span>
+							</InputLabel>
+							<Field
+								as={TextField}
+								helperText={
+									<ErrorMessage name='otp'>
+										{(msg) => <span style={{ color: 'red' }}>{msg}</span>}
+									</ErrorMessage>
+								}
+								name='otp'
+								variant='outlined'
+								margin='normal'
+								type='text'
+								size='small'
+								fullWidth
+								className={classes.select}
 								style={{
 									marginTop: '8px',
 									marginBottom: '22px',

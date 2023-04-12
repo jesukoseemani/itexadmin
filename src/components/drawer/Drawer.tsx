@@ -121,23 +121,22 @@ const settlement = [
   },
 ];
 
-// const compliance = [
-// 	{
-// 		id: 'DAC',
-// 		title: 'Compliance',
-// 		route: '/compliance',
-// 		icon: <AssuredWorkloadIcon />,
-// 	},
-// ];
+const PaymentManagement = [
+  {
+    id: 'DBC',
+    title: 'Payment Links',
+    route: '/paymentlinks',
+    icon: <AssuredWorkloadIcon />,
+  },
+  {
+    id: 'MIOS',
+    title: 'Merchant Invoice',
+    route: '/merchantinvoice',
+    icon: <PointOfSaleIcon />,
+  },
+];
 
-// const pointOfSale = [
-// 	{
-// 		id: 'DPOS',
-// 		title: 'POS',
-// 		route: '/pos',
-// 		icon: <PointOfSaleIcon />,
-// 	},
-// ];
+
 
 const RollingReserveManagement = [
   {
@@ -158,13 +157,13 @@ const ComplianceManagement = [
     id: "CFF",
     title: "Fees",
     route: "/compliance/fees",
-    icon: <AssuredWorkloadIcon />,
+    icon: <DonutSmallIcon />,
   },
   {
     id: "CLM",
     title: "Limit",
     route: "/compliance/limit",
-    icon: <AssuredWorkloadIcon />,
+    icon: <PointOfSaleIcon />,
   },
   {
     id: "CSM",
@@ -176,7 +175,7 @@ const ComplianceManagement = [
     id: "CCM",
     title: "Config",
     route: "/compliance/config",
-    icon: <AssuredWorkloadIcon />,
+    icon: <AccountBalanceWalletIcon />,
   },
 ];
 
@@ -189,49 +188,23 @@ const customerManagement = [
   },
 ];
 
-// const fraudRiskManagement = [
-// 	{
-// 		id: 'DFMS',
-// 		title: 'Sales',
-// 		route: '/fraudmgt_sales',
-// 		icon: <PriceCheckIcon />,
-// 	},
+const fraudRiskManagement = [
+  {
+    id: 'DFMS',
+    title: 'Flaged',
+    route: '/fraudmgt',
+    icon: <PriceCheckIcon />,
+  },
 
-// 	{
-// 		id: 'DFCB',
-// 		title: 'Chargeback Breakdown',
-// 		route: '/fraudmgt/chargeback',
-// 		icon: <MapsHomeWorkIcon />,
-// 	},
+  {
+    id: 'DFRA',
+    title: 'Hotlist',
+    route: '/hotlist',
+    icon: <AssessmentIcon />,
+  },
 
-// 	{
-// 		id: 'DFCF',
-// 		title: 'CB & Fraud Summary',
-// 		route: '/fraudmgt/fraud_summary',
-// 		icon: <SummarizeIcon />,
-// 	},
 
-// 	{
-// 		id: 'DFCR',
-// 		title: 'CB & Fraud Ratio',
-// 		route: '/fraudmgt/fraud_ratio',
-// 		icon: <AspectRatioIcon />,
-// 	},
-
-// 	{
-// 		id: 'DFRA',
-// 		title: 'Assessment Fee',
-// 		route: '/fraudmgt/fraud_assessment_fee',
-// 		icon: <AssessmentIcon />,
-// 	},
-
-// 	{
-// 		id: 'DFRAT',
-// 		title: 'Audit Trail',
-// 		route: '/fraudmgt/audittrail',
-// 		icon: <ReceiptLongIcon />,
-// 	},
-// ];
+];
 
 const chargebackManagement = [
   {
@@ -241,12 +214,28 @@ const chargebackManagement = [
     icon: <WarehouseIcon />,
   },
 ];
+const MarketingManagement = [
+  {
+    id: "MCA",
+    title: "Logs",
+    route: "/marketingmgt",
+    icon: <PolicyIcon />,
+  },
+];
 const refundManagement = [
   {
     id: "DCR",
     title: "Refunds",
     route: "/refunds",
     icon: <ChangeCircleIcon />,
+  },
+];
+const PayoutManagement = [
+  {
+    id: "PRM",
+    title: "Payout",
+    route: "/payout",
+    icon: <AccountBalanceWalletIcon />,
   },
 ];
 
@@ -272,6 +261,44 @@ const usersAndPermissions = [
     icon: <AssignmentIndIcon />,
   },
 ];
+
+const UtilityManagement = [
+  {
+    id: "CCTM",
+    title: "Countries",
+    route: "/countrylist",
+    icon: <AssuredWorkloadIcon />,
+  },
+
+  {
+    id: "CCCL",
+    title: "Categories",
+    route: "/categorylist",
+    icon: <AccountBalanceWalletIcon />,
+  },
+];
+
+const wealthManagement = [
+  {
+    id: 'DFMW',
+    title: 'Summary',
+    route: '/summary',
+    icon: <PriceCheckIcon />,
+  },
+
+  {
+    id: 'WEBA',
+    title: 'Balances',
+    route: '/wealth/balance',
+    icon: <AssessmentIcon />,
+  },
+
+
+];
+
+
+
+
 
 const drawerWidth = 269;
 
@@ -497,19 +524,7 @@ export default function MiniDrawer() {
 								/>
 							))} */}
 
-              {/* <h2 style={styledH2} className={styles.sectionTitle}>
-								Wallet Management
-							</h2> */}
-              {/* {walletManagement.map(({ route, title, id, icon }) => (
-								<ComponentListItem
-									key={id}
-									route={route}
-									title={title}
-									id={id}
-									icon={icon}
-									open={open}
-								/>
-							))} */}
+
 
               <h2 style={styledH2} className={styles.sectionTitle}>
                 Customer Management
@@ -620,11 +635,89 @@ export default function MiniDrawer() {
                   open={open}
                 />
               ))}
+              <h2 style={styledH2} className={styles.sectionTitle}>
+                Fraud Management
+              </h2>
+              {fraudRiskManagement.map(({ route, title, id, icon }) => (
+                <ComponentListItem
+                  key={id}
+                  route={route}
+                  title={title}
+                  id={id}
+                  icon={icon}
+                  open={open}
+                />
+              ))}
+              <h2 style={styledH2} className={styles.sectionTitle}>
+                Marketing Management
+              </h2>
+              {MarketingManagement.map(({ route, title, id, icon }) => (
+                <ComponentListItem
+                  key={id}
+                  route={route}
+                  title={title}
+                  id={id}
+                  icon={icon}
+                  open={open}
+                />
+              ))}
+              <h2 style={styledH2} className={styles.sectionTitle}>
+                Payout Management
+              </h2>
+              {PayoutManagement.map(({ route, title, id, icon }) => (
+                <ComponentListItem
+                  key={id}
+                  route={route}
+                  title={title}
+                  id={id}
+                  icon={icon}
+                  open={open}
+                />
+              ))}
+              <h2 style={styledH2} className={styles.sectionTitle}>
+                Payment Management
+              </h2>
+              {PaymentManagement.map(({ route, title, id, icon }) => (
+                <ComponentListItem
+                  key={id}
+                  route={route}
+                  title={title}
+                  id={id}
+                  icon={icon}
+                  open={open}
+                />
+              ))}
 
               <h2 style={styledH2} className={styles.sectionTitle}>
                 Users &amp; Permissions
               </h2>
               {usersAndPermissions.map(({ route, title, id, icon }) => (
+                <ComponentListItem
+                  key={id}
+                  route={route}
+                  title={title}
+                  id={id}
+                  icon={icon}
+                  open={open}
+                />
+              ))}
+              <h2 style={styledH2} className={styles.sectionTitle}>
+                Wealth Management
+              </h2>
+              {wealthManagement.map(({ route, title, id, icon }) => (
+                <ComponentListItem
+                  key={id}
+                  route={route}
+                  title={title}
+                  id={id}
+                  icon={icon}
+                  open={open}
+                />
+              ))}
+              <h2 style={styledH2} className={styles.sectionTitle}>
+                Utilities
+              </h2>
+              {UtilityManagement.map(({ route, title, id, icon }) => (
                 <ComponentListItem
                   key={id}
                   route={route}

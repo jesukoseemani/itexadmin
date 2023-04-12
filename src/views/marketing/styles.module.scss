@@ -1,0 +1,201 @@
+.m1 {
+    margin: 1rem 2rem 1rem 2rem;
+}
+
+.mt1 {
+    margin-top: 1rem;
+}
+
+
+
+.headerAmount {
+    font-size: 21px;
+    line-height: 28px;
+    color: #333333;
+}
+
+.header {
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 16px;
+    color: #828282;
+}
+
+.tableTitle {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 16px;
+}
+
+.gridHeader {
+    margin: 3rem 0rem 0.5rem 0rem;
+}
+
+.detail {
+    font-size: 13px;
+    line-height: 16px;
+    color: #333333;
+    margin-top: 0.4rem;
+}
+
+.settlementDetails {
+    margin: 1rem;
+}
+
+.headerFlex {
+    margin: 1rem;
+    display: flex;
+    flex-direction: row;
+}
+
+.headerFlexRight {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.buttongreen {
+    width: 140px;
+    height: 32px;
+    background: #27ae60;
+    border-radius: 4px;
+    border: none;
+    margin-left: 1rem;
+    font-size: 12px;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.buttonflag {
+    width: 140px;
+    height: 32px;
+    background: #eb5757;
+    border-radius: 4px;
+    border: none;
+    font-size: 12px;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+@media only screen and (max-width: 1025px) {
+    .tableHeader {
+        display: block;
+    }
+
+    .headerFlex {
+        flex-direction: column;
+    }
+
+    .headerFlexLeft {
+        display: inline;
+    }
+
+    .headerFlexRight {
+        display: block;
+    }
+
+    .tableHeaderRight {
+        width: 100%;
+        text-align: left;
+        margin: 1rem;
+    }
+}
+
+.buttonSpan {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.blackist {
+    padding: 10px 0px;
+    margin-top: 1rem;
+    width: 96%;
+    display: flex;
+    justify-content: flex-end;
+
+    button {
+        padding: 10px;
+        border: none;
+        outline: none;
+        background-color: #27ae60;
+        color: #fff;
+        width: 120px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+}
+
+.blacklist__box {
+    width: 100%;
+    padding: 0 !important;
+    max-height: 99vh !important;
+    overflow-y: auto;
+
+    .headerTitle {
+        border-bottom: 1px solid #ddd;
+        padding: 10px 25px;
+
+        h2 {
+            font-size: 16px;
+            color: #333;
+            font-family: roboto;
+            font-weight: 500;
+        }
+    }
+
+    .blacklistmodalBody {
+        padding: 10px 25px;
+        margin-top: 1.5rem;
+
+        .otpBox {
+            padding: 10px 0px;
+            display: flex;
+            gap: 5px;
+        }
+
+        .otpInput {
+            width: 58px !important;
+            height: 40px !important;
+            font-size: 16px !important;
+            border-radius: 5px !important;
+            outline: none !important;
+            border: 1px solid #ddd;
+        }
+
+        button {
+            border: none;
+            outline: none;
+            height: 44px;
+            border-radius: 20px;
+            width: 100%;
+            background: #27ae60;
+            margin: 20px 0;
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+
+            &:hover {
+                background-color: lighten(#27ae60, 5%);
+            }
+        }
+    }
+
+}
+
+.editor {
+    color: #333;
+}
+
+.back {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    flex-wrap: wrap;
+    font-size: 12px;
+    line-height: 14px;
+    color: #4f4f4f;
+    cursor: pointer !important;
+    padding: 10px 0;
+}

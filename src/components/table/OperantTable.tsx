@@ -112,7 +112,7 @@ export default function OperantTable({
 						</TableRow>
 					</TableHead>
 					<TableBody>
-						{rows.map((row, index) => {
+						{rows?.map((row, index) => {
 							return (
 								<TableRow hover role='checkbox' tabIndex={-1} key={index}>
 									{columns.map((column, secondIndex) => {
@@ -138,14 +138,15 @@ export default function OperantTable({
 					</TableBody>
 				</Table>
 			</TableContainer>
-			<TablePagination
+			{console.log(rows, "rowsss")}
+			{page > 0 && <TablePagination
 				rowsPerPageOptions={rowsPerPageOptions}
-				count={totalRows}
+				count={totalRows && totalRows}
 				rowsPerPage={rowsPerPage}
 				page={page}
 				onPageChange={handleChangePage}
 				onRowsPerPageChange={handleChangeRowsPerPage}
-			/>
+			/>}
 		</Paper>
 	);
 }

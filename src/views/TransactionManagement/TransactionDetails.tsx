@@ -182,7 +182,7 @@ const TransactionDetails = () => {
 				<div>
 					<Box sx={{ flexGrow: 1, margin: '0 1rem 1rem 1rem' }}>
 						<Grid container spacing={1}>
-							<Grid item md={2} xs={6} lg={4}>
+							<Grid item md={2} xs={6} lg={2}>
 								<p className={styles.header}>Date / Time</p>
 								<p className={styles.detail}>
 									<strong>Time In:</strong> {apiRes?.transaction.timein} <br />
@@ -202,13 +202,13 @@ const TransactionDetails = () => {
 								<p className={styles.detail}>{apiRes?.transaction?.cardtype}</p>
 							</Grid>
 							<hr className={styles.dividerClass} />
-							{/* <Grid item md={2} xs={6} lg={2}>
+							<Grid item md={2} xs={6} lg={2}>
 								<p className={styles.header}>Card number</p>
 								<p className={styles.detail}>
 									{apiRes?.transaction?.source?.customer?.card?.number}
 								</p>
-							</Grid> */}
-							{/* <Grid item md={2} xs={6} lg={2}>
+							</Grid>
+							<Grid item md={2} xs={6} lg={2}>
 								<span className={styles.blacklist}>
 									<button
 										className={styles.button_mark_button}
@@ -218,7 +218,7 @@ const TransactionDetails = () => {
 										Log chargeback
 									</button>
 								</span>
-							</Grid> */}
+							</Grid> *
 						</Grid>
 					</Box>
 				</div>

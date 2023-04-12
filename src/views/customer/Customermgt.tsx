@@ -57,6 +57,7 @@ const Customermgt = () => {
   const [merchantId, setMerchantId] = useState("");
 
   const [bearer, setBearer] = useState(false);
+  const [navigate, setNavigate] = useState(false)
 
   const clearHandler = () => {
     setEventDate("");
@@ -134,7 +135,7 @@ const Customermgt = () => {
   }, [customers]);
 
   useEffect(() => {
-    Object.values(contentAction).length > 0 &&
+    Object.values(contentAction).length > 0 && !navigate &&
       history.push(`/customer/${contentAction?.id}`);
   }, [contentAction]);
 
@@ -183,6 +184,11 @@ const Customermgt = () => {
 
   // showBlacklistForm
   const showBlacklistForm = (cust: any) => {
+    setNavigate(true)
+    setTimeout(() => {
+      setNavigate(false)
+
+    }, 3000);
     dispatch(
       openModalAndSetContent({
         modalStyles: {
@@ -193,11 +199,13 @@ const Customermgt = () => {
         },
         modalContent: (
           <div className={styles.modalDiv}>
-            <BlacklistCustomer custId={cust} />
+            <BlacklistCustomer custId={cust} setNavigate={setNavigate} />
           </div>
         ),
       })
     );
+
+
   };
 
   return (
@@ -240,7 +248,7 @@ const Customermgt = () => {
 
           <PaginationTable
             data={tableRow ? tableRow : []}
-            columns={ColumnBusinessCustomerModule ? ColumnCustomerModule : []}
+            columns={ColumnCustomerModule ? ColumnCustomerModule : []}
             emptyPlaceHolder={
               customers?._metadata?.totalcount == 0
                 ? "You currently do not have any data"

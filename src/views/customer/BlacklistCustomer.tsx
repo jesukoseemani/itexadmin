@@ -21,7 +21,7 @@ interface Props {
   message: string;
 }
 
-const BlacklistCustomer = ({ custId }: any) => {
+const BlacklistCustomer = ({ custId, setNavigate }: any) => {
   const dispatch = useDispatch()
   const [otp, setOtp] = useState("");
   const auth = useSelector((state) => state?.authPayReducer?.auth);
@@ -61,6 +61,7 @@ const BlacklistCustomer = ({ custId }: any) => {
                 })
               );
               dispatch(closeModal());
+              setNavigate(false)
 
             } else {
               dispatch(
@@ -73,6 +74,7 @@ const BlacklistCustomer = ({ custId }: any) => {
               );
             }
             console.log(values, "values")
+            setNavigate(false)
           }}
         >
 

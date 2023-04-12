@@ -28,6 +28,7 @@ interface FilterModalProps {
     setValue: React.Dispatch<React.SetStateAction<any>>;
     selective?: any;
     selectHelper?: boolean;
+    type?: string;
   }[];
   setBearer?: React.Dispatch<React.SetStateAction<boolean>>;
   clearHandler?: () => void;
@@ -182,7 +183,7 @@ const FilterModal = ({
           }}
         >
           {filteredArray?.map(
-            ({ name, value, selective, setValue, selectHelper }, i) => (
+            ({ name, value, selective, setValue, selectHelper, type }, i) => (
               <div
                 key={i}
                 style={{
@@ -190,42 +191,56 @@ const FilterModal = ({
                 }}
               >
                 {!selective || selective?.length <= 0 ? (
-                  <TextField
-                    name={name}
-                    variant="outlined"
-                    margin="normal"
-                    type="text"
-                    size="small"
-                    value={value}
-                    onChange={(e: any) => setValue(e.target.value)}
-                    fullWidth
-                  />
-                ) : (
-                  <div className={styles.select}>
-                    <select
+                  type === "text" ?
+                    <TextField
+                      name={name}
+                      variant="outlined"
+                      margin="normal"
+                      type="text"
+                      size="small"
+                      value={value}
                       onChange={(e: any) => setValue(e.target.value)}
-                      className={styles.select_text}
-                      required
-                    >
-                      <option key={i} value="">
-                        **Select**
-                      </option>
-                      {selective?.map(
-                        (
-                          { name, value }: { name: any; value: any },
-                          i: any
-                        ) => (
-                          <option key={i} value={selectHelper ? name : value}>
-                            {name}
-                          </option>
-                        )
-                      )}
-                    </select>
-                    <span className={styles.select_highlight}></span>
-                    <span className={styles.select_bar}></span>
-                    <label className={styles.select_label}>{name}</label>
-                  </div>
-                )}
+                      fullWidth
+                    />
+
+                    :
+                    <TextField
+                      name={name}
+                      variant="outlined"
+                      margin="normal"
+                      type="number"
+                      size="small"
+                      value={value}
+                      onChange={(e: any) => setValue(e.target.value)}
+                      fullWidth
+                    />
+                ) :
+                  (
+                    <div className={styles.select}>
+                      <select
+                        onChange={(e: any) => setValue(e.target.value)}
+                        className={styles.select_text}
+                        required
+                      >
+                        <option key={i} value="">
+                          **Select**
+                        </option>
+                        {selective?.map(
+                          (
+                            { name, value }: { name: any; value: any },
+                            i: any
+                          ) => (
+                            <option key={i} value={selectHelper ? name : value}>
+                              {name}
+                            </option>
+                          )
+                        )}
+                      </select>
+                      <span className={styles.select_highlight}></span>
+                      <span className={styles.select_bar}></span>
+                      <label className={styles.select_label}>{name}</label>
+                    </div>
+                  )}
               </div>
             )
           )}

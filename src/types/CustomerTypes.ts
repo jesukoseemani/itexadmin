@@ -1,4 +1,3 @@
-import React, { ReactNode } from 'react';
 
 export interface CustomerModuleData {
 	id: string;

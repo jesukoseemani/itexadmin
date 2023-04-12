@@ -24,13 +24,6 @@ import Reconciliations from '../views/Settlement/Reconciliations';
 import AllCompliance from '../views/Compliance/AllCompliance';
 import Legal from '../views/Legal/Legal';
 import POS from '../views/PointOfSale/POS';
-import AssessmentFee from '../views/FraudRiskManagement/AssessmentFee';
-import CBFraudRatio from '../views/FraudRiskManagement/CBFraudRatio';
-import CBFraudSummary from '../views/FraudRiskManagement/CBFraudSummary';
-import ChargeBack from '../views/FraudRiskManagement/Chargeback';
-import ChargebackDetails from '../views/FraudRiskManagement/ChargebackDetails';
-import Sales from '../views/FraudRiskManagement/Sales';
-import FraudMgtAuditTrail from '../views/FraudRiskManagement/AuditTrail';
 import AllChargebacks from '../views/ChargebackManagement/AllChargebacks';
 import Refunds from '../views/ChargebackManagement/Refunds';
 import Roles from '../views/UsersAndPermissions/Roles';
@@ -59,7 +52,6 @@ import { logOut } from '../redux/actions/auth/authActions';
 import { saveLoading } from '../redux/actions/loadingState/loadingStateActions';
 import Bank from '../views/Bank/Bank';
 import BankDetails from '../components/bankDetails/BankDetails';
-import SalesTab from '../views/FraudRiskManagement/SalesTab/SalesTab';
 import ResetCompletePassword from '../components/accountSetUp/ResetCompletePassword';
 import Modules from '../views/UsersAndPermissions/Modules';
 import BusinessTab from '../components/businessDetails/BusinessTab';
@@ -74,6 +66,21 @@ import LimitCompliance from '../views/Compliance/LimitCompliance';
 import ScheduleCompliance from '../views/Compliance/ScheduleCompliance';
 import ConfigCompliance from '../views/Compliance/ConfigCompliance';
 import DueSettlements from '../views/Settlement/DueSettlement';
+import Fraudmgt from '../views/FraudRiskManagement/Fraudmgt';
+import Hotlist from '../views/FraudRiskManagement/Hotlist';
+import FraudDetails from '../views/FraudRiskManagement/FraudDetails';
+import Marketingmgt from '../views/marketing/Marketingmgt';
+import LogDetails from '../views/marketing/LogDetails';
+import Payoutmgt from '../views/payout/Payoutmgt';
+import PayoutDetails from '../views/payout/PayoutDetails';
+import PaymentLink from '../views/payment/PaymentLink';
+import PaymentDetails from '../views/payment/PaymentDetails';
+import MerchantInvoice from '../views/payment/MerchantInvoice';
+import InvoiceDetails from '../views/payment/InvoiceDetails';
+import CountryList from '../views/utility/CountryList';
+import CategoryList from '../views/utility/CategoryList';
+import WealthTab from '../views/wealth/WealthTab';
+import WealthBalance from '../views/wealth/WealthBalance';
 
 export default function AppRoutes() {
 	const dispatch = useDispatch();
@@ -389,44 +396,21 @@ export default function AppRoutes() {
 
 							<ProtectedRoute
 								exact
-								path='/fraudmgt_sales'
-								component={SalesTab}
+								path='/fraudmgt'
+								component={Fraudmgt}
 								AuthUser={loadingState}
 							/>
 							<ProtectedRoute
 								exact
-								path='/fraudmgt/chargeback'
-								component={ChargeBack}
+								path='/fraudmgt/:id'
+								component={FraudDetails}
 								AuthUser={loadingState}
 							/>
+
 							<ProtectedRoute
 								exact
-								path='/fraudmgt/chargeback/:id'
-								component={ChargebackDetails}
-								AuthUser={loadingState}
-							/>
-							<ProtectedRoute
-								exact
-								path='/fraudmgt/fraud_summary'
-								component={CBFraudSummary}
-								AuthUser={loadingState}
-							/>
-							<ProtectedRoute
-								exact
-								path='/fraudmgt/fraud_ratio'
-								component={CBFraudRatio}
-								AuthUser={loadingState}
-							/>
-							<ProtectedRoute
-								exact
-								path='/fraudmgt/fraud_assessment_fee'
-								component={AssessmentFee}
-								AuthUser={loadingState}
-							/>
-							<ProtectedRoute
-								exact
-								path='/fraudmgt/audittrail'
-								component={FraudMgtAuditTrail}
+								path='/hotlist'
+								component={Hotlist}
 								AuthUser={loadingState}
 							/>
 							<ProtectedRoute
@@ -451,6 +435,54 @@ export default function AppRoutes() {
 								exact
 								path='/chargebackmgt/upload'
 								component={UploadChargeback}
+								AuthUser={loadingState}
+							/>
+							<ProtectedRoute
+								exact
+								path='/marketingmgt'
+								component={Marketingmgt}
+								AuthUser={loadingState}
+							/>
+							<ProtectedRoute
+								exact
+								path='/logs/:id'
+								component={LogDetails}
+								AuthUser={loadingState}
+							/>
+							<ProtectedRoute
+								exact
+								path='/payout'
+								component={Payoutmgt}
+								AuthUser={loadingState}
+							/>
+							<ProtectedRoute
+								exact
+								path='/payout/:id'
+								component={PayoutDetails}
+								AuthUser={loadingState}
+							/>
+							<ProtectedRoute
+								exact
+								path='/paymentlinks'
+								component={PaymentLink}
+								AuthUser={loadingState}
+							/>
+							<ProtectedRoute
+								exact
+								path='/paymentlinks/:id'
+								component={PaymentDetails}
+								AuthUser={loadingState}
+							/>
+							<ProtectedRoute
+								exact
+								path='/merchantinvoice'
+								component={MerchantInvoice}
+								AuthUser={loadingState}
+							/>
+							<ProtectedRoute
+								exact
+								path='/merchantinvoice/:id'
+								component={InvoiceDetails}
 								AuthUser={loadingState}
 							/>
 							<ProtectedRoute
@@ -505,6 +537,30 @@ export default function AppRoutes() {
 								exact
 								path='/account'
 								component={Account}
+								AuthUser={loadingState}
+							/>
+							<ProtectedRoute
+								exact
+								path='/countrylist'
+								component={CountryList}
+								AuthUser={loadingState}
+							/>
+							<ProtectedRoute
+								exact
+								path='/categorylist'
+								component={CategoryList}
+								AuthUser={loadingState}
+							/>
+							<ProtectedRoute
+								exact
+								path='/summary'
+								component={WealthTab}
+								AuthUser={loadingState}
+							/>
+							<ProtectedRoute
+								exact
+								path='/wealth/balance'
+								component={WealthBalance}
 								AuthUser={loadingState}
 							/>
 						</>

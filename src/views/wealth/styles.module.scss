@@ -1,0 +1,52 @@
+.box__wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-flow: row wrap;
+
+
+    .box {
+        border: 1px solid #eee;
+        width: 270px;
+        margin: 10px;
+
+        h2 {
+            display: flex;
+            justify-content: space-between;
+            padding-inline: 20px;
+            align-items: center;
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 30px;
+
+            p {
+                font-size: 14px;
+                font-weight: 400;
+            }
+        }
+    }
+
+}
+
+.searchBox {
+    width: 100%;
+
+    input {
+        width: 100%;
+        padding: 10px;
+        height: 40px;
+
+    }
+
+    button {
+        background: #27ae60;
+        border: none;
+        outline: none;
+        width: 100%;
+        padding: 10px;
+        height: 40px;
+        color: #fff;
+
+        font-size: 16px;
+    }
+}

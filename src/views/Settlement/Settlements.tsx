@@ -222,8 +222,8 @@ const Settlements = () => {
   const [email, setEmail] = useState("");
   const [event, setEvent] = useState("");
   const [reset, setReset] = useState<boolean>(false);
-  const [settlementId, setSettlementId] = useState("");
-  const [merchantId, setMerchantId] = useState("");
+  const [settlementId, setSettlementId] = useState<string | null>(null);
+  const [merchantId, setMerchantId] = useState<number | null>(null);
 
   //PAGINATION
 
@@ -251,11 +251,13 @@ const Settlements = () => {
       name: "merchantid",
       value: merchantId,
       setValue: setMerchantId,
+      type: "number"
     },
     {
       name: "settlementid",
       value: settlementId,
       setValue: setSettlementId,
+      type: "text"
     },
   ];
 

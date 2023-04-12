@@ -53,7 +53,7 @@ function UserModal({
 		email: Yup.string()
 			.email('Email is invalid')
 			.required('Email Address is required'),
-		roleId: Yup.string().required('Role is required'),
+		otp: Yup.string().required('otp is required'),
 		firstname: Yup.string().required('firstname is required'),
 		lastname: Yup.string().required('lastname is required'),
 		phoneNumber: Yup.string().required('phoneNumber is required'),
@@ -87,7 +87,7 @@ function UserModal({
 					email: editDetails?.email || '',
 					firstname: editDetails?.firstname || '',
 					lastname: editDetails?.lastname || '',
-					roleId: editDetails?.userRole?.id || '',
+					otp: '',
 					phoneNumber: editDetails?.phoneNumber || '',
 					institution: editDetails?.institution || '',
 				}}
@@ -149,17 +149,17 @@ function UserModal({
 										fullWidth
 									/>
 									<InputLabel>
-										<span className={styles.formTitle}>User Role</span>
+										<span className={styles.formTitle}>otp</span>
 									</InputLabel>
 
 									<Field
-										as={Select}
+										as={TextField}
 										helperText={
-											<ErrorMessage name='roleId'>
+											<ErrorMessage name='otp'>
 												{(msg) => <span style={{ color: 'red' }}>{msg}</span>}
 											</ErrorMessage>
 										}
-										name='roleId'
+										name='otp'
 										variant='outlined'
 										margin='normal'
 										type='text'
