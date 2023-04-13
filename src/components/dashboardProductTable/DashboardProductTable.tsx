@@ -14,9 +14,9 @@ function DashboardProductTable({
 	title,
 	figured,
 }: {
-	data: dashboardDataTypes[];
-	title: string;
-	figured: boolean;
+	data: any[];
+	title?: string;
+	figured?: boolean;
 }) {
 	const [pageNumber, setPageNumber] = useState<number>(1);
 	const [rowsPerPage, setRowsPerPage] = useState<string | number | undefined>(
@@ -32,25 +32,8 @@ function DashboardProductTable({
 		setRowsPerPage(value);
 	};
 
-	// const [apiRes, setApiRes] = useState<dashboardDataTypes[]>([]);
-
-	// useEffect(() => {
-	// 	axios
-	// 		.get<dashboardDataTypes>(
-	// 			`/api/v1/merchant/dashboard/metric/product/usage?limit=${rowsPerPage}&page=${pageNumber}`
-	// 		)
-	// 		.then((res: any) => {
-	// 			setApiRes(res.data);
-	// 		})
-	// 		.catch((err) => console.log(err));
-	// }, [rowsPerPage, pageNumber]);
-
-	// useEffect(() => {
-	// 	setTotalRows(Number(apiRes?.data?.length));
-	// }, [apiRes]);
-
 	interface Column {
-		id: 'head' | 'amount';
+		id: 'name' | 'merchantcode' | 'transaction_amount' | 'transaction_count';
 		label: any;
 		minWidth?: number;
 		align?: 'right' | 'left' | 'center';
@@ -58,14 +41,26 @@ function DashboardProductTable({
 
 	const columns: Column[] = [
 		{
-			id: 'head',
-			label: `${title}`,
+			id: 'name',
+			label: 'name',
 			align: 'left',
 			minWidth: 100,
 		},
 		{
-			id: 'amount',
-			label: <TableElementSymbol />,
+			id: 'merchantcode',
+			label: 'merchantcode',
+			align: 'right',
+			minWidth: 100,
+		},
+		{
+			id: 'transaction_amount',
+			label: 'transaction_amount',
+			align: 'right',
+			minWidth: 100,
+		},
+		{
+			id: 'transaction_count',
+			label: 'transaction_count',
 			align: 'right',
 			minWidth: 100,
 		},
@@ -73,21 +68,15 @@ function DashboardProductTable({
 
 	const LoanRowTab = useCallback(
 		(
-			id: number | string,
-			business: string | number,
-			amount: string | number
+			tradingname: string,
+			merchantcode: string,
+			transaction_amount: number,
+			transaction_count: number
 		) => ({
-			head: business,
-			amount: figured ? (
-				<NumberFormat
-					value={Number(amount)}
-					displayType={'text'}
-					thousandSeparator={true}
-					// prefix={'₦'}
-				/>
-			) : (
-				`${amount}%`
-			),
+			name: tradingname,
+			merchantcode: merchantcode,
+			transaction_amount: transaction_amount,
+			transaction_count: transaction_count,
 		}),
 		[]
 	);
@@ -96,21 +85,41 @@ function DashboardProductTable({
 		const newRowOptions: any[] = [];
 		data?.length !== 0 &&
 			data?.map((each: any) =>
-				newRowOptions.push(LoanRowTab(each.id, each.business, each.amount))
+				newRowOptions.push(
+					LoanRowTab(
+						each.tradingname,
+						each.merchantcode,
+						each.transaction_amount,
+						each.transaction_count
+					)
+				)
 			);
 		setRows(newRowOptions);
-	}, [LoanRowTab]);
+	}, [LoanRowTab, data]);
 
 	return (
-		<>
-			<OperantTable
-				columns={columns}
-				rows={rows}
-				totalRows={totalRows}
-				changePage={changePage}
-				limit={limit}
-			/>
-		</>
+		<div style={{ height: '100%' }}>
+			{data.length > 0 ? (
+				<OperantTable
+					columns={columns}
+					rows={rows}
+					totalRows={totalRows}
+					changePage={changePage}
+					limit={limit}
+				/>
+			) : (
+				<p
+					style={{
+						display: 'flex',
+						justifyContent: 'center',
+						alignItems: 'center',
+						height: '100%',
+						fontWeight: 'bold',
+					}}>
+					No Data Found
+				</p>
+			)}
+		</div>
 	);
 }
 

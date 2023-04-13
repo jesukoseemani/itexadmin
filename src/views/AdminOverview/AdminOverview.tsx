@@ -6,36 +6,98 @@ import PieChart2 from '../../components/pieChart2/PieChart2';
 import styles from './AdminOverview.module.scss';
 import ProgressBar from '../../components/progressbar/ProgressBar';
 import axios from 'axios';
-import { trendTypes, progressSuccessTypes } from '../../types/UserTableTypes';
 import { saveMe } from '../../redux/actions/me/meActions';
 import { useDispatch } from 'react-redux';
 import { Grid } from '@mui/material';
-import DashboardProductTable from '../../components/dashboardProductTable/DashboardProductTable';
 import { openToastAndSetContent } from '../../redux/actions/toast/toastActions';
-import { AnySchema } from 'yup';
+import { Divider } from '@material-ui/core';
+import BarTopFilterDate from '../../components/barTopFilterDate/BarTopFilterDate';
+import {
+	dateIT,
+	sevenDaysAgo,
+	thirtyDaysAgo,
+	yesterday,
+	startOfYear,
+	convertApiDate,
+	endOfYear,
+} from '../../util/DateUtil';
+import useCalender from '../../hooks/useCalender';
+import { numberWithCommas } from '../../util/formatNumber';
+import {
+	closeLoader,
+	openLoader,
+} from '../../redux/actions/loader/loaderActions';
+import OverviewTable from '../../components/OverviewTable/OverviewTable';
+import DashboardProductTable from '../../components/dashboardProductTable/DashboardProductTable';
+import PieChart from '../../components/pieChart/PieChart';
+import SimpleBarChart from '../../components/simpleBarChart/SimpleBarChart';
+import PolarAreaChart from '../../components/polarAreaChart/PolarAreaChart';
+import moment from 'moment';
 
-interface businessData {
-	total: string;
-	active: string;
-	inactive: string;
-	code: string;
-	message: string;
+interface infoTypes {
+	currency: string;
+	total: number;
+	total_count: number;
+	success: number;
+	success_count: number;
+	failed: number;
+	failed_count: number;
+	pending: number;
+	pending_count: number;
+}
+
+interface businessType {
+	tradingname: string;
+	merchantcode: string;
+	currency: string;
+	transaction_amount: string;
+	transaction_count: string;
+}
+
+interface failureType {
+	responsecode: string;
+	count: number;
+}
+interface currencyType {
+	date: string;
+	currency?: string;
+	total?: number;
+	success?: number;
+	failed?: number;
+	pending?: number;
+}
+interface countryType {
+	country: string;
+	total: number;
+}
+
+interface transactionType {
+	date: string;
+	total: number;
+	success: number;
+	failed: number;
+	pending: number;
 }
 
 const AdminOverview = () => {
-	const [businessData, setBusinessData] = useState<businessData>();
-	const [overviewData, setOverviewData] = useState<trendTypes>();
-	const [progressSuccessData, setProgressSuccessData] =
-		useState<progressSuccessTypes>();
-	const [progressFailedData, setProgressFailedData] =
-		useState<progressSuccessTypes>();
-	const [topBusiness, setTopBusiness] = useState<any>();
-	const [topBusinessByS, setTopBusinessByS] = useState<any>();
-	const [topBusinessByF, setTopBusinessByF] = useState<any>();
-	const [topBusinessByR, setTopBusinessByR] = useState<any>();
-	const [cardNetwork, setCardNetwork] = useState<any>();
-
 	const dispatch = useDispatch();
+	const [info, setInfo] = useState<infoTypes[]>([]);
+	const [topBusiness, setTopBusiness] = useState<businessType[]>([]);
+	const [topFailure, setTopFailure] = useState<failureType[]>([]);
+	const [topCurrency, setTopCurrency] = useState<currencyType[]>([]);
+	const [topCountry, setTopCountry] = useState<countryType[]>([]);
+	const [topTransaction, setTopTransaction] = useState<transactionType[]>([]);
+	const [topCardType, setTopCardType] = useState<any>([]);
+	const [topChargeType, setTopChargeType] = useState<any>([]);
+	const { calender, setCalender } = useCalender();
+	const [dateEvent, setDateEvent] = useState<string>('last7days');
+	const [startDate, setStartDate] = useState(sevenDaysAgo);
+	const [endDate, setEndDate] = useState(dateIT);
+	const [newList, setNewList] = useState<any>([]);
+
+	useEffect(() => {
+		console.log('calendery', calender);
+	}, [calender]);
 
 	useEffect(() => {
 		axios
@@ -46,22 +108,43 @@ const AdminOverview = () => {
 			.catch((err) => console.log(err));
 	}, [dispatch]);
 
+	useEffect(() => {
+		if (dateEvent === 'last7days') {
+			setStartDate(sevenDaysAgo);
+			setEndDate(dateIT);
+		} else if (dateEvent === 'last30days') {
+			setStartDate(thirtyDaysAgo);
+			setEndDate(dateIT);
+		} else if (dateEvent === 'lastyear') {
+			setStartDate(startOfYear);
+			setEndDate(endOfYear);
+		} else if (
+			dateEvent === 'custom' &&
+			calender[0] === '' &&
+			calender[1] === ''
+		) {
+			setStartDate(calender[0]);
+			setEndDate(calender[1]);
+		} else {
+			return;
+		}
+	}, [dateEvent, calender[0], calender[1]]);
+
 	const trendTransaction = () => {
+		dispatch(openLoader());
 		axios
-			.get<trendTypes>(`/v1/trend/transactions`)
-			.then((res) => {
-				setOverviewData(res.data);
-				dispatch(
-					openToastAndSetContent({
-						toastContent: res?.data?.message,
-						toastStyles: {
-							backgroundColor: 'green',
-						},
-					})
-				);
+			.get(
+				`/v1/trend/transaction/summary?fromdate=${startDate}&todate=${endDate}`
+			)
+			.then((res: any) => {
+				dispatch(closeLoader());
+
+				setInfo(res.data.data);
 			})
 			.catch((err) => {
 				console.log(err);
+				dispatch(closeLoader());
+
 				dispatch(
 					openToastAndSetContent({
 						toastContent: err?.data?.message,
@@ -73,23 +156,19 @@ const AdminOverview = () => {
 			});
 	};
 
-	const trendBusiness = () => {
+	const topBusinessFn = () => {
+		dispatch(openLoader());
 		axios
-			.get<businessData>(`/v1/trend/business`)
-			.then((res) => {
-				setBusinessData(res.data);
+			.get(`/v1/trend/top/business?fromdate=${startDate}&todate=${endDate}`)
+			.then((res: any) => {
+				dispatch(closeLoader());
 
-				dispatch(
-					openToastAndSetContent({
-						toastContent: res?.data?.message,
-						toastStyles: {
-							backgroundColor: 'green',
-						},
-					})
-				);
+				setTopBusiness(res.data.data);
 			})
 			.catch((err) => {
 				console.log(err);
+				dispatch(closeLoader());
+
 				dispatch(
 					openToastAndSetContent({
 						toastContent: err?.data?.message,
@@ -101,23 +180,18 @@ const AdminOverview = () => {
 			});
 	};
 
-	const trendSuccess = () => {
+	const topFailureFn = () => {
+		dispatch(openLoader());
 		axios
-			.get<progressSuccessTypes>(`/v1/trend/successtrxpercent`)
-			.then((res) => {
-				setProgressSuccessData(res.data);
-
-				dispatch(
-					openToastAndSetContent({
-						toastContent: res?.data?.message,
-						toastStyles: {
-							backgroundColor: 'green',
-						},
-					})
-				);
+			.get(`/v1/trend/top/failure?fromdate=${startDate}&todate=${endDate}`)
+			.then((res: any) => {
+				dispatch(closeLoader());
+				setTopFailure(res.data.data);
 			})
 			.catch((err) => {
 				console.log(err);
+				dispatch(closeLoader());
+
 				dispatch(
 					openToastAndSetContent({
 						toastContent: err?.data?.message,
@@ -129,23 +203,42 @@ const AdminOverview = () => {
 			});
 	};
 
-	const trendFailed = () => {
+	const topCurrencyFn = () => {
+		dispatch(openLoader());
 		axios
-			.get<progressSuccessTypes>(`/v1/trend/failtrxpercent`)
-			.then((res) => {
-				setProgressSuccessData(res.data);
-
-				dispatch(
-					openToastAndSetContent({
-						toastContent: res?.data?.message,
-						toastStyles: {
-							backgroundColor: 'green',
-						},
-					})
-				);
+			.get(
+				`/v1/trend/transaction/chart/currency?fromdate=${startDate}&todate=${endDate}`
+			)
+			.then((res: any) => {
+				dispatch(closeLoader());
+				setTopCurrency(res.data.data);
 			})
 			.catch((err) => {
 				console.log(err);
+				dispatch(closeLoader());
+
+				dispatch(
+					openToastAndSetContent({
+						toastContent: err?.data?.message,
+						toastStyles: {
+							backgroundColor: 'red',
+						},
+					})
+				);
+			});
+	};
+	const topCountryFn = () => {
+		dispatch(openLoader());
+		axios
+			.get(`/v1/trend/top/country?fromdate=${startDate}&todate=${endDate}`)
+			.then((res: any) => {
+				dispatch(closeLoader());
+				setTopCountry(res.data.data);
+			})
+			.catch((err) => {
+				console.log(err);
+				dispatch(closeLoader());
+
 				dispatch(
 					openToastAndSetContent({
 						toastContent: err?.data?.message,
@@ -157,23 +250,20 @@ const AdminOverview = () => {
 			});
 	};
 
-	const topBusinessFN = () => {
+	const topTransactionFn = () => {
+		dispatch(openLoader());
 		axios
-			.get<any>(`/v1/trend/topbusiness`)
-			.then((res) => {
-				setTopBusiness(res.data);
-
-				dispatch(
-					openToastAndSetContent({
-						toastContent: res?.data?.message,
-						toastStyles: {
-							backgroundColor: 'green',
-						},
-					})
-				);
+			.get(
+				`/v1/trend/transaction/chart?fromdate=${startDate}&todate=${endDate}`
+			)
+			.then((res: any) => {
+				dispatch(closeLoader());
+				setTopTransaction(res.data.data);
 			})
 			.catch((err) => {
 				console.log(err);
+				dispatch(closeLoader());
+
 				dispatch(
 					openToastAndSetContent({
 						toastContent: err?.data?.message,
@@ -185,23 +275,18 @@ const AdminOverview = () => {
 			});
 	};
 
-	const topSBusinessFN = () => {
+	const topCardTypeFn = () => {
+		dispatch(openLoader());
 		axios
-			.get<any>(`/v1/trend/topbusinessbysuccess`)
-			.then((res) => {
-				setTopBusinessByS(res.data);
-
-				dispatch(
-					openToastAndSetContent({
-						toastContent: res?.data?.message,
-						toastStyles: {
-							backgroundColor: 'green',
-						},
-					})
-				);
+			.get(`/v1/trend/top/cardtype?fromdate=${startDate}&todate=${endDate}`)
+			.then((res: any) => {
+				dispatch(closeLoader());
+				setTopCardType(res.data.data);
 			})
 			.catch((err) => {
 				console.log(err);
+				dispatch(closeLoader());
+
 				dispatch(
 					openToastAndSetContent({
 						toastContent: err?.data?.message,
@@ -212,77 +297,19 @@ const AdminOverview = () => {
 				);
 			});
 	};
-	const topFBusinessFN = () => {
-		axios
-			.get<any>(`/v1/trend/topbusinessbyfail`)
-			.then((res) => {
-				setTopBusinessByF(res.data);
 
-				dispatch(
-					openToastAndSetContent({
-						toastContent: res?.data?.message,
-						toastStyles: {
-							backgroundColor: 'green',
-						},
-					})
-				);
+	const topChargeTypeFn = () => {
+		dispatch(openLoader());
+		axios
+			.get(`/v1/trend/top/chargetype?fromdate=${startDate}&todate=${endDate}`)
+			.then((res: any) => {
+				dispatch(closeLoader());
+				setTopChargeType(res.data.data);
 			})
 			.catch((err) => {
 				console.log(err);
-				dispatch(
-					openToastAndSetContent({
-						toastContent: err?.data?.message,
-						toastStyles: {
-							backgroundColor: 'red',
-						},
-					})
-				);
-			});
-	};
-	const topRBusinessFN = () => {
-		axios
-			.get<any>(`/v1/trend/topbusinessbyrefund`)
-			.then((res) => {
-				setTopBusinessByR(res.data);
+				dispatch(closeLoader());
 
-				dispatch(
-					openToastAndSetContent({
-						toastContent: res?.data?.message,
-						toastStyles: {
-							backgroundColor: 'green',
-						},
-					})
-				);
-			})
-			.catch((err) => {
-				console.log(err);
-				dispatch(
-					openToastAndSetContent({
-						toastContent: err?.data?.message,
-						toastStyles: {
-							backgroundColor: 'red',
-						},
-					})
-				);
-			});
-	};
-	const cardNetworkFN = () => {
-		axios
-			.get<any>(`/v1/trend/cardnetworks`)
-			.then((res) => {
-				setCardNetwork(res.data);
-
-				dispatch(
-					openToastAndSetContent({
-						toastContent: res?.data?.message,
-						toastStyles: {
-							backgroundColor: 'green',
-						},
-					})
-				);
-			})
-			.catch((err) => {
-				console.log(err);
 				dispatch(
 					openToastAndSetContent({
 						toastContent: err?.data?.message,
@@ -296,258 +323,270 @@ const AdminOverview = () => {
 
 	useEffect(() => {
 		trendTransaction();
-		trendBusiness();
-		trendSuccess();
-		trendFailed();
-	}, []);
+		topBusinessFn();
+		topFailureFn();
+		topCurrencyFn();
+		topCountryFn();
+		topTransactionFn();
+		topCardTypeFn();
+		topChargeTypeFn();
+	}, [startDate, endDate, calender]);
 
-	const data02 = [
-		{
-			name: 'Success',
-			amount: overviewData?.success[0]?.successful,
-			color: '#169859',
-			transaction: overviewData?.success[0]?.successful,
-			percentage: overviewData?.success[0]?.successfulpercent,
-		},
-		{
-			name: 'Failed',
-			amount: overviewData?.success[0]?.failed,
-			color: '#f71717',
-			transaction: overviewData?.success[0]?.failed,
-			percentage: overviewData?.success[0]?.failpercent,
-		},
+	const colorFalure = [
+		'#3C486B',
+		'#F0F0F0',
+		'#F9D949',
+		'#F45050',
+		'#070A52',
+		'#D21312',
 	];
 
-	const dataFigure = [
-		{
-			business: 'james Business',
-			amount: 49373499,
-		},
-		{
-			business: 'james Business',
-			amount: 49373499,
-		},
-		{
-			business: 'james Business',
-			amount: 49373499,
-		},
-		{
-			business: 'james Business',
-			amount: 49373499,
-		},
+	useEffect(() => {
+		const newList = topFailure.map((item: any) => {
+			item['name'] = item.responsecode;
+			item['value'] = item.count;
+			item['color'] = colorFalure[0];
+			colorFalure.shift();
+			return item;
+		});
 
-		{
-			business: 'james Business',
-			amount: 49373499,
-		},
-	];
-
-	const dataPercent = [
-		{
-			business: 'james Business',
-			amount: 49,
-		},
-		{
-			business: 'james Business',
-			amount: 42,
-		},
-		{
-			business: 'james Business',
-			amount: 33,
-		},
-		{
-			business: 'james Business',
-			amount: 73,
-		},
-
-		{
-			business: 'james Business',
-			amount: 39,
-		},
-	];
+		setNewList(newList);
+	}, [topFailure]);
 
 	return (
 		<div className={styles.wrapper}>
-			<NavBar name='business' />
-			{/* <NavBar name='Admin Overview' /> */}
+			<NavBar name='overview' />
+			<BarTopFilterDate
+				title='Overview'
+				setDateEvent={setDateEvent}
+				dateEvent={dateEvent}
+				calender={calender}
+				setCalender={setCalender}
+				showMenu={false}
+			/>
 
-			{/* first */}
-			<div className={styles.container}>
-				<div className={styles.lineChartContainer}>
-					<BarTopFilter />
-					<hr className={styles.firstline} />
-					<div className={styles.gridContainer}>
-						<div className={styles.gridContainerLeft}>
-							{/* <div className={styles.lineChartHeader}> */}
-							<div className={styles.lineChartHeaderLeft}>
-								<div className={styles.breakOffContent}>
-									<h1 className={styles.breakOffContentH1}>
-										Total processed volume
-									</h1>
-									<p className={styles.breakOffContentP}>
-										{overviewData?.tpv[0]?.volume || 0}
-									</p>
-								</div>
-								<div className={styles.breakOffContent}>
-									<h1 className={styles.breakOffContentH1}>
-										Total processed value
-									</h1>
-									<p className={styles.breakOffContentP}>
-										$ {overviewData?.tpv[0]?.value || 0}
-									</p>
-								</div>
-								<div className={styles.breakOffContent}>
-									<h1 className={styles.breakOffContentH1}>Total revenue</h1>
-									<p className={styles.breakOffContentP}>
-										$ {overviewData?.tpv[0]?.value || 0}
-									</p>
-								</div>
-							</div>
-							<div className={styles.gridAreaChart}>
-								<AreChart />
-							</div>
-
-							{/* <div className={styles.lineChartHeaderRight}>
-									<div className={styles.bulletWrapper}>
-										<div className={styles.bullet}></div>
-										<p className={styles.bulletContent}></p>
-									</div>
-									<div className={styles.bulletWrapper}>
-										<div className={styles.bullet}></div>
-										<p className={styles.bulletContent}></p>
-									</div>
-								</div> */}
-							{/* </div> */}
-						</div>
-
-						<div className={styles.gridContainerRight}>
-							<div className={styles.gridContainerRightTop}>
-								<div className={styles.breakOffContentTopBox}>
-									<h1 className={styles.breakOffContentH1}>
-										Total successful transaction
-									</h1>
-									<p className={styles.breakOffContentP}>
-										{overviewData?.success[0]?.successful}
-									</p>
-								</div>
-								<div className={styles.breakOffContentTopBox}>
-									<h1 className={styles.breakOffContentH1}>
-										Total failed transactions
-									</h1>
-									<p className={styles.breakOffContentP}>
-										{overviewData?.success[0]?.failed}
-									</p>
-								</div>
-							</div>
-							<hr className={styles.secondline} />
-							<div className={styles.gridContainerRightBottom}>
-								<PieChart2 data02={data02} />
-							</div>
-						</div>
-					</div>
+			<div className={styles.detailBox}>
+				<div className={styles.detailBoxCorner}>
+					<h3 className={styles.detailh3}>Transaction Summary</h3>
 				</div>
-			</div>
 
-			{/* second */}
-			<div className={styles.container}>
-				<div className={styles.gridFeatures}>
-					<div className={styles.gridFeatureContent}>
-						<h1 className={styles.gridFeatureContentH1}>Total businesses</h1>
-						<p className={styles.gridFeatureContentP}>{businessData?.total}</p>
-					</div>
-
-					<div className={styles.gridFeatureContent}>
-						<h1 className={styles.gridFeatureContentH1}>Active businesses</h1>
-						<p className={styles.gridFeatureContentP}>{businessData?.active}</p>
-					</div>
-
-					<div className={styles.gridFeatureContent}>
-						<h1 className={styles.gridFeatureContentH1}>Inactive businesses</h1>
-						<p className={styles.gridFeatureContentP}>
-							{businessData?.inactive}
-						</p>
-					</div>
-
-					<div className={styles.gridFeatureContenth}>
-						<h1 className={styles.gridFeatureContentH1}>
-							POS Devices deployed
-						</h1>
-						<p className={styles.gridFeatureContentP}>0</p>
-					</div>
-				</div>
-			</div>
-
-			{/* third */}
-
-			<div className={styles.container}>
-				<div className={styles.gridFeaturesTable}>
+				<Divider style={{ color: '#CECECD' }} />
+				<div
+					style={{
+						padding: '0 24px',
+					}}>
 					<Grid container spacing={2}>
-						<Grid item xs={12} md={6}>
-							<DashboardProductTable
-								title='Top Businesses'
-								data={dataFigure}
-								figured={true}
-							/>
+						<Grid item xs={12} sm={6} md={2} lg={3}>
+							<div className={styles.customerInfo}>
+								<div className={styles.detailsValue}>CURRENCY</div>
+								<div className={styles.detailsKey}>
+									{' '}
+									{info[0]?.currency || 'Not Provider'}
+								</div>
+							</div>
 						</Grid>
-						<Grid item xs={12} md={6}>
-							<DashboardProductTable
-								title='Top merchant by success rate'
-								data={dataPercent}
-								figured={false}
-							/>
+						<Grid item xs={12} sm={6} md={4} lg={3}>
+							<div className={styles.customerInfo}>
+								<div className={styles.detailsValue}>TOTAL TRANSACTION</div>
+								<div className={styles.detailsKey}>
+									{info[0]?.currency}
+									{(info[0]?.total && numberWithCommas(info[0]?.total)) || 0}
+								</div>
+							</div>
 						</Grid>
-						<Grid item xs={12} md={6}>
-							<DashboardProductTable
-								title='Top merchant by failure rate'
-								data={dataPercent}
-								figured={false}
-							/>
+						<Grid item xs={12} sm={6} md={2} lg={3}>
+							<div className={styles.customerInfo}>
+								<div className={styles.detailsValue}>
+									TOTAL TRANSACTION COUNT
+								</div>
+								<div className={styles.detailsKey}>
+									{info[0]?.total_count || 0}
+								</div>
+							</div>
 						</Grid>
-						<Grid item xs={12} md={6}>
-							<DashboardProductTable
-								title='Top refund merchant'
-								data={dataPercent}
-								figured={true}
-							/>
+						<Grid item xs={12} sm={6} md={4} lg={3}>
+							<div className={styles.customerInfo}>
+								<div className={styles.detailsValue}>
+									SUCCESSFUL TRANSACTION
+								</div>
+								<div className={styles.detailsKey}>
+									{info[0]?.currency}
+									{(info[0]?.success && numberWithCommas(info[0]?.success)) ||
+										0}
+								</div>
+							</div>
 						</Grid>
-						<Grid item xs={12} md={6}>
-							<DashboardProductTable
-								title='Top merchant by funding'
-								data={dataPercent}
-								figured={true}
-							/>
-						</Grid>
-						<Grid item xs={12} md={6}>
-							<DashboardProductTable
-								title='Card networks'
-								data={dataPercent}
-								figured={false}
-							/>
-						</Grid>
+						<Grid item xs={12} sm={6} md={4} lg={3}>
+							<div className={styles.customerInfo}>
+								<div className={styles.detailsValue}>
+									SUCCESSFUL TRANSACTION COUNT
+								</div>
+								<div className={styles.detailsKey}>
+									{info[0]?.success_count || 0}
+								</div>
+							</div>
+						</Grid>{' '}
+						<Grid item xs={12} sm={6} md={4} lg={3}>
+							<div className={styles.customerInfo}>
+								<div className={styles.detailsValue}>FAILED TRANSACTION</div>
+								<div className={styles.detailsKey}>
+									{info[0]?.currency}
+									{info[0]?.failed || 0}
+								</div>
+							</div>
+						</Grid>{' '}
+						<Grid item xs={12} sm={6} md={4} lg={3}>
+							<div className={styles.customerInfo}>
+								<div className={styles.detailsValue}>
+									FAILED TRANSACTION COUNT
+								</div>
+								<div className={styles.detailsKey}>
+									{info[0]?.failed_count || 0}{' '}
+								</div>
+							</div>
+						</Grid>{' '}
+						<Grid item xs={12} sm={6} md={4} lg={3}>
+							<div className={styles.customerInfo}>
+								<div className={styles.detailsValue}>PENDING TRANSACTION</div>
+								<div className={styles.detailsKey}>
+									{info[0]?.currency}
+									{info[0]?.pending || 0}
+								</div>
+							</div>
+						</Grid>{' '}
+						<Grid item xs={12} sm={6} md={4} lg={3}>
+							<div className={styles.customerInfo}>
+								<div className={styles.detailsValue}>
+									PENDING TRANSACTION COUNT
+								</div>
+								<div className={styles.detailsKey}>
+									{info[0]?.pending_count || 0}{' '}
+								</div>
+							</div>
+						</Grid>{' '}
 					</Grid>
 				</div>
 			</div>
 
-			{/* fourth */}
-			<div className={styles.container}>
-				<div style={{ marginBottom: '20px' }}>
-					<div className={styles.progressBarContainer}>
-						<div className={styles.progreeBarChild}>
-							<ProgressBar
-								data={progressSuccessData?.transactions}
-								title='Percentage of successful transactions'
-								color='rgba(111, 207, 151, 0.71)'
-							/>
-						</div>
-						<div className={styles.progreeBarChild}>
-							<ProgressBar
-								data={progressFailedData?.transactions}
-								title='Percentage of failed transactions'
-								color='rgba(235, 87, 87, 0.71)'
-							/>
-						</div>
-					</div>
-				</div>
+			<div
+				style={{
+					padding: '0 24px',
+				}}>
+				<Grid container spacing={2}>
+					<Grid item xs={12} md={6}>
+						<OverviewTable title='Top Businesses'>
+							<DashboardProductTable data={topBusiness} />
+						</OverviewTable>
+					</Grid>
+					<Grid item xs={12} md={6}>
+						<OverviewTable title='Top Failures'>
+							{topFailure.length > 0 ? (
+								<PieChart data={newList} />
+							) : (
+								<p
+									style={{
+										display: 'flex',
+										justifyContent: 'center',
+										alignItems: 'center',
+										height: '100%',
+										fontWeight: 'bold',
+									}}>
+									No Data Found
+								</p>
+							)}
+						</OverviewTable>
+					</Grid>
+					<Grid item xs={12} md={6}>
+						<OverviewTable title='Currencies'>
+							{topCurrency.length > 0 ? (
+								<SimpleBarChart data={topCurrency} identifier='date' />
+							) : (
+								<p
+									style={{
+										display: 'flex',
+										justifyContent: 'center',
+										alignItems: 'center',
+										height: '100%',
+										fontWeight: 'bold',
+									}}>
+									No Data Found
+								</p>
+							)}
+						</OverviewTable>
+					</Grid>
+					<Grid item xs={12} md={6}>
+						<OverviewTable title='Countries'>
+							{topCountry.length > 0 ? (
+								<PolarAreaChart data={topCountry} />
+							) : (
+								<p
+									style={{
+										display: 'flex',
+										justifyContent: 'center',
+										alignItems: 'center',
+										height: '100%',
+										fontWeight: 'bold',
+									}}>
+									No Data Found
+								</p>
+							)}
+						</OverviewTable>
+					</Grid>
+					<Grid item xs={12} md={6}>
+						<OverviewTable title='Card Type'>
+							{topCardType.length > 0 ? (
+								<SimpleBarChart data={topCardType} identifier='cardtype' />
+							) : (
+								<p
+									style={{
+										display: 'flex',
+										justifyContent: 'center',
+										alignItems: 'center',
+										height: '100%',
+										fontWeight: 'bold',
+									}}>
+									No Data Found
+								</p>
+							)}
+						</OverviewTable>
+					</Grid>
+					<Grid item xs={12} md={6}>
+						<OverviewTable title='Chargetype'>
+							{topChargeType.length > 0 ? (
+								<SimpleBarChart data={topChargeType} identifier='chargetype' />
+							) : (
+								<p
+									style={{
+										display: 'flex',
+										justifyContent: 'center',
+										alignItems: 'center',
+										height: '100%',
+										fontWeight: 'bold',
+									}}>
+									No Data Found
+								</p>
+							)}
+						</OverviewTable>
+					</Grid>
+					<Grid item xs={12}>
+						<OverviewTable title='Transactions'>
+							{topTransaction.length > 0 ? (
+								<SimpleBarChart data={topTransaction} identifier='date' />
+							) : (
+								<p
+									style={{
+										display: 'flex',
+										justifyContent: 'center',
+										alignItems: 'center',
+										height: '100%',
+										fontWeight: 'bold',
+									}}>
+									No Data Found
+								</p>
+							)}
+						</OverviewTable>
+					</Grid>
+				</Grid>
 			</div>
 		</div>
 	);
