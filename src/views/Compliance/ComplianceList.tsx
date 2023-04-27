@@ -91,7 +91,7 @@ const ComplianceList = () => {
     dispatch(openLoader());
     try {
       const { data } = await axios.get<any>(
-        `/v1/compliance/business?perpage=${rowsPerPage}&page=${pageNumber}`
+        `/v1/compliance/business?perpage=${rowsPerPage}&page=${pageNumber}&search=${value}`
       );
       setBusinesses(data);
       dispatch(closeLoader());

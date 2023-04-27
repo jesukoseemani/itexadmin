@@ -15,6 +15,7 @@ const persistConfig = {
 		'mePayReducer',
 		'loadingStatePayReducer',
 		'countryReducer',
+		'permissionPayReducer',
 	],
 };
 const persistedReducer = persistReducer(persistConfig, rootReducer);

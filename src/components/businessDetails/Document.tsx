@@ -5,7 +5,7 @@ import {
 	openLoader,
 } from '../../redux/actions/loader/loaderActions';
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { openToastAndSetContent } from '../../redux/actions/toast/toastActions';
 import { useHistory } from 'react-router-dom';
 import { ReactComponent as PendingIcon } from '../../assets/images/alert-circle.svg';
@@ -15,11 +15,15 @@ import Modal from 'react-modal';
 import { customStyles } from '../../helpers/modalStyles';
 import { Divider } from '@material-ui/core';
 import { ReactComponent as CloseIcon } from '../../assets/images/modalclose.svg';
+import NotPermitted from '../NotPermitted';
 
 function Document({ id }: { id: number | undefined }) {
 	const [businesses, setBusinesses] = useState<any>();
 	const [docsDetails, setDocsDetails] = useState<any>();
 	const history = useHistory();
+	const { VIEW_BUSINESS_DOCUMENT } = useSelector(
+		(state) => state?.permissionPayReducer.permission
+	);
 
 	const dispatch = useDispatch();
 
@@ -101,55 +105,59 @@ function Document({ id }: { id: number | undefined }) {
 
 	return (
 		<>
-			<div className={styles.containerHeader}>
-				{businesses?.documents?.length > 0 ? (
-					businesses?.documents?.map(
-						(
-							{
-								idurl,
-								idtype,
-								status,
-								merchantaccountidentificationid,
-							}: {
-								idurl: string;
-								idtype: string;
-								status: string;
-								merchantaccountidentificationid: number;
-							},
-							i: number
-						) => (
-							<div
-								key={merchantaccountidentificationid}
-								onClick={() =>
-									imageViewerHandler(
-										idurl,
-										idtype,
-										status,
-										merchantaccountidentificationid,
-										i
-									)
-								}
-								className={styles.singleDocs}>
-								<p>{idtype}</p>
-								<div className={styles.singleDocsImage}>
-									<img src={idurl} alt='' />
-									<span>
-										{status === 'APPROVED' ? (
-											<ApprovedIcon />
-										) : status === 'PENDING' ? (
-											<PendingIcon />
-										) : (
-											<DangerIcon />
-										)}
-									</span>
+			{VIEW_BUSINESS_DOCUMENT ? (
+				<div className={styles.containerHeader}>
+					{businesses?.documents?.length > 0 ? (
+						businesses?.documents?.map(
+							(
+								{
+									idurl,
+									idtype,
+									status,
+									merchantaccountidentificationid,
+								}: {
+									idurl: string;
+									idtype: string;
+									status: string;
+									merchantaccountidentificationid: number;
+								},
+								i: number
+							) => (
+								<div
+									key={merchantaccountidentificationid}
+									onClick={() =>
+										imageViewerHandler(
+											idurl,
+											idtype,
+											status,
+											merchantaccountidentificationid,
+											i
+										)
+									}
+									className={styles.singleDocs}>
+									<p>{idtype}</p>
+									<div className={styles.singleDocsImage}>
+										<img src={idurl} alt='' />
+										<span>
+											{status === 'APPROVED' ? (
+												<ApprovedIcon />
+											) : status === 'PENDING' ? (
+												<PendingIcon />
+											) : (
+												<DangerIcon />
+											)}
+										</span>
+									</div>
 								</div>
-							</div>
+							)
 						)
-					)
-				) : (
-					<h1>NO DOCUMENT UPLOADED YET</h1>
-				)}
-			</div>
+					) : (
+						<h1>NO DOCUMENT UPLOADED YET</h1>
+					)}
+				</div>
+			) : (
+				<NotPermitted title='DOCUMENTS' />
+			)}
 
 			<Modal
 				isOpen={modalIsOpen}

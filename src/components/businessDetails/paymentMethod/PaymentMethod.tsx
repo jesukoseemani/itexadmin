@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
 	closeLoader,
 	openLoader,
@@ -14,6 +14,7 @@ import {
 	openModalAndSetContent,
 } from '../../../redux/actions/modal/modalActions';
 import { InputLabel, TextField } from '@material-ui/core';
+import NotPermitted from '../../NotPermitted';
 
 const label = { inputProps: { 'aria-label': 'Size switch demo' } };
 
@@ -41,6 +42,9 @@ function PaymentMethod({ id }: { id: string | number }) {
 	const [otp, setOtp] = useState('');
 	const [status, setStatus] = useState(false);
 	const [edit, setEdit] = useState(false);
+	const { VIEW_BUSINESS_PAYMENT_METHOD } = useSelector(
+		(state) => state?.permissionPayReducer.permission
+	);
 
 	const fetchPayment = async () => {
 		dispatch(openLoader());
@@ -173,76 +177,80 @@ function PaymentMethod({ id }: { id: string | number }) {
 			otp,
 		};
 
-			axios
-				.post(`/v1/business/${merchantId}/paymentMethod/modify`, newObject)
-				.then((res: any) => {
-					dispatch(closeLoader());
-					dispatch(closeModal());
+		axios
+			.post(`/v1/business/${merchantId}/paymentMethod/modify`, newObject)
+			.then((res: any) => {
+				dispatch(closeLoader());
+				dispatch(closeModal());
 
-					dispatch(
-						openToastAndSetContent({
-							toastContent: res.data.message,
-							toastStyles: {
-								backgroundColor: 'green',
-							},
-						})
-					);
-				})
-				.catch((err) => {
-					dispatch(closeLoader());
-					dispatch(
-						openToastAndSetContent({
-							toastContent: err.data.message,
-							toastStyles: {
-								backgroundColor: 'red',
-							},
-						})
-					);
-				});
+				dispatch(
+					openToastAndSetContent({
+						toastContent: res.data.message,
+						toastStyles: {
+							backgroundColor: 'green',
+						},
+					})
+				);
+			})
+			.catch((err) => {
+				dispatch(closeLoader());
+				dispatch(
+					openToastAndSetContent({
+						toastContent: err.data.message,
+						toastStyles: {
+							backgroundColor: 'red',
+						},
+					})
+				);
+			});
 	};
 	return (
 		<div className={styles.wrapper}>
-			{payment?.paymentMethods?.map((item: any) => (
-				<div
-					onClick={() => editConfigHandler(item)}
-					className={styles.outerbox}>
-					<div className={styles.innerbox}>
-						<h1>Account Id:</h1>
-						<p>{item.merchantaccountid}</p>
-					</div>
-					<div className={styles.innerbox}>
-						<h1>Method Id:</h1>
-						<p>{item.merchantaccountmethodid}</p>
-					</div>
-					<div className={styles.innerbox}>
-						<h1>Payment Method:</h1>
-						<p>{item.paymentmethod}</p>
-					</div>
+			{VIEW_BUSINESS_PAYMENT_METHOD ? (
+				payment?.paymentMethods?.map((item: any) => (
+					<div
+						onClick={() => editConfigHandler(item)}
+						className={styles.outerbox}>
+						<div className={styles.innerbox}>
+							<h1>Account Id:</h1>
+							<p>{item.merchantaccountid}</p>
+						</div>
+						<div className={styles.innerbox}>
+							<h1>Method Id:</h1>
+							<p>{item.merchantaccountmethodid}</p>
+						</div>
+						<div className={styles.innerbox}>
+							<h1>Payment Method:</h1>
+							<p>{item.paymentmethod}</p>
+						</div>
 
-					<div className={styles.innerbox}>
-						<h1>Status:</h1>
-						<p style={{ cursor: 'not-allowed' }}>
-							<GreenSwitch
-								{...label}
-								checked={item.status ? true : false}
-								size='small'
-								value={item.status}
-							/>
-						</p>
+						<div className={styles.innerbox}>
+							<h1>Status:</h1>
+							<p style={{ cursor: 'not-allowed' }}>
+								<GreenSwitch
+									{...label}
+									checked={item.status ? true : false}
+									size='small'
+									value={item.status}
+								/>
+							</p>
+						</div>
+						<div className={styles.innerbox}>
+							<h1>Is Editable:</h1>
+							<p style={{ cursor: 'not-allowed' }}>
+								<GreenSwitch
+									{...label}
+									checked={item.iseditable ? true : false}
+									size='small'
+									value={item.iseditable}
+								/>
+							</p>
+						</div>
 					</div>
-					<div className={styles.innerbox}>
-						<h1>Is Editable:</h1>
-						<p style={{ cursor: 'not-allowed' }}>
-							<GreenSwitch
-								{...label}
-								checked={item.iseditable ? true : false}
-								size='small'
-								value={item.iseditable}
-							/>
-						</p>
-					</div>
-				</div>
-			))}
+				))
+			) : (
+				<NotPermitted title='PAYMENT METHOD' />
+			)}
 		</div>
 	);
 }

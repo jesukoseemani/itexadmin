@@ -3,7 +3,7 @@ import NavBar from '../../components/navbar/NavBar'
 import { closeLoader, openLoader } from '../../redux/actions/loader/loaderActions';
 import { openToastAndSetContent } from '../../redux/actions/toast/toastActions';
 import { ColumnPaymentInvoiceModule, PaymentInvoceModuleData } from '../../types/PaymentTypes';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Dayjs } from 'dayjs';
 import {
@@ -35,6 +35,9 @@ const MerchantInvoice = () => {
     const history = useHistory();
 
     const dispatch = useDispatch();
+    	const { DISABLE_INVOICE } = useSelector(
+				(state) => state?.permissionPayReducer.permission
+			);
     //PAGINATION
     const [pageNumber, setPageNumber] = React.useState<number>(1);
     const [rowsPerPage, setRowsPerPage] = React.useState<number>(10);
@@ -158,7 +161,7 @@ const MerchantInvoice = () => {
                     date: invoice?.createdAt,
                     dueDate: invoice?.dueDate,
                     invoiceName: invoice?.invoiceName,
-                    action: invoice?.status === "inactive" ? null : <button onClick={() => handleDisable(invoice?.id)}
+                    action: invoice?.status === "inactive" ? null : DISABLE_INVOICE && <button onClick={() => handleDisable(invoice?.id)}
 
                         style={{
                             outline: "none",

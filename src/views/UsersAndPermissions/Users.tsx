@@ -42,11 +42,11 @@ const useStyles = makeStyles({
 			border: 'none',
 		},
 		'& .MuiOutlinedInput-input.MuiInputBase-input.MuiInputBase-input.MuiOutlinedInput-input':
-		{
-			textAlign: 'center',
-			padding: '8.1px 70px',
-			fontSize: '4px',
-		},
+			{
+				textAlign: 'center',
+				padding: '8.1px 70px',
+				fontSize: '4px',
+			},
 		// '& .MuiSelect-select.MuiInputBase-input.MuiOutlinedInput-input.MuiSelect-select.MuiInputBase-input.MuiOutlinedInput-input.MuiSelect-select.MuiInputBase-input.MuiOutlinedInput-input':
 		// 	{
 		// 		paddingRight: '50px',
@@ -54,11 +54,11 @@ const useStyles = makeStyles({
 	},
 	select: {
 		'& .MuiOutlinedInput-input.MuiInputBase-input.MuiInputBase-input.MuiOutlinedInput-input':
-		{
-			textAlign: 'center',
-			padding: '5px 40px',
-			fontSize: '15px',
-		},
+			{
+				textAlign: 'center',
+				padding: '5px 40px',
+				fontSize: '15px',
+			},
 		'&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
 			outline: 'none',
 		},
@@ -140,13 +140,13 @@ const UsersPermission = () => {
 	const [rows, setRows] = useState<any[]>([]);
 	const [apiRes, setApiRes] = useState<userRoleTypes>();
 	const [isFilterModalOpen, setIsFilterModalOpen] = useState<boolean>(false);
-	const permission = useSelector(
-		(state) => state?.permissionPayReducer.permission
-	);
-
-	useEffect(() => {
-		console.log('responding:', permission);
-	}, []);
+	const {
+		USERS_CREATE,
+		USERS_VIEW,
+		USERS_ASSIGN_ROLE,
+		USERS_ASSIGN_MODULE,
+		EDIT_USER,
+	} = useSelector((state) => state?.permissionPayReducer.permission);
 
 	// const [singleData, setSingleData] = useState<userRoleTypes>({
 	// 	id: '',
@@ -485,13 +485,13 @@ const UsersPermission = () => {
 
 	interface Column {
 		id:
-		| 'first_name'
-		| 'last_name'
-		| 'username'
-		| 'role'
-		| 'status'
-		| 'added_on'
-		| 'actions';
+			| 'first_name'
+			| 'last_name'
+			| 'username'
+			| 'role'
+			| 'status'
+			| 'added_on'
+			| 'actions';
 
 		label: any;
 		minWidth?: number;
@@ -534,7 +534,6 @@ const UsersPermission = () => {
 					className={styles.tableSpan}
 					style={{
 						backgroundColor: userStatus ? '#27AE60' : '#EB5757',
-
 						color: userStatus ? '#FFFFFF' : '#FFFFFF',
 					}}>
 					{userStatus ? 'Active' : 'InActive'}
@@ -550,37 +549,46 @@ const UsersPermission = () => {
 					aria-expanded={open ? 'true' : undefined}
 					onClick={handleClick}
 					className={styles.tableVertIcon}>
-					<div
-						onClick={() =>
-							editHandler(
-								id,
-								firstname,
-								lastname,
-								userRole,
-								email,
-								phoneNumber,
-								institution
-							)
-						}
-						className={styles.icons}>
-						<Edit />
-					</div>
+					{EDIT_USER && (
+						<div
+							onClick={() =>
+								editHandler(
+									id,
+									firstname,
+									lastname,
+									userRole,
+									email,
+									phoneNumber,
+									institution
+								)
+							}
+							className={styles.icons}>
+							<Edit />
+						</div>
+					)}
+
 					{/* <div onClick={() => deleteHandler()} className={styles.icons}>
 						<Trash />
 					</div> */}
-					<div
-						onClick={() => changeHandler(id, firstname)}
-						className={styles.icons}>
-						<Change />
-					</div>
-					<div
-						onClick={() => permissionHandler(id, email)}
-						className={styles.icons}>
-						<Key />
-					</div>
-					<div onClick={() => resetHandler(id)} className={styles.icons}>
-						<Repeat />
-					</div>
+					{USERS_ASSIGN_ROLE && (
+						<div
+							onClick={() => changeHandler(id, firstname)}
+							className={styles.icons}>
+							<Change />
+						</div>
+					)}
+					{USERS_ASSIGN_MODULE && (
+						<div
+							onClick={() => permissionHandler(id, email)}
+							className={styles.icons}>
+							<Key />
+						</div>
+					)}
+					{USERS_CREATE && (
+						<div onClick={() => resetHandler(id)} className={styles.icons}>
+							<Repeat />
+						</div>
+					)}
 				</div>
 			),
 		}),
@@ -623,27 +631,32 @@ const UsersPermission = () => {
 						<h1 className={styles.header_left_h1}>Users</h1>
 					</div>
 					<div className={styles.header_right}>
-						<div className={styles.selectwrapper}>Download</div>
-						<div className={styles.button_business}>
-							<button
-								onClick={editBusinessHandler}
-								className={styles.button_business_button}>
-								<span className={styles.button_business_span}>+</span> &nbsp;
-								New User
-							</button>
-						</div>
+						{/* <div className={styles.selectwrapper}>Download</div> */}
+						{USERS_CREATE && (
+							<div className={styles.button_business}>
+								<button
+									onClick={editBusinessHandler}
+									className={styles.button_business_button}>
+									<span className={styles.button_business_span}>+</span> &nbsp;
+									New User
+								</button>
+							</div>
+						)}
 					</div>
 				</div>
 
 				{/* TABLE */}
 				<div className={styles.maintable}>
-					<OperantTableItexPay
-						columns={columns}
-						rows={rows}
-						totalRows={totalRows}
-						changePage={changePage}
-						limit={limit}
-					/>
+					{USERS_VIEW && (
+						<OperantTableItexPay
+							columns={columns}
+							rows={rows}
+							totalRows={totalRows}
+							changePage={changePage}
+							limit={limit}
+						/>
+					)}
+
 					{/* <Menu
 						id='basic-menu'
 						anchorEl={anchorEl}

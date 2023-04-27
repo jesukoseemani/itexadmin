@@ -15,7 +15,7 @@ import {
 	openLoader,
 } from '../../redux/actions/loader/loaderActions';
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { openToastAndSetContent } from '../../redux/actions/toast/toastActions';
 import {
 	ColumnBusinessModule,
@@ -25,12 +25,18 @@ import PaginationTable from '../../components/paginatedTable/pagination-table';
 import TableHeader from '../../components/TableHeader/TableHeader';
 import StatusView from '../../components/StatusView/StatusView';
 import { useHistory } from 'react-router-dom';
+import NotPermitted from '../../components/NotPermitted';
 
 function Businesses() {
 	const [tableRow, setTableRow] = useState<any[]>();
 	const [businesses, setBusinesses] = useState<any>();
 	const [contentAction, setContentAction] = useState<any>({});
 	const history = useHistory();
+
+	const {
+		VIEW_BUSINESS,
+	
+	} = useSelector((state) => state?.permissionPayReducer.permission);
 
 	const dispatch = useDispatch();
 	//PAGINATION
@@ -97,7 +103,7 @@ function Businesses() {
 			setBusinesses(data);
 			dispatch(closeLoader());
 			setBearer(false);
-			console.log(data, "data")
+			console.log(data, 'data');
 		} catch (error: any) {
 			dispatch(closeLoader());
 			const { message } = error.response.data;
@@ -160,56 +166,60 @@ function Businesses() {
 	return (
 		<div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
 			<NavBar name='business' />
-			<div className={styles.container}>
-				<TableHeader
-					pageName='Businesses'
-					data={businesses?.businesses}
-					dataLength={businesses?._metadata.totalcount}
-					value={value}
-					setValue={setValue}
-					dropdown={dropdown}
-					setDropdown={setDropdown}
-					placeHolder='Search'
-					FilterComponent={
-						<FilterModal
-							eventDate={eventDate}
-							setEventDate={setEventDate}
-							dropdown={dropdown}
-							setDropdown={setDropdown}
-							setFromDate={setFromDate}
-							setToDate={setToDate}
-							fromDate={fromDate}
-							toDate={toDate}
-							setBearer={setBearer}
-							clearHandler={clearHandler}
-							filteredArray={filteredArray}
-						/>
-					}
-				/>
+			{VIEW_BUSINESS ? (
+				<div className={styles.container}>
+					<TableHeader
+						pageName='Businesses'
+						data={businesses?.businesses}
+						dataLength={businesses?._metadata.totalcount}
+						value={value}
+						setValue={setValue}
+						dropdown={dropdown}
+						setDropdown={setDropdown}
+						placeHolder='Search'
+						FilterComponent={
+							<FilterModal
+								eventDate={eventDate}
+								setEventDate={setEventDate}
+								dropdown={dropdown}
+								setDropdown={setDropdown}
+								setFromDate={setFromDate}
+								setToDate={setToDate}
+								fromDate={fromDate}
+								toDate={toDate}
+								setBearer={setBearer}
+								clearHandler={clearHandler}
+								filteredArray={filteredArray}
+							/>
+						}
+					/>
 
-				<PaginationTable
-					data={tableRow ? tableRow : []}
-					columns={ColumnBusinessModule ? ColumnBusinessModule : []}
-					emptyPlaceHolder={
-						businesses?._metadata?.totalcount == 0
-							? 'You currently do not have any data'
-							: 'Loading...'
-					}
-					value={value}
-					total={businesses?._metadata.totalcount}
-					totalPage={businesses?._metadata.pagecount}
-					pageNumber={pageNumber}
-					setPageNumber={setPageNumber}
-					nextPage={nextPage}
-					setNextPage={setNextPage}
-					previousPage={previousPage}
-					setPreviousPage={setPreviousPage}
-					rowsPerPage={rowsPerPage}
-					setRowsPerPage={setRowsPerPage}
-					clickAction={true}
-					setContentAction={setContentAction}
-				/>
-			</div>
+					<PaginationTable
+						data={tableRow ? tableRow : []}
+						columns={ColumnBusinessModule ? ColumnBusinessModule : []}
+						emptyPlaceHolder={
+							businesses?._metadata?.totalcount == 0
+								? 'You currently do not have any data'
+								: 'Loading...'
+						}
+						value={value}
+						total={businesses?._metadata.totalcount}
+						totalPage={businesses?._metadata.pagecount}
+						pageNumber={pageNumber}
+						setPageNumber={setPageNumber}
+						nextPage={nextPage}
+						setNextPage={setNextPage}
+						previousPage={previousPage}
+						setPreviousPage={setPreviousPage}
+						rowsPerPage={rowsPerPage}
+						setRowsPerPage={setRowsPerPage}
+						clickAction={true}
+						setContentAction={setContentAction}
+					/>
+				</div>
+			) : (
+			<NotPermitted title='BUSINESS'/>
+			)}
 		</div>
 	);
 }

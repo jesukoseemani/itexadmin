@@ -27,6 +27,7 @@ import StatusView from '../StatusView/StatusView';
 import { useHistory } from 'react-router-dom';
 import { openModalAndSetContent } from '../../redux/actions/modal/modalActions';
 import BusinessSchedule from './businessSchedule/BusinessSchedule';
+import NotPermitted from '../NotPermitted';
 
 function SettlementSchedule({ id }: { id: number | undefined }) {
 	const [tableRow, setTableRow] = useState<any[]>();
@@ -34,6 +35,10 @@ function SettlementSchedule({ id }: { id: number | undefined }) {
 	const [contentAction, setContentAction] = useState<any>({});
 	const history = useHistory();
 	const { modalOpened } = useSelector((state) => state.modal);
+	const {
+		VIEW_BUSINESS_SETTLEMENT_SCHEDULE,
+		ADD_BUSINESS_SETTLEMENT_SCHEDULE,
+	} = useSelector((state) => state?.permissionPayReducer.permission);
 
 	const dispatch = useDispatch();
 	//PAGINATION
@@ -183,40 +188,47 @@ function SettlementSchedule({ id }: { id: number | undefined }) {
 
 	return (
 		<div className={styles.containerHeader}>
-			<div className={styles.buttonmove}>
-				<button
-					onClick={() => editConfigHandler('Add')}
-					className={styles.downloadbutton}>
-					Add Schedule
-				</button>
-			</div>
-			<PaginationTable
-				data={tableRow ? tableRow : []}
-				columns={
-					ColumnBusinessSettlementScheduleData
-						? ColumnBusinessSettlementScheduleData
-						: []
-				}
-				emptyPlaceHolder={
-					businesses?.schedule?.length == 0
-						? 'You currently do not have any data'
-						: 'Loading...'
-				}
-				value={value}
-				total={businesses?.schedule?.length}
-				totalPage={businesses?.schedule?.length}
-				pageNumber={pageNumber}
-				setPageNumber={setPageNumber}
-				nextPage={nextPage}
-				setNextPage={setNextPage}
-				previousPage={previousPage}
-				setPreviousPage={setPreviousPage}
-				rowsPerPage={rowsPerPage}
-				setRowsPerPage={setRowsPerPage}
-				clickAction={true}
-				setContentAction={setContentAction}
-				recent={false}
-			/>
+			{ADD_BUSINESS_SETTLEMENT_SCHEDULE && (
+				<div className={styles.buttonmove}>
+					<button
+						onClick={() => editConfigHandler('Add')}
+						className={styles.downloadbutton}>
+						Add Schedule
+					</button>
+				</div>
+			)}
+
+			{VIEW_BUSINESS_SETTLEMENT_SCHEDULE ? (
+				<PaginationTable
+					data={tableRow ? tableRow : []}
+					columns={
+						ColumnBusinessSettlementScheduleData
+							? ColumnBusinessSettlementScheduleData
+							: []
+					}
+					emptyPlaceHolder={
+						businesses?.schedule?.length == 0
+							? 'You currently do not have any data'
+							: 'Loading...'
+					}
+					value={value}
+					total={businesses?.schedule?.length}
+					totalPage={businesses?.schedule?.length}
+					pageNumber={pageNumber}
+					setPageNumber={setPageNumber}
+					nextPage={nextPage}
+					setNextPage={setNextPage}
+					previousPage={previousPage}
+					setPreviousPage={setPreviousPage}
+					rowsPerPage={rowsPerPage}
+					setRowsPerPage={setRowsPerPage}
+					clickAction={true}
+					setContentAction={setContentAction}
+					recent={false}
+				/>
+			) : (
+				<NotPermitted title='BUSINESS SCHEDULE' />
+			)}
 		</div>
 	);
 }

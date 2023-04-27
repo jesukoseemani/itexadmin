@@ -27,6 +27,7 @@ import StatusView from '../StatusView/StatusView';
 import { useHistory } from 'react-router-dom';
 import { openModalAndSetContent } from '../../redux/actions/modal/modalActions';
 import BusinessFee from './businessFee/BusinessFee';
+import NotPermitted from '../NotPermitted';
 
 function Fee({ id }: { id: number | undefined }) {
 	const [tableRow, setTableRow] = useState<any[]>();
@@ -36,6 +37,9 @@ function Fee({ id }: { id: number | undefined }) {
 
 	const dispatch = useDispatch();
 	const { modalOpened } = useSelector((state) => state.modal);
+	const { VIEW_BUSINESS_FEES, ADD_BUSINESS_FEE } = useSelector(
+		(state) => state?.permissionPayReducer.permission
+	);
 
 	//PAGINATION
 	const [pageNumber, setPageNumber] = React.useState<number>(1);
@@ -124,9 +128,9 @@ function Fee({ id }: { id: number | undefined }) {
 		Object.values(contentAction).length > 0 && editConfigHandler('Edit');
 	}, [contentAction]);
 
-useEffect(() => {
-	if (!modalOpened) setContentAction({});
-}, [modalOpened]);
+	useEffect(() => {
+		if (!modalOpened) setContentAction({});
+	}, [modalOpened]);
 
 	const dataBusinesses = () => {
 		const tempArr: BusinessFeeModuleData[] = [];
@@ -184,36 +188,43 @@ useEffect(() => {
 
 	return (
 		<div className={styles.containerHeader}>
-			<div className={styles.buttonmove}>
-				<button
-					onClick={() => editConfigHandler('Add')}
-					className={styles.downloadbutton}>
-					Add Fee
-				</button>
-			</div>
-			<PaginationTable
-				data={tableRow ? tableRow : []}
-				columns={ColumnBusinessFeeModule ? ColumnBusinessFeeModule : []}
-				emptyPlaceHolder={
-					businesses?.fees?.length == 0
-						? 'You currently do not have any data'
-						: 'Loading...'
-				}
-				value={value}
-				total={businesses?.fees?.length}
-				totalPage={businesses?.fees?.length}
-				pageNumber={pageNumber}
-				setPageNumber={setPageNumber}
-				nextPage={nextPage}
-				setNextPage={setNextPage}
-				previousPage={previousPage}
-				setPreviousPage={setPreviousPage}
-				rowsPerPage={rowsPerPage}
-				setRowsPerPage={setRowsPerPage}
-				clickAction={true}
-				setContentAction={setContentAction}
-				recent={false}
-			/>
+			{ADD_BUSINESS_FEE && (
+				<div className={styles.buttonmove}>
+					<button
+						onClick={() => editConfigHandler('Add')}
+						className={styles.downloadbutton}>
+						Add Fee
+					</button>
+				</div>
+			)}
+
+			{VIEW_BUSINESS_FEES ? (
+				<PaginationTable
+					data={tableRow ? tableRow : []}
+					columns={ColumnBusinessFeeModule ? ColumnBusinessFeeModule : []}
+					emptyPlaceHolder={
+						businesses?.fees?.length == 0
+							? 'You currently do not have any data'
+							: 'Loading...'
+					}
+					value={value}
+					total={businesses?.fees?.length}
+					totalPage={businesses?.fees?.length}
+					pageNumber={pageNumber}
+					setPageNumber={setPageNumber}
+					nextPage={nextPage}
+					setNextPage={setNextPage}
+					previousPage={previousPage}
+					setPreviousPage={setPreviousPage}
+					rowsPerPage={rowsPerPage}
+					setRowsPerPage={setRowsPerPage}
+					clickAction={true}
+					setContentAction={setContentAction}
+					recent={false}
+				/>
+			) : (
+				<NotPermitted title='BUSINESS FEE' />
+			)}
 		</div>
 	);
 }

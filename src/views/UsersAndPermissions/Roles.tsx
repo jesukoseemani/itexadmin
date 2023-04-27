@@ -39,11 +39,11 @@ const useStyles = makeStyles({
 			border: 'none',
 		},
 		'& .MuiOutlinedInput-input.MuiInputBase-input.MuiInputBase-input.MuiOutlinedInput-input':
-		{
-			textAlign: 'center',
-			padding: '8.1px 70px',
-			fontSize: '4px',
-		},
+			{
+				textAlign: 'center',
+				padding: '8.1px 70px',
+				fontSize: '4px',
+			},
 		// '& .MuiSelect-select.MuiInputBase-input.MuiOutlinedInput-input.MuiSelect-select.MuiInputBase-input.MuiOutlinedInput-input.MuiSelect-select.MuiInputBase-input.MuiOutlinedInput-input':
 		// 	{
 		// 		paddingRight: '50px',
@@ -51,11 +51,11 @@ const useStyles = makeStyles({
 	},
 	select: {
 		'& .MuiOutlinedInput-input.MuiInputBase-input.MuiInputBase-input.MuiOutlinedInput-input':
-		{
-			textAlign: 'center',
-			padding: '5px 40px',
-			fontSize: '15px',
-		},
+			{
+				textAlign: 'center',
+				padding: '5px 40px',
+				fontSize: '15px',
+			},
 		'&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
 			outline: 'none',
 		},
@@ -131,6 +131,14 @@ const Roles = () => {
 		setAnchorEl(event.currentTarget);
 		setDataValue(event.currentTarget.getAttribute('data-value'));
 	};
+
+	const {
+		ROLE_ASSIGN_MODULE,
+		ADD_ROLE_MODULE,
+		DELETE_ROLE_MODULE,
+		ROLE_MODULE,
+		RESTORE_ROLE_MODULE,
+	} = useSelector((state) => state?.permissionPayReducer.permission);
 
 	// DATE CONVERTION
 	const now = new Date();
@@ -420,21 +428,28 @@ const Roles = () => {
 					aria-expanded={open ? 'true' : undefined}
 					onClick={handleClick}
 					className={styles.tableVertIcon}>
-					<div
-						onClick={() =>
-							editHandler(id, userRoleName, roleDescription, createdAt)
-						}
-						className={styles.icons}>
-						<Edit />
-					</div>
-					<div onClick={() => deleteHandler(id)} className={styles.icons}>
-						<Trash />
-					</div>
-					<div
-						onClick={() => permissionHandler(id, userRoleName)}
-						className={styles.icons}>
-						<Key />
-					</div>
+					{ROLE_ASSIGN_MODULE && (
+						<div
+							onClick={() =>
+								editHandler(id, userRoleName, roleDescription, createdAt)
+							}
+							className={styles.icons}>
+							<Edit />
+						</div>
+					)}
+
+					{DELETE_ROLE_MODULE && (
+						<div onClick={() => deleteHandler(id)} className={styles.icons}>
+							<Trash />
+						</div>
+					)}
+					{ROLE_ASSIGN_MODULE && (
+						<div
+							onClick={() => permissionHandler(id, userRoleName)}
+							className={styles.icons}>
+							<Key />
+						</div>
+					)}
 				</div>
 			),
 		}),
@@ -473,15 +488,17 @@ const Roles = () => {
 						</h1>
 					</div>
 					<div className={styles.header_right}>
-						<div className={styles.selectwrapper}>Download</div>
-						<div className={styles.button_business}>
-							<button
-								onClick={editBusinessHandler}
-								className={styles.button_business_button}>
-								<span className={styles.button_business_span}>+</span> &nbsp;
-								Add custom role
-							</button>
-						</div>
+						{/* <div className={styles.selectwrapper}>Download</div> */}
+						{ADD_ROLE_MODULE && (
+							<div className={styles.button_business}>
+								<button
+									onClick={editBusinessHandler}
+									className={styles.button_business_button}>
+									<span className={styles.button_business_span}>+</span> &nbsp;
+									Add custom role
+								</button>
+							</div>
+						)}
 					</div>
 				</div>
 

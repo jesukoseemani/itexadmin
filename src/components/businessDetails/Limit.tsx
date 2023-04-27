@@ -27,12 +27,16 @@ import StatusView from '../StatusView/StatusView';
 import { useHistory } from 'react-router-dom';
 import { openModalAndSetContent } from '../../redux/actions/modal/modalActions';
 import BusinessLimit from './businessLimit/BusinessLimit';
+import NotPermitted from '../NotPermitted';
 
 function Limit({ id }: { id: number | undefined }) {
 	const [tableRow, setTableRow] = useState<any[]>();
 	const [businesses, setBusinesses] = useState<any>();
 	const [contentAction, setContentAction] = useState<any>({});
 	const history = useHistory();
+	const { VIEW_BUSINESS_LIMIT, ADD_BUSINESS_LIMIT } = useSelector(
+		(state) => state?.permissionPayReducer.permission
+	);
 
 	const dispatch = useDispatch();
 
@@ -182,36 +186,43 @@ function Limit({ id }: { id: number | undefined }) {
 
 	return (
 		<div className={styles.containerHeader}>
-			<div className={styles.buttonmove}>
-				<button
-					onClick={() => editConfigHandler('add')}
-					className={styles.downloadbutton}>
-					Add Limit
-				</button>
-			</div>
-			<PaginationTable
-				data={tableRow ? tableRow : []}
-				columns={ColumnBusinessLimitModule ? ColumnBusinessLimitModule : []}
-				emptyPlaceHolder={
-					businesses?.limit?.length == 0
-						? 'You currently do not have any data'
-						: 'Loading...'
-				}
-				value={value}
-				total={businesses?.limit?.length}
-				totalPage={businesses?.limit?.length}
-				pageNumber={pageNumber}
-				setPageNumber={setPageNumber}
-				nextPage={nextPage}
-				setNextPage={setNextPage}
-				previousPage={previousPage}
-				setPreviousPage={setPreviousPage}
-				rowsPerPage={rowsPerPage}
-				setRowsPerPage={setRowsPerPage}
-				clickAction={true}
-				setContentAction={setContentAction}
-				recent={false}
-			/>
+			{ADD_BUSINESS_LIMIT && (
+				<div className={styles.buttonmove}>
+					<button
+						onClick={() => editConfigHandler('add')}
+						className={styles.downloadbutton}>
+						Add Limit
+					</button>
+				</div>
+			)}
+
+			{VIEW_BUSINESS_LIMIT ? (
+				<PaginationTable
+					data={tableRow ? tableRow : []}
+					columns={ColumnBusinessLimitModule ? ColumnBusinessLimitModule : []}
+					emptyPlaceHolder={
+						businesses?.limit?.length == 0
+							? 'You currently do not have any data'
+							: 'Loading...'
+					}
+					value={value}
+					total={businesses?.limit?.length}
+					totalPage={businesses?.limit?.length}
+					pageNumber={pageNumber}
+					setPageNumber={setPageNumber}
+					nextPage={nextPage}
+					setNextPage={setNextPage}
+					previousPage={previousPage}
+					setPreviousPage={setPreviousPage}
+					rowsPerPage={rowsPerPage}
+					setRowsPerPage={setRowsPerPage}
+					clickAction={true}
+					setContentAction={setContentAction}
+					recent={false}
+				/>
+			) : (
+				<NotPermitted title='BUSINESS LIMIT' />
+			)}
 		</div>
 	);
 }

@@ -7,7 +7,7 @@ import StatusView from '../StatusView/StatusView';
 import { Divider } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import BusinessConfig from './businessConfig/BusinessConfig';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { openModalAndSetContent } from '../../redux/actions/modal/modalActions';
 import BusinessSubTab from './BusinessSubTab';
 import { BusinessDetailApiTypes } from '../../types/UserTableTypes';
@@ -27,6 +27,25 @@ function BusinessDetails({
 }) {
 	const history = useHistory();
 	const dispatch = useDispatch();
+	const {
+		VIEW_BUSINESS,
+		VIEW_BUSINESS_CUSTOMERS,
+		VIEW_BUSINESS_TRANSACTION,
+		VIEW_BUSINESS_USERS,
+		VIEW_BUSINESS_FEES,
+		VIEW_BUSINESS_LIMIT,
+		VIEW_BUSINESS_PAYMENT_METHOD,
+		VIEW_BUSINESS_DOCUMENT,
+		VIEW_BUSINESS_SETTLEMENT_SCHEDULE,
+		ADD_BUSINESS_FEE,
+		ADD_BUSINESS_LIMIT,
+		APPROVE_BUSINESS_FEE,
+		APPROVE_BUSINESS_LIMIT,
+		APPROVE_BUSINESS_DOCUMENT,
+		APPROVE_BUSINESS_SETTLEMENT_SCHEDULE,
+		EDIT_BUSINESS_CONFIG,
+		ADD_BUSINESS_SETTLEMENT_SCHEDULE,
+	} = useSelector((state) => state?.permissionPayReducer.permission);
 
 	const editConfigHandler = () => {
 		dispatch(
