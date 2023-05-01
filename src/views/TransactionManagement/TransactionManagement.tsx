@@ -110,7 +110,7 @@ function TransactionManagement() {
 		dispatch(openLoader());
 		try {
 			const { data } = await axios.get(
-				`/v1/transaction?fromdate=${fromDate}&todate=${toDate}&perpage=${rowsPerPage}&page=${pageNumber}`
+				`/v1/transaction?search=${value}&fromdate=${fromDate}&todate=${toDate}&perpage=${rowsPerPage}&page=${pageNumber}`
 			);
 			setTransaction(data);
 			dispatch(closeLoader());
@@ -213,6 +213,7 @@ function TransactionManagement() {
 					setDropdown={setDropdown}
 					placeHolder='Search'
 					handleClick={downloadHandler}
+					filtering={false}
 					FilterComponent={
 						<FilterModal
 							eventDate={eventDate}
