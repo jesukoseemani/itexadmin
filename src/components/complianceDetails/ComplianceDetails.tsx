@@ -15,13 +15,13 @@ import { useDispatch } from 'react-redux';
 import { format, parseISO } from 'date-fns';
 import { openModalAndSetContent } from '../../redux/actions/modal/modalActions';
 
-
 import { useParams } from 'react-router-dom';
 import { ComplianceModuleData } from '../../types/ComplianceTypes';
 import { Box } from '@mui/material';
 import { openToastAndSetContent } from '../../redux/actions/toast/toastActions';
 import VerifyCompliance from './VerifyCompliance';
 import ValidateDoc from './ValidateDoc';
+import CompleteApproval from '../../components/complianceDetails/CompleteApproval';
 
 function ComplianceDetails() {
 	const [details, setDetails] = useState<any>();
@@ -32,38 +32,35 @@ function ComplianceDetails() {
 	const history = useHistory();
 	const dispatch = useDispatch();
 
-
-
-
-
 	const { id }: any = useParams();
-	const [business, setBusiness] = useState<any>()
-	const [document, setDocument] = useState<any>()
+	const [business, setBusiness] = useState<any>();
+	const [document, setDocument] = useState<any>();
 
 	const fetchDoc = async () => {
 		try {
-			const { data } = await axios.get<any>(`/v1/compliance/business/${id}/docs`)
-			console.log(data)
-			setBusiness(data)
+			const { data } = await axios.get<any>(
+				`/v1/compliance/business/${id}/docs`
+			);
+			console.log(data);
+			setBusiness(data);
 			// setDocument(business?.documents)
 		} catch (error: any) {
 			dispatch(
 				openToastAndSetContent({
 					toastContent: error.message,
 					toastStyles: {
-						backgroundColor: "red",
+						backgroundColor: 'red',
 					},
 				})
-			)
+			);
 		}
-	}
+	};
 
 	useEffect(() => {
-		fetchDoc()
-	}, [id])
+		fetchDoc();
+	}, [id]);
 
 	const handleValidate = async (doc: any) => {
-
 		dispatch(
 			openModalAndSetContent({
 				modalStyles: {
@@ -71,13 +68,12 @@ function ComplianceDetails() {
 				},
 				modalContent: (
 					<Box>
-						<ValidateDoc doc={doc} />
+						<ValidateDoc doc={doc} fn={fetchDoc}/>
 					</Box>
 				),
 			})
 		);
-	}
-
+	};
 
 	const handleVerify = (doc: any) => {
 		dispatch(
@@ -87,12 +83,43 @@ function ComplianceDetails() {
 				},
 				modalContent: (
 					<Box>
-						<VerifyCompliance doc={doc} />
+						<VerifyCompliance doc={doc} fn={fetchDoc} />
 					</Box>
 				),
 			})
 		);
-	}
+	};
+
+	const enlargeDoc = (doc: any) => {
+		dispatch(
+			openModalAndSetContent({
+				modalStyles: {
+					padding: 0,
+				},
+				modalContent: (
+					<Box>
+						<img width='450px' height='450px' src={doc} alt='' />
+					</Box>
+				),
+			})
+		);
+	};
+
+	const handleApproval = (business: any) => {
+		dispatch(
+			openModalAndSetContent({
+				modalStyles: {
+					padding: 0,
+				},
+				modalContent: (
+					<Box>
+						<CompleteApproval id={business} />
+					</Box>
+				),
+			})
+		);
+	};
+
 	return (
 		<div className={styles.container}>
 			<NavBar name='business' />
@@ -102,6 +129,10 @@ function ComplianceDetails() {
 					<ArrowLeftIcon />
 				</span>{' '}
 				<p className={styles.back_paragraph}> Back to Compliance</p>
+			</div>
+
+			<div className={styles.businessbutton}>
+				<button onClick={() => handleApproval(id)}>Business Approval</button>
 			</div>
 
 			{/* <div className={styles.detailsHeader}>
@@ -154,77 +185,78 @@ function ComplianceDetails() {
 				<Grid container spacing={2}>
 					<Grid item xs={6} md={4}>
 						<div className={styles.gridFeatureBusiness}>
-							<h1 className={styles.gridFeatureBusinessH1}>Business email
-							</h1>
-							<p className={styles.gridFeatureBusinessP}>{business?.business?.businessemail}</p>
+							<h1 className={styles.gridFeatureBusinessH1}>Business email</h1>
+							<p className={styles.gridFeatureBusinessP}>
+								{business?.business?.businessemail}
+							</p>
 						</div>
 					</Grid>
 					<Grid item xs={6} md={4}>
 						<div className={styles.gridFeatureBusiness}>
-							<h1 className={styles.gridFeatureBusinessH1}>Merchantcode
-							</h1>
-							<p className={styles.gridFeatureBusinessP}>{business?.business?.merchantcode}</p>
+							<h1 className={styles.gridFeatureBusinessH1}>Merchantcode</h1>
+							<p className={styles.gridFeatureBusinessP}>
+								{business?.business?.merchantcode}
+							</p>
 						</div>
 					</Grid>
 					<Grid item xs={6} md={4}>
 						<div className={styles.gridFeatureBusiness}>
-							<h1 className={styles.gridFeatureBusinessH1}>Business phone
-
-							</h1>
-							<p className={styles.gridFeatureBusinessP}>{business?.business?.businessphone
-							}</p>
+							<h1 className={styles.gridFeatureBusinessH1}>Business phone</h1>
+							<p className={styles.gridFeatureBusinessP}>
+								{business?.business?.businessphone}
+							</p>
 						</div>
 					</Grid>
 					<Grid item xs={6} md={4}>
 						<div className={styles.gridFeatureBusiness}>
-							<h1 className={styles.gridFeatureBusinessH1}>Trading name
-
-							</h1>
-							<p className={styles.gridFeatureBusinessP}>{business?.business?.tradingname
-
-							}</p>
+							<h1 className={styles.gridFeatureBusinessH1}>Trading name</h1>
+							<p className={styles.gridFeatureBusinessP}>
+								{business?.business?.tradingname}
+							</p>
 						</div>
 					</Grid>
 					<Grid item xs={6} md={4}>
 						<div className={styles.gridFeatureBusiness}>
 							<h1 className={styles.gridFeatureBusinessH1}>country</h1>
-							<p className={styles.gridFeatureBusinessP}>{business?.business?.country}</p>
+							<p className={styles.gridFeatureBusinessP}>
+								{business?.business?.country}
+							</p>
 						</div>
 					</Grid>
 					<Grid item xs={6} md={4}>
 						<div className={styles.gridFeatureBusiness}>
 							<h1 className={styles.gridFeatureBusinessH1}>islive</h1>
-							<p className={styles.gridFeatureBusinessP}>{business?.business?.lively ? "True" : "False"}</p>
+							<p className={styles.gridFeatureBusinessP}>
+								{business?.business?.lively ? 'True' : 'False'}
+							</p>
 						</div>
 					</Grid>
 				</Grid>
 			</div>
 
-
-			<Box >
+			<Box>
 				<Grid container spacing={3} px={4}>
-
 					{business?.documents?.map((x: any) => (
 						<Grid item xs={12} sm={6} md={4} key={x?.id}>
 							<Box className={styles.imgBox}>
-								<Box className={styles.imgList}>
-									<img src={x?.idurl} alt="hhhhh" />
-
+								<Box
+									onClick={() => enlargeDoc(x?.idurl)}
+									className={styles.imgList}>
+									<img src={x?.idurl} alt='docurl' />
 								</Box>
 								<Box className={styles.btn}>
-									{x?.status !== "APPROVE" && <button onClick={() => handleValidate(x)}>Validate</button>}
-									{x?.verifiedstatus !== "VERIFIED" && <button onClick={() => handleVerify(x)}>Verify</button>}
+									{x?.status !== 'APPROVE' && (
+										<button onClick={() => handleValidate(x)}>Validate</button>
+									)}
+									{x?.verifiedstatus !== 'VERIFIED' && (
+										<button onClick={() => handleVerify(x)}>Verify</button>
+									)}
 								</Box>
-
 							</Box>
 						</Grid>
 					))}
 				</Grid>
 			</Box>
-
-
-
-
 
 			{/* 
 			<div
